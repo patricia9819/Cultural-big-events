@@ -1,0 +1,656 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/@fontsource/noto-sans-tc/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/noto-sans-tc/700.css">
+<link rel="stylesheet" href="node_modules/@fontsource/noto-sans-tc/900.css">
+<link rel="stylesheet" href="node_modules/@fontsource/barlow-condensed/600.css">
+<link rel="stylesheet" href="node_modules/@fontsource/barlow-condensed/800.css">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+</head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script>
+const W = 1080, H = 1920, FPS = 30, DUR = 66.5;
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const P = { bg0:'#070B22', bg1:'#11184A', teal:'#21E6C1', coral:'#FF5A6E', amber:'#FFC23D', violet:'#8A6BFF', sky:'#3FB2FF', white:'#F4F6FF', mute:'#8E98C8', dim:'#2A3370', gold:'#FFD166' };
+
+// ---------- math ----------
+const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const pr = (t, s, d) => cl((t - s) / d);
+const lerp = (a, b, x) => a + (b - a) * x;
+const eOE = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const eIE = x => x <= 0 ? 0 : Math.pow(2, 10 * x - 10);
+const eOC = x => 1 - Math.pow(1 - x, 3);
+const eIC = x => x * x * x;
+const eIOC = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eOB = x => { const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const eIOE = x => x <= 0 ? 0 : x >= 1 ? 1 : x < .5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
+const hash = n => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+const fmt = n => Math.round(n).toLocaleString('en-US');
+const BEAT = .5;
+function drumsOn(t) { return (t >= 8 && t < 40) || (t >= 48 && t < 64); }
+function kick(t) { const on = drumsOn(t) ? 1 : (t >= 4 && t < 8) || (t >= 44 && t < 48) ? .5 : 0; return on * Math.exp(-(t % BEAT) / .09); }
+
+// ---------- drawing helpers ----------
+const FAM = { TC: '"Noto Sans TC"', N: '"Barlow Condensed","Noto Sans TC"' };
+function font(size, weight = 700, fam = 'TC') { ctx.font = `${weight} ${size}px ${FAM[fam]}`; }
+function txt(s, x, y, o = {}) {
+  const { size = 60, weight = 700, fam = 'TC', color = P.white, align = 'center', ls = 0, alpha = 1, base = 'alphabetic' } = o;
+  ctx.save(); font(size, weight, fam); ctx.letterSpacing = ls + 'px';
+  ctx.textAlign = align; ctx.textBaseline = base; ctx.globalAlpha *= alpha; ctx.fillStyle = color;
+  ctx.fillText(s, x, y); ctx.restore();
+}
+function measure(s, o = {}) {
+  const { size = 60, weight = 700, fam = 'TC', ls = 0 } = o;
+  ctx.save(); font(size, weight, fam); ctx.letterSpacing = ls + 'px'; const w = ctx.measureText(s).width; ctx.restore(); return w;
+}
+// per-character masked rise-in
+function charsIn(s, x, y, o, t, start, stagger = .035, dur = .6, out = null) {
+  const { size = 60, align = 'center' } = o;
+  const chars = [...s];
+  const total = measure(s, o);
+  let x0 = align === 'center' ? x - total / 2 : align === 'right' ? x - total : x;
+  ctx.save();
+  ctx.beginPath(); ctx.rect(0, y - size * 1.15, W, size * 1.5); ctx.clip();
+  let acc = 0;
+  chars.forEach((ch, i) => {
+    const k = eOE(pr(t, start + i * stagger, dur));
+    let dy = (1 - k) * size * 1.2;
+    let a = k;
+    if (out) { const ko = eIC(pr(t, out + i * stagger * .5, .35)); dy -= ko * size * 1.2; }
+    const cx = x0 + measure(s.slice(0, i), o);
+    txt(ch, cx, y + dy, { ...o, align: 'left', alpha: (o.alpha ?? 1) * a });
+  });
+  ctx.restore();
+}
+function rr(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x, y, Math.max(0, w), h, Math.min(r, Math.max(0, w) / 2, h / 2)); }
+function fillRR(x, y, w, h, r, c, a = 1) { ctx.save(); ctx.globalAlpha *= a; ctx.fillStyle = c; rr(x, y, w, h, r); ctx.fill(); ctx.restore(); }
+function strokeRR(x, y, w, h, r, c, lw = 2, a = 1) { ctx.save(); ctx.globalAlpha *= a; ctx.strokeStyle = c; ctx.lineWidth = lw; rr(x, y, w, h, r); ctx.stroke(); ctx.restore(); }
+function arc(cx, cy, r, a0, a1, c, lw, cap = 'round', a = 1) { if (a1 - a0 < 1e-4) return; ctx.save(); ctx.globalAlpha *= a; ctx.strokeStyle = c; ctx.lineWidth = lw; ctx.lineCap = cap; ctx.beginPath(); ctx.arc(cx, cy, r, a0, a1); ctx.stroke(); ctx.restore(); }
+function circle(cx, cy, r, c, a = 1) { ctx.save(); ctx.globalAlpha *= a; ctx.fillStyle = c; ctx.beginPath(); ctx.arc(cx, cy, Math.max(0, r), 0, 7); ctx.fill(); ctx.restore(); }
+function glow(c, b) { ctx.shadowColor = c; ctx.shadowBlur = b; }
+function grad(x0, y0, x1, y1, stops) { const g = ctx.createLinearGradient(x0, y0, x1, y1); stops.forEach((c, i) => g.addColorStop(i / (stops.length - 1), c)); return g; }
+function check(x, y, s, k, c, lw = 8) { // animated check mark
+  ctx.save(); ctx.strokeStyle = c; ctx.lineWidth = lw; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const pts = [[x - s * .5, y], [x - s * .12, y + s * .38], [x + s * .55, y - s * .42]];
+  const l1 = Math.hypot(pts[1][0] - pts[0][0], pts[1][1] - pts[0][1]), l2 = Math.hypot(pts[2][0] - pts[1][0], pts[2][1] - pts[1][1]);
+  const d = k * (l1 + l2);
+  ctx.beginPath(); ctx.moveTo(...pts[0]);
+  if (d <= l1) ctx.lineTo(lerp(pts[0][0], pts[1][0], d / l1), lerp(pts[0][1], pts[1][1], d / l1));
+  else { ctx.lineTo(...pts[1]); const q = (d - l1) / l2; ctx.lineTo(lerp(pts[1][0], pts[2][0], q), lerp(pts[1][1], pts[2][1], q)); }
+  ctx.stroke(); ctx.restore();
+}
+function warnIcon(x, y, s, c, k) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(eOB(k), eOB(k)); ctx.strokeStyle = c; ctx.lineWidth = s * .1; ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(0, -s * .5); ctx.lineTo(s * .55, s * .45); ctx.lineTo(-s * .55, s * .45); ctx.closePath(); ctx.stroke();
+  ctx.fillStyle = c; ctx.fillRect(-s * .05, -s * .18, s * .1, s * .34); ctx.beginPath(); ctx.arc(0, s * .3, s * .06, 0, 7); ctx.fill(); ctx.restore();
+}
+function crown(x, y, s, c) {
+  ctx.save(); ctx.fillStyle = c; ctx.beginPath();
+  ctx.moveTo(x - s * .5, y + s * .3); ctx.lineTo(x - s * .5, y - s * .2); ctx.lineTo(x - s * .22, y + s * .05); ctx.lineTo(x, y - s * .35);
+  ctx.lineTo(x + s * .22, y + s * .05); ctx.lineTo(x + s * .5, y - s * .2); ctx.lineTo(x + s * .5, y + s * .3); ctx.closePath(); ctx.fill(); ctx.restore();
+}
+
+// ---------- grain ----------
+const grains = [];
+for (let g = 0; g < 4; g++) {
+  const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d');
+  const im = x.createImageData(256, 256);
+  for (let i = 0; i < im.data.length; i += 4) { const v = Math.random() * 255; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; }
+  x.putImageData(im, 0, 0); grains.push(c);
+}
+
+// ---------- background ----------
+const SECT_COL = [P.teal, P.sky, P.teal, P.violet, P.gold, P.coral, P.amber, P.teal, P.teal];
+function background(t) {
+  const g = ctx.createLinearGradient(0, 0, W * .3, H); g.addColorStop(0, P.bg1); g.addColorStop(1, P.bg0);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  const si = Math.min(8, Math.floor(t / 8));
+  const acc = SECT_COL[si];
+  // drifting blobs
+  const blobs = [[.2, .25, acc, 620], [.85, .7, P.violet, 700], [.3, .95, P.sky, 560]];
+  blobs.forEach(([bx, by, c, r], i) => {
+    const x = W * bx + Math.sin(t * .35 + i * 2) * 120, y = H * by + Math.cos(t * .28 + i) * 140;
+    const rg = ctx.createRadialGradient(x, y, 0, x, y, r * (1 + kick(t) * .04));
+    rg.addColorStop(0, c + '38'); rg.addColorStop(1, c + '00'); ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+  });
+  // perspective dot grid
+  ctx.save(); ctx.globalAlpha = .22; ctx.fillStyle = '#9FB0FF';
+  const off = (t * 22) % 60;
+  for (let y = -60; y < H + 60; y += 60) for (let x = 0; x < W + 60; x += 60) {
+    const yy = y + off; const d = Math.hypot(x - W / 2, yy - H * .45) / 1200;
+    ctx.globalAlpha = .18 * (1 - d) * (1 + kick(t) * .6);
+    ctx.fillRect(x - 1.5, yy - 1.5, 3, 3);
+  }
+  ctx.restore();
+  // particles
+  for (let i = 0; i < 46; i++) {
+    const sp = 20 + hash(i) * 60;
+    const x = (hash(i + 9) * W + Math.sin(t * .5 + i) * 30);
+    const y = ((hash(i + 3) * H - t * sp) % H + H) % H;
+    circle(x, y, 1.5 + hash(i + 5) * 3, i % 3 ? P.white : acc, .25 + .3 * hash(i + 7));
+  }
+}
+function marquee(t, y, text, speed, alpha, size = 170) {
+  ctx.save(); font(size, 900, 'N'); ctx.letterSpacing = '6px';
+  const w = ctx.measureText(text).width; let x = -((t * speed) % w + w) % w;
+  ctx.globalAlpha = alpha; ctx.strokeStyle = P.white; ctx.lineWidth = 2;
+  for (; x < W; x += w) ctx.strokeText(text, x, y);
+  ctx.restore();
+}
+
+// ---------- HUD ----------
+const SCENES = ['', '申報總覽', '年度累計', '系統比較', '填報最多', '偏少掛零', '注意重點', '衝刺建議'];
+function hud(t) {
+  if (t < 8.2 || t > 63.5) return;
+  const a = Math.min(pr(t, 8.2, .5), 1 - pr(t, 63, .5));
+  ctx.save(); ctx.globalAlpha = a;
+  const si = Math.min(7, Math.floor(t / 8));
+  txt('臺中市藝文網 · 9–10月填報快報', 90, 175, { size: 30, weight: 700, color: P.mute, align: 'left', ls: 3 });
+  txt(String(si + 1).padStart(2, '0'), W - 160, 178, { size: 44, weight: 800, fam: 'N', color: SECT_COL[si], align: 'right' });
+  txt('/ 08', W - 90, 178, { size: 30, weight: 600, fam: 'N', color: P.mute, align: 'right' });
+  // segmented progress
+  for (let i = 0; i < 8; i++) {
+    const x = 90 + i * 113, w = 101;
+    fillRR(x, 205, w, 6, 3, P.white, .14);
+    const k = cl((t - i * 8) / 8);
+    if (k > 0) fillRR(x, 205, w * k, 6, 3, i === si ? SECT_COL[si] : P.white, i === si ? 1 : .55);
+  }
+  // reel timecode
+  const f = Math.floor(t * FPS);
+  const tc = `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(Math.floor(t % 60)).padStart(2, '0')}:${String(f % FPS).padStart(2, '0')}`;
+  circle(98, 1690, 7, P.coral, .6 + .4 * Math.sin(t * 6));
+  txt('REC  ' + tc, 116, 1700, { size: 28, weight: 600, fam: 'N', color: P.mute, align: 'left', ls: 3 });
+  txt('資料統計至 115.10.31', W - 90, 1700, { size: 26, weight: 500, color: P.mute, align: 'right', ls: 2 });
+  ctx.restore();
+}
+
+// section title block
+function title(u, tag, en, zh, col, sub) {
+  const out = 7.25;
+  const k = eOE(pr(u, .15, .7)), ko = eIC(pr(u, out, .4));
+  ctx.save(); ctx.globalAlpha = 1 - ko;
+  // tag box
+  const tw = 70 * k;
+  fillRR(90, 268, tw, 52, 8, col);
+  if (k > .6) txt(tag, 90 + 35, 307, { size: 38, weight: 800, fam: 'N', color: P.bg0 });
+  charsIn(en, 180, 307, { size: 32, weight: 600, fam: 'N', color: col, align: 'left', ls: 8 }, u, .3, .02, .5);
+  charsIn(zh, 90, 410, { size: 78, weight: 900, align: 'left', ls: 2 }, u, .35, .04, .6, out);
+  if (sub) charsIn(sub, 92, 462, { size: 32, weight: 500, color: P.mute, align: 'left', ls: 2 }, u, .7, .015, .5, out);
+  ctx.restore();
+}
+function outK(u) { return eIC(pr(u, 7.2, .45)); }
+
+// ================= SCENES =================
+function S1(t) { // intro 0-8
+  const u = t;
+  marquee(u, 380, 'DATA REEL · 藝文網 · ', 60, .07 * pr(u, .3, 1));
+  marquee(u, 1620, '115 · SEP–OCT · 填報 · ', -80, .07 * pr(u, .3, 1));
+  const cx = W / 2, cy = 860, kk = kick(u);
+  const zoom = 1 + eIE(pr(u, 7, 1)) * 2.2;
+  ctx.save(); ctx.translate(cx, cy); ctx.scale(zoom, zoom); ctx.translate(-cx, -cy);
+  // opening line
+  const l = eOE(pr(u, 0, .6)), lo = eIOC(pr(u, .55, .5));
+  if (lo < 1) { ctx.save(); ctx.strokeStyle = P.teal; ctx.lineWidth = 4; ctx.globalAlpha = 1 - lo; ctx.beginPath(); ctx.moveTo(cx - 420 * l, cy); ctx.lineTo(cx + 420 * l, cy); ctx.stroke(); ctx.restore(); }
+  // rings
+  const rk = eOE(pr(u, .5, 1.6));
+  const R = 380 + kk * 10;
+  arc(cx, cy, R, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * rk, P.teal, 6, 'round', .9);
+  ctx.save(); ctx.setLineDash([4, 18]); arc(cx, cy, R + 50, u * .3, u * .3 + Math.PI * 2 * rk, P.white, 3, 'butt', .35); ctx.restore();
+  arc(cx, cy, R - 40, Math.PI - u * .6, Math.PI - u * .6 + 1.4 * rk, P.violet, 10, 'round', .8);
+  arc(cx, cy, R - 40, -u * .6, -u * .6 + .8 * rk, P.coral, 10, 'round', .8);
+  for (let i = 0; i < 3; i++) { const a = u * (1 + i * .4) + i * 2; circle(cx + Math.cos(a) * (R + 50), cy + Math.sin(a) * (R + 50), 9, [P.teal, P.amber, P.coral][i], rk); }
+  // burst on drop (t=4)
+  const bk = pr(u, 4, 1.2);
+  if (bk > 0 && bk < 1) for (let i = 0; i < 28; i++) { const a = i / 28 * Math.PI * 2; const d = R + eOE(bk) * 360; circle(cx + Math.cos(a) * d, cy + Math.sin(a) * d, 7 * (1 - bk), i % 2 ? P.teal : P.amber, 1 - bk); }
+  // text
+  charsIn('臺中市政府文化局 · 藝文網', cx, 610, { size: 42, weight: 700, color: P.mute, ls: 10 }, u, .7, .03, .6);
+  const pk = pr(u, 1.4, .7), s = eOB(pk);
+  if (pk > 0) {
+    ctx.save(); ctx.translate(cx, 880); ctx.scale(s * (1 + kk * .03), s * (1 + kk * .03)); ctx.globalAlpha = cl(pk * 3);
+    const w1 = measure('9–10', { size: 330, weight: 800, fam: 'N' }), w2 = measure('月', { size: 170, weight: 900 });
+    const x0 = -(w1 + w2 + 10) / 2;
+    ctx.save(); glow(P.teal, 40);
+    txt('9–10', x0, 0, { size: 330, weight: 800, fam: 'N', align: 'left', color: P.white }); ctx.restore();
+    txt('月', x0 + w1 + 10, -10, { size: 170, weight: 900, align: 'left', color: P.teal });
+    ctx.restore();
+  }
+  // gradient title
+  ctx.save();
+  const gfill = grad(cx - 380, 0, cx + 380, 0, [P.teal, P.sky, P.violet]);
+  charsIn('填報成績單', cx, 1090, { size: 160, weight: 900, color: gfill, ls: 12 }, u, 2.1, .08, .7);
+  ctx.restore();
+  charsIn('115年 藝文活動統計 · 數據快報', cx, 1190, { size: 40, weight: 500, color: P.white, ls: 6, alpha: .85 }, u, 2.9, .02, .5);
+  // underline sweep
+  const ul = eIOE(pr(u, 3.2, .8));
+  fillRR(cx - 300 * ul, 1235, 600 * ul, 6, 3, P.amber);
+  ctx.restore();
+  // flash on drop
+  const fl = pr(u, 4, .35); if (fl > 0 && fl < 1) { ctx.save(); ctx.globalAlpha = (1 - fl) * .25; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+}
+
+function S2(t) { // overview 8-16
+  const u = t - 8, ok = outK(u);
+  title(u, '02', 'OVERVIEW', '9–10月 申報總覽', P.sky, '各機關於藝文網申報活動之審核結果');
+  ctx.save(); ctx.translate(0, -ok * 120); ctx.globalAlpha = 1 - ok;
+  // big count
+  const ck = eOC(pr(u, .5, 1.6));
+  charsIn('申報總件數', W / 2, 590, { size: 40, weight: 700, color: P.mute, ls: 10 }, u, .5, .04, .5);
+  if (u > .5) {
+    const sc = 1 + kick(t) * .025;
+    ctx.save(); ctx.translate(W / 2, 830); ctx.scale(sc, sc); glow(P.sky, 50);
+    txt(fmt(1033 * ck), -30, 0, { size: 280, weight: 800, fam: 'N', color: P.white, alpha: cl(pr(u, .5, .3)) });
+    ctx.restore();
+    txt('件', W / 2 + 290, 820, { size: 64, weight: 900, color: P.sky, alpha: cl(pr(u, 1.6, .3)) });
+  }
+  // stacked bar
+  const bx = 90, bw = 900, by = 920, bh = 64;
+  const tot = 1033, segs = [[962, P.teal], [41, P.coral], [30, P.amber]];
+  fillRR(bx, by, bw * eOE(pr(u, 1.9, .6)), bh, 14, P.white, .08);
+  let acc = 0;
+  segs.forEach(([v, c], i) => {
+    const k = eOE(pr(u, 2.1 + i * .25, .8));
+    const w = bw * v / tot * k;
+    ctx.save(); rr(bx, by, bw * eOE(pr(u, 1.9, .6)), bh, 14); ctx.clip();
+    ctx.fillStyle = c; ctx.fillRect(bx + acc, by, w, bh); ctx.restore();
+    acc += bw * v / tot * k;
+  });
+  // cards
+  const cards = [['通過', 962, '93.1%', P.teal], ['退回', 41, '4.0%', P.coral], ['待審核', 30, '2.9%', P.amber]];
+  cards.forEach(([lab, v, pct, c], i) => {
+    const k = pr(u, 2.6 + i * .22, .7), e = eOB(k);
+    const x = 90 + i * 310, y = 1040, w = 280, h = 320;
+    if (k <= 0) return;
+    ctx.save(); ctx.translate(x + w / 2, y + h); ctx.scale(1, e); ctx.translate(-(x + w / 2), -(y + h)); ctx.globalAlpha *= cl(k * 2);
+    fillRR(x, y, w, h, 28, '#ffffff', .07); strokeRR(x, y, w, h, 28, c, 2, .6);
+    fillRR(x + 30, y + 34, 46, 8, 4, c);
+    txt(lab, x + 30, y + 98, { size: 44, weight: 900, align: 'left' });
+    txt(fmt(v * eOC(pr(u, 2.8 + i * .22, 1.2))), x + 30, y + 230, { size: 120, weight: 800, fam: 'N', color: c, align: 'left' });
+    txt('占 ' + pct, x + 30, y + 288, { size: 34, weight: 700, color: P.mute, align: 'left' });
+    ctx.restore();
+  });
+  // highlight pill
+  const hk = eOE(pr(u, 4.6, .7));
+  if (hk > 0) {
+    const w = 900 * hk;
+    fillRR(W / 2 - w / 2, 1430, w, 130, 65, P.teal, .14); strokeRR(W / 2 - w / 2, 1430, w, 130, 65, P.teal, 3, .8);
+    if (hk > .7) {
+      check(W / 2 - 375, 1495, 44, pr(u, 5, .4), P.teal, 9);
+      charsIn('通過率 93.1%　整體品質穩定', W / 2 + 40, 1515, { size: 48, weight: 900, ls: 2 }, u, 5.0, .03, .5);
+    }
+  }
+  ctx.restore();
+}
+
+function S3(t) { // cumulative 16-24
+  const u = t - 16, ok = outK(u);
+  title(u, '03', 'YEAR TO DATE', '全年累計進度', P.teal, '115年累計通過數 vs. 114年同期');
+  ctx.save(); ctx.translate(0, -ok * 120); ctx.globalAlpha = 1 - ok;
+  const cx = W / 2, cy = 840, R = 250;
+  const k = eIOC(pr(u, .5, 2.4)), pct = .805;
+  arc(cx, cy, R, 0, Math.PI * 2, P.white, 46, 'butt', .08 * cl(u * 3));
+  ctx.save(); ctx.setLineDash([2, 12]); arc(cx, cy, R + 50, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * eOE(pr(u, .3, 1.5)), P.white, 14, 'butt', .25); ctx.restore();
+  ctx.save(); glow(P.teal, 40);
+  arc(cx, cy, R, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct * k, grad(cx - R, cy - R, cx + R, cy + R, [P.sky, P.teal]), 46, 'round');
+  ctx.restore();
+  // gap arc (the missing 19.5%)
+  const gk = eOE(pr(u, 3, .8));
+  if (gk > 0) { ctx.save(); ctx.setLineDash([10, 10]); arc(cx, cy, R, -Math.PI / 2 + Math.PI * 2 * pct + .06, -Math.PI / 2 + Math.PI * 2 * (pct + (1 - pct) * gk) - .02, P.coral, 46, 'butt', .7); ctx.restore(); }
+  // head dot
+  const ha = -Math.PI / 2 + Math.PI * 2 * pct * k;
+  circle(cx + Math.cos(ha) * R, cy + Math.sin(ha) * R, 16 + kick(t) * 4, P.white, cl(u * 2));
+  txt((80.5 * k).toFixed(1), cx - 18, cy + 50, { size: 190, weight: 800, fam: 'N', alpha: cl(pr(u, .5, .4)) });
+  txt('%', cx + 160, cy + 48, { size: 80, weight: 800, fam: 'N', color: P.teal, alpha: cl(pr(u, .5, .4)) });
+  txt('達去年同期', cx, cy + 115, { size: 40, weight: 700, color: P.mute, ls: 8, alpha: cl(pr(u, 1, .4)) });
+  // comparison bars
+  const rows = [['115年 累計通過', 4887, P.teal], ['114年 同期通過', 6069, P.white]];
+  rows.forEach(([lab, v, c], i) => {
+    const y = 1200 + i * 130, bk = eOE(pr(u, 2 + i * .3, 1.2));
+    txt(lab, 90, y, { size: 36, weight: 700, color: P.mute, align: 'left', alpha: cl(pr(u, 2 + i * .3, .3)) });
+    fillRR(90, y + 20, 900, 40, 20, P.white, .06);
+    fillRR(90, y + 20, 900 * v / 6069 * bk, 40, 20, c, i ? .5 : 1);
+    txt(fmt(v * bk), 990, y, { size: 64, weight: 800, fam: 'N', color: c, align: 'right', alpha: cl(pr(u, 2 + i * .3, .3)) });
+  });
+  // callouts
+  const c1 = eOB(pr(u, 3.6, .6));
+  if (c1 > 0) {
+    ctx.save(); ctx.translate(90, 1500); ctx.scale(c1, c1);
+    fillRR(0, -70, 440, 120, 24, P.coral, .16); strokeRR(0, -70, 440, 120, 24, P.coral, 3);
+    txt('落後同期', 30, -18, { size: 30, weight: 700, color: P.coral, align: 'left' });
+    txt(fmt(1182 * eOC(pr(u, 3.6, 1))) + ' 件', 30, 34, { size: 52, weight: 900, align: 'left' });
+    ctx.restore();
+  }
+  const c2 = eOB(pr(u, 4.2, .6));
+  if (c2 > 0) {
+    ctx.save(); ctx.translate(550, 1500); ctx.scale(c2, c2);
+    fillRR(0, -70, 440, 120, 24, P.amber, .14); strokeRR(0, -70, 440, 120, 24, P.amber, 3);
+    txt('距114年全年 6,782', 30, -18, { size: 30, weight: 700, color: P.amber, align: 'left' });
+    txt('尚差 ' + fmt(1895 * eOC(pr(u, 4.2, 1))) + ' 件', 30, 34, { size: 52, weight: 900, align: 'left' });
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+function rateCol(r) { return r >= 85 ? P.teal : r >= 70 ? P.amber : P.coral; }
+function S4(t) { // systems 24-32
+  const u = t - 24, ok = outK(u);
+  title(u, '04', 'BY SYSTEM', '各系統 通過件數', P.violet, '9–10月通過數 ｜ 標籤為累計達成率（對比114年同期）');
+  ctx.save(); ctx.translate(0, -ok * 120); ctx.globalAlpha = 1 - ok;
+  const rows = [['市立圖書館', 422, 443, 78.5], ['文化局＋文資處＋市美館', 369, 383, 90.5], ['區公所', 90, 125, 80.5], ['一級機關', 69, 69, 75.0], ['其他', 12, 13, 71.0], ['通訊員', 0, 0, 38.5]];
+  rows.forEach(([name, v, sub, rate], i) => {
+    const y = 560 + i * 140, st = .5 + i * .18;
+    const k = eOE(pr(u, st, 1.1)), a = cl(pr(u, st, .3));
+    ctx.save(); ctx.globalAlpha *= a;
+    txt(name, 90, y, { size: 40, weight: 900, align: 'left' });
+    txt('申報 ' + sub, 90 + measure(name, { size: 40, weight: 900 }) + 18, y, { size: 28, weight: 500, color: P.mute, align: 'left' });
+    const maxW = 640, w = Math.max(10, maxW * v / 422) * k;
+    fillRR(90, y + 22, maxW, 44, 10, P.white, .05);
+    const c = i < 2 ? (i ? P.violet : P.sky) : (v === 0 ? P.coral : '#5B6BC8');
+    ctx.save(); if (i < 2) glow(c, 24); fillRR(90, y + 22, w, 44, 10, c); ctx.restore();
+    txt(fmt(v * eOC(pr(u, st, 1.2))), 90 + w + 16, y + 62, { size: 58, weight: 800, fam: 'N', align: 'left', color: v === 0 ? P.coral : P.white });
+    // rate chip
+    const ck = eOB(pr(u, st + .5, .5));
+    if (ck > 0) {
+      ctx.save(); ctx.translate(920, y + 30); ctx.scale(ck, ck);
+      const rc = rateCol(rate);
+      fillRR(-70, -30, 140, 60, 30, rc, .18); strokeRR(-70, -30, 140, 60, 30, rc, 2);
+      txt(rate.toFixed(1) + '%', 0, 12, { size: 36, weight: 800, fam: 'N', color: rc });
+      ctx.restore();
+    }
+    ctx.restore();
+  });
+  // callout
+  const hk = eOE(pr(u, 4.3, .7));
+  if (hk > 0) {
+    const y = 1420;
+    fillRR(90, y, 900 * hk, 150, 30, '#ffffff', .07);
+    if (hk > .6) {
+      txt('圖書館＋文化局體系', 130, y + 62, { size: 38, weight: 900, align: 'left', alpha: cl(pr(u, 4.6, .3)) });
+      txt('合計占 9–10月 通過件數', 130, y + 112, { size: 30, weight: 500, color: P.mute, align: 'left', alpha: cl(pr(u, 4.7, .3)) });
+      ctx.save(); glow(P.violet, 30);
+      txt(Math.round(82 * eOC(pr(u, 4.6, 1))) + '%', 950, y + 110, { size: 120, weight: 800, fam: 'N', color: P.violet, align: 'right' });
+      ctx.restore();
+    }
+  }
+  ctx.restore();
+}
+
+function S5(t) { // top 8: 32-40
+  const u = t - 32, ok = outK(u);
+  title(u, '05', 'TOP REPORTERS', '填報最多 TOP 8', P.gold, '9–10月 申報件數排行');
+  ctx.save(); ctx.translate(0, -ok * 120); ctx.globalAlpha = 1 - ok;
+  const rows = [['大墩文化中心', '文化局', 78], ['葫蘆墩文化中心', '文化局', 57], ['社會局', '一級機關', 52], ['表演藝術科', '文化局', 52], ['屯區藝文中心', '文化局', 49], ['港區藝術中心', '文化局', 41], ['大里/大新/德芳分館', '圖書館', 28], ['神岡區公所', '區公所', 26]];
+  const tagCol = { '文化局': P.violet, '一級機關': P.sky, '圖書館': P.teal, '區公所': P.amber };
+  const ranks = [1, 2, 3, 3, 5, 6, 7, 8];
+  rows.forEach(([name, grp, v], i) => {
+    const y = 520 + i * 112, st = .45 + (7 - i) * .12; // build from bottom up
+    const k = eOE(pr(u, st, .9));
+    if (k <= 0) return;
+    ctx.save(); ctx.translate((1 - k) * 300, 0); ctx.globalAlpha *= k;
+    const top = i === 0;
+    if (top) { ctx.save(); glow(P.gold, 40); fillRR(80, y - 6, 920, 100, 22, P.gold, .14 + kick(t) * .08); ctx.restore(); strokeRR(80, y - 6, 920, 100, 22, P.gold, 2, .8); }
+    else fillRR(80, y - 6, 920, 100, 22, '#ffffff', .045);
+    // rank
+    const rc = i < 4 ? P.gold : P.mute;
+    txt(String(ranks[i]), 140, y + 66, { size: 66, weight: 800, fam: 'N', color: rc });
+    if (top) crown(140, y - 2, 34, P.gold);
+    txt(name, 200, y + 42, { size: 38, weight: 900, align: 'left' });
+    const tw = measure(grp, { size: 24, weight: 900 }) + 24;
+    fillRR(200, y + 54, tw + 4, 36, 18, tagCol[grp], .85);
+    txt(grp, 214, y + 81, { size: 24, weight: 900, color: P.bg0, align: 'left' });
+    const bw = 300 * v / 78 * eOE(pr(u, st + .2, 1));
+    fillRR(600, y + 34, bw, 26, 13, top ? P.gold : rc === P.gold ? '#E8B23A' : '#5B6BC8');
+    txt(String(Math.round(v * eOC(pr(u, st + .2, 1)))), 990, y + 62, { size: 56, weight: 800, fam: 'N', align: 'right', color: top ? P.gold : P.white });
+    ctx.restore();
+  });
+  // growth chips
+  const lk = pr(u, 4.4, .4);
+  if (lk > 0) {
+    txt('▲ 超越去年同期的亮點', 90, 1450, { size: 32, weight: 900, color: P.teal, align: 'left', alpha: lk });
+    const chips = [['神岡區公所', '183%'], ['北區區公所', '179%'], ['西屯區公所', '165%'], ['社會局', '129%']];
+    chips.forEach(([n, r], j) => {
+      const ck = eOB(pr(u, 4.6 + j * .15, .5)); if (ck <= 0) return;
+      const x = 90 + (j % 2) * 460, y = 1480 + Math.floor(j / 2) * 90;
+      ctx.save(); ctx.translate(x + 215, y + 36); ctx.scale(ck, ck); ctx.translate(-(x + 215), -(y + 36));
+      fillRR(x, y, 430, 72, 36, P.teal, .14); strokeRR(x, y, 430, 72, 36, P.teal, 2, .6);
+      txt(n, x + 30, y + 48, { size: 32, weight: 700, align: 'left' });
+      txt(r, x + 400, y + 50, { size: 44, weight: 800, fam: 'N', color: P.teal, align: 'right' });
+      ctx.restore();
+    });
+  }
+  ctx.restore();
+}
+
+function S6(t) { // low / zero 40-48 (breakdown)
+  const u = t - 40, ok = outK(u);
+  title(u, '06', 'ATTENTION', '填報偏少・掛零單位', P.coral, '9–10月 申報為 0 件或明顯偏低');
+  ctx.save(); ctx.translate(0, -ok * 120); ctx.globalAlpha = 1 - ok;
+  // panel A: two zero cards
+  const A = [['通訊員', '年度達成率 38.5%', '97 / 252 件'], ['文化局 秘書室', '累計僅 1 件', '達成率 5%']];
+  A.forEach(([n, s1, s2], i) => {
+    const k = pr(u, .4 + i * .25, .7), e = eOE(k); if (k <= 0) return;
+    const x = 90 + i * 460, y = 510, w = 440, h = 300;
+    ctx.save(); ctx.globalAlpha *= cl(k * 2); ctx.translate(0, (1 - e) * 80);
+    fillRR(x, y, w, h, 28, P.coral, .1); strokeRR(x, y, w, h, 28, P.coral, 2, .7);
+    txt(n, x + 30, y + 64, { size: 38, weight: 900, align: 'left' });
+    const shake = Math.sin(u * 40) * 6 * Math.max(0, 1 - pr(u, .9 + i * .25, .6)) * (u > .9 + i * .25 ? 1 : 0);
+    ctx.save(); glow(P.coral, 40);
+    txt('0', x + 30 + shake, y + 230, { size: 200, weight: 800, fam: 'N', color: P.coral, align: 'left' }); ctx.restore();
+    txt('件', x + 145, y + 222, { size: 48, weight: 900, color: P.coral, align: 'left' });
+    txt(s1, x + w - 30, y + 170, { size: 30, weight: 700, align: 'right' });
+    txt(s2, x + w - 30, y + 220, { size: 28, weight: 500, color: P.mute, align: 'right' });
+    ctx.restore();
+  });
+  // panel B: dot matrix 49 units
+  const by = 860;
+  const bk = pr(u, 2.3, .4);
+  if (bk > 0) {
+    ctx.save(); ctx.globalAlpha *= bk;
+    fillRR(90, by, 900, 330, 28, '#ffffff', .05);
+    const lit = [3, 9, 17, 22, 26, 29, 31, 38, 40, 46]; // 10 units that reported
+    for (let i = 0; i < 49; i++) {
+      const gx = 140 + (i % 7) * 46, gy = by + 50 + Math.floor(i / 7) * 40;
+      const dk = eOB(pr(u, 2.4 + i * .018, .4));
+      const on = lit.includes(i);
+      if (on) circle(gx, gy, 14 * dk, P.teal);
+      else { ctx.save(); ctx.globalAlpha *= .9; ctx.strokeStyle = P.coral; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(gx, gy, 12 * dk, 0, 7); ctx.stroke(); ctx.restore(); }
+    }
+    txt('一級機關 49 個填報單位', 500, by + 70, { size: 32, weight: 700, color: P.mute, align: 'left' });
+    ctx.save(); glow(P.coral, 30);
+    txt(String(Math.round(39 * eOC(pr(u, 2.6, 1.2)))), 500, by + 200, { size: 150, weight: 800, fam: 'N', color: P.coral, align: 'left' }); ctx.restore();
+    txt('個單位掛零', 660, by + 190, { size: 46, weight: 900, align: 'left' });
+    txt('社會局一局就占 52 件（75%）', 500, by + 270, { size: 30, weight: 700, color: P.amber, align: 'left', alpha: cl(pr(u, 3.4, .4)) });
+    ctx.restore();
+  }
+  // panel C: district offices tags
+  const ck = pr(u, 4.3, .4);
+  if (ck > 0) {
+    const y = 1250;
+    ctx.save(); ctx.globalAlpha *= ck;
+    warnIcon(120, y + 4, 44, P.amber, pr(u, 4.3, .5));
+    txt('區公所 8 所 9–10月 0 件', 165, y + 18, { size: 42, weight: 900, align: 'left' });
+    ctx.restore();
+    const tags = ['東區', '南屯', '清水', '大肚', '大雅', '后里', '龍井', '和平'];
+    tags.forEach((s, i) => {
+      const k = eOB(pr(u, 4.6 + i * .09, .45)); if (k <= 0) return;
+      const x = 90 + (i % 4) * 228, yy = y + 60 + Math.floor(i / 4) * 100;
+      ctx.save(); ctx.translate(x + 104, yy + 40); ctx.scale(k, k); ctx.translate(-(x + 104), -(yy + 40));
+      fillRR(x, yy, 208, 80, 40, P.amber, .14); strokeRR(x, yy, 208, 80, 40, P.amber, 2, .7);
+      txt(s, x + 104, yy + 54, { size: 38, weight: 900 });
+      ctx.restore();
+    });
+  }
+  ctx.restore();
+}
+
+function S7(t) { // focus 48-56
+  const u = t - 48, ok = outK(u);
+  title(u, '07', 'KEY POINTS', '需注意重點', P.amber);
+  ctx.save(); ctx.translate(0, -ok * 120); ctx.globalAlpha = 1 - ok;
+  const cards = [
+    [P.coral, '區公所退回率', '22%', '125 件中退回 28 件（全市平均 4%）', '大安區公所 4 件全數退回'],
+    [P.amber, '待審核仍有', '30 件', '圖書館占 19 件，沙鹿深波分館 6 件最多', '請各單位加速審核作業'],
+    [P.violet, '達成率偏低', '< 25%', '和平區公所 0%・中區 19%・南屯 24%', '文化局秘書室 5%・豐原/南嵩分館 47%'],
+    [P.sky, '年度缺口', '1,895 件', '11–12月須持續衝刺', '才能追平 114 年全年 6,782 件'],
+  ];
+  cards.forEach(([c, head, big, l1, l2], i) => {
+    const st = .25 + i * 1.5, k = pr(u, st, .8), e = eOE(k);
+    if (k <= 0) return;
+    const y = 470 + i * 262, h = 240;
+    ctx.save(); ctx.globalAlpha *= cl(k * 2.5);
+    // flip-in (scaleY) from left edge
+    ctx.translate(90, y + h / 2); ctx.scale(1, e); ctx.translate(-90, -(y + h / 2));
+    fillRR(90, y, 900, h, 28, '#ffffff', .06);
+    fillRR(90, y, 12, h, 6, c);
+    txt(String(i + 1).padStart(2, '0'), 140, y + 80, { size: 60, weight: 800, fam: 'N', color: c, align: 'left' });
+    txt(head, 230, y + 76, { size: 46, weight: 900, align: 'left' });
+    ctx.save(); glow(c, 26);
+    const bw = measure(head, { size: 46, weight: 900 });
+    txt(big, 230 + bw + 20, y + 80, { size: 66, weight: 800, fam: 'N', color: c, align: 'left' }); ctx.restore();
+    txt(l1, 140, y + 150, { size: 32, weight: 700, color: P.white, align: 'left', alpha: cl(pr(u, st + .3, .4)) });
+    txt(l2, 140, y + 200, { size: 30, weight: 500, color: P.mute, align: 'left', alpha: cl(pr(u, st + .4, .4)) });
+    // highlight sweep
+    const sw = pr(u, st + .2, .7);
+    if (sw > 0 && sw < 1) { ctx.save(); rr(90, y, 900, h, 28); ctx.clip(); const gx = lerp(-200, 1200, eIOC(sw)); ctx.fillStyle = grad(gx - 150, 0, gx + 150, 0, ['#ffffff00', '#ffffff22', '#ffffff00']); ctx.fillRect(gx - 150, y, 300, h); ctx.restore(); }
+    ctx.restore();
+  });
+  ctx.restore();
+}
+
+function S8(t) { // outro 56-66.5
+  const u = t - 56;
+  const o1 = eIC(pr(u, 3.7, .45));
+  if (u < 4.3) {
+    ctx.save(); ctx.globalAlpha = 1 - o1; ctx.translate(0, -o1 * 120);
+    title(u, '08', 'NEXT STEPS', '11–12月 衝刺三步驟', P.teal, '一起追平去年、拚年度達標');
+    const acts = [['即時填報', '活動確定即上網申報，不積壓'], ['確認資料', '送出前檢查欄位，降低退回'], ['掛零單位', '盡速補登 9–10月活動']];
+    acts.forEach(([h, s], i) => {
+      const st = .5 + i * .35, k = eOE(pr(u, st, .8)); if (k <= 0) return;
+      const y = 620 + i * 260;
+      ctx.save(); ctx.globalAlpha *= k; ctx.translate((1 - k) * -200, 0);
+      fillRR(90, y, 900, 210, 105, '#ffffff', .06); strokeRR(90, y, 900, 210, 105, P.teal, 2, .5);
+      circle(195, y + 105, 70, P.teal, .18 + kick(t) * .1);
+      check(195, y + 105, 64, pr(u, st + .3, .5), P.teal, 11);
+      txt(h, 300, y + 95, { size: 58, weight: 900, align: 'left' });
+      txt(s, 300, y + 152, { size: 32, weight: 500, color: P.mute, align: 'left' });
+      ctx.restore();
+    });
+    ctx.restore();
+  }
+  // slogan (60-64)
+  if (u >= 4) {
+    const cx = W / 2, cy = 900, kk = kick(t);
+    const s = eOB(pr(u, 4, .6));
+    const so = eIC(pr(u, 7.5, .5));
+    ctx.save(); ctx.globalAlpha = 1 - so;
+    // spinning rings
+    for (let i = 0; i < 3; i++) arc(cx, cy, 300 + i * 50 + kk * 8, u * (i % 2 ? -1 : 1) * .8 + i, u * (i % 2 ? -1 : 1) * .8 + i + Math.PI * 1.2 * eOE(pr(u, 4 + i * .1, 1)), [P.teal, P.violet, P.amber][i], 8 - i * 2, 'round', .8);
+    ctx.save(); ctx.translate(cx, cy); ctx.scale(s, s);
+    txt('攜手衝刺', 0, -20, { size: 150, weight: 900, color: grad(-330, 0, 330, 0, [P.teal, P.sky, P.violet]), ls: 8 });
+    ctx.restore();
+    charsIn('年度達標', cx, cy + 160, { size: 110, weight: 900, ls: 20 }, u, 4.5, .1, .6);
+    ctx.restore();
+  }
+  // end card at 64
+  if (u >= 7.9) {
+    const k = pr(u, 8, .8), cx = W / 2;
+    const fl = pr(u, 8, .4); if (fl < 1) { ctx.save(); ctx.globalAlpha = (1 - fl) * .35; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+    const R = 120 * eOB(k);
+    ctx.save(); glow(P.teal, 40); arc(cx, 760, R, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * eOE(k), P.teal, 10); ctx.restore();
+    check(cx, 765, 110, pr(u, 8.2, .5), P.white, 14);
+    charsIn('臺中市藝文網', cx, 1010, { size: 92, weight: 900, ls: 8 }, u, 8.15, .05, .6);
+    charsIn('115年 9–10月 填報快報', cx, 1090, { size: 44, weight: 700, color: P.teal, ls: 6 }, u, 8.35, .025, .5);
+    const lk = eIOE(pr(u, 8.5, .7)); fillRR(cx - 250 * lk, 1140, 500 * lk, 4, 2, P.white, .4);
+    txt('資料來源：115年11月藝文網策進會議', cx, 1210, { size: 30, weight: 500, color: P.mute, alpha: cl(pr(u, 8.7, .4)) });
+    txt('統計期間 115.1.1 – 115.10.31・本表非最終數據', cx, 1258, { size: 26, weight: 500, color: P.mute, alpha: cl(pr(u, 8.8, .4)) });
+  }
+}
+
+// ---------- transitions (cover boundary at 8k) ----------
+function transition(t) {
+  const bounds = [8, 16, 24, 32, 40, 48, 56];
+  for (let i = 0; i < bounds.length; i++) {
+    const b = bounds[i], d = t - b;
+    if (d < -.45 || d > .45) continue;
+    const cin = eIOE(cl((d + .45) / .45)), cout = eIOE(cl(d / .45));
+    const cols = [SECT_COL[i + 1], P.violet, P.bg0];
+    const type = i % 3;
+    ctx.save();
+    if (type === 0) { // diagonal bars sweeping up
+      cols.forEach((c, j) => {
+        const lag = j * .12;
+        const a = eIOE(cl((d + .45 - lag * .45) / .45 * (1 + lag)));
+        const b2 = eIOE(cl((d - (2 - j) * .07) / .32));
+        const top = lerp(H + 400, -400, a), bot = lerp(H + 400, -400, b2);
+        if (top >= bot) return; // nothing
+        ctx.fillStyle = c; ctx.beginPath();
+        ctx.moveTo(0, top + 300); ctx.lineTo(W, top); ctx.lineTo(W, bot); ctx.lineTo(0, bot + 300); ctx.closePath(); ctx.fill();
+      });
+    } else if (type === 1) { // iris
+      cols.forEach((c, j) => {
+        const lag = j * .1;
+        const a = eIOE(cl((d + .45 - lag) / (.45 - lag)));
+        const r = a * 1250;
+        const hole = eIOE(cl((d - (.2 - lag) * .5) / .35)) * 1250;
+        if (r <= 0 || hole >= r) return;
+        ctx.fillStyle = c; ctx.beginPath(); ctx.arc(W / 2, H / 2, r, 0, Math.PI * 2); ctx.moveTo(W / 2 + hole, H / 2); ctx.arc(W / 2, H / 2, hole, Math.PI * 2, 0, true); ctx.fill('evenodd');
+      });
+    } else { // vertical shutters
+      const n = 6;
+      for (let s = 0; s < n; s++) {
+        const lag = s * .04;
+        const a = eIOE(cl((d + .45 - lag) / .3)), b2 = eIOE(cl((d - lag) / .3));
+        const x = s * W / n, w = W / n + 1;
+        const top = (1 - a) * H, bot = H - b2 * H;
+        const c = s % 2 ? cols[0] : cols[2];
+        if (d < 0) { ctx.fillStyle = c; ctx.fillRect(x, top, w, H - top); }
+        else { ctx.fillStyle = c; ctx.fillRect(x, 0, w, bot); }
+      }
+    }
+    ctx.restore();
+  }
+}
+
+// ---------- frame ----------
+const SCENE_FN = [S1, S2, S3, S4, S5, S6, S7, S8];
+function render(t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+  background(t);
+  // subtle camera drift + kick punch
+  const kk = kick(t);
+  const z = 1 + kk * .006;
+  ctx.save(); ctx.translate(W / 2, H / 2); ctx.scale(z, z); ctx.rotate(Math.sin(t * .4) * .003); ctx.translate(-W / 2, -H / 2);
+  const si = Math.min(7, Math.floor(t / 8));
+  SCENE_FN[si](t);
+  ctx.restore();
+  hud(t);
+  transition(t);
+  // vignette
+  const vg = ctx.createRadialGradient(W / 2, H / 2, H * .3, W / 2, H / 2, H * .75);
+  vg.addColorStop(0, '#00000000'); vg.addColorStop(1, '#00000088'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+  // final fade
+  const ff = pr(t, 65.7, .8); if (ff > 0) { ctx.fillStyle = `rgba(4,6,20,${ff})`; ctx.fillRect(0, 0, W, H); }
+  // grain
+  ctx.save(); ctx.globalAlpha = .045; ctx.globalCompositeOperation = 'overlay';
+  const gi = grains[Math.floor(t * FPS) % 4];
+  for (let y = 0; y < H; y += 256) for (let x = 0; x < W; x += 256) ctx.drawImage(gi, x, y);
+  ctx.restore();
+}
+
+// ---------- font preloading by collecting all glyphs ----------
+async function prepare() {
+  const all = new Set('0123456789,.%–/');
+  const orig = ctx.fillText, origS = ctx.strokeText;
+  ctx.fillText = function (s) { for (const ch of s) all.add(ch); };
+  ctx.strokeText = function (s) { for (const ch of s) all.add(ch); };
+  for (let t = 0; t < DUR; t += 1 / 15) render(t);
+  ctx.fillText = orig; ctx.strokeText = origS;
+  const str = [...all].join('');
+  const jobs = [];
+  for (const w of [500, 700, 900]) jobs.push(document.fonts.load(`${w} 40px "Noto Sans TC"`, str));
+  for (const w of [600, 800]) jobs.push(document.fonts.load(`${w} 40px "Barlow Condensed"`, str));
+  await Promise.all(jobs); await document.fonts.ready;
+  window.__chars = str.length;
+  window.__ready = true;
+}
+window.render = render;
+prepare();
+</script></body></html>
