@@ -206,9 +206,10 @@ export const Finish: React.FC = () => {
  * Three-band diagonal wipe that hides a hard cut.
  * Mount it so that local frame 0 is its start; the screen is fully covered at frame `half`.
  */
-export const Wipe: React.FC<{ colors?: string[]; half?: number }> = ({
+export const Wipe: React.FC<{ colors?: string[]; half?: number; spread?: string }> = ({
   colors = [C.mint, C.red, C.paper],
   half = 10,
+  spread = "-20%", // use a wider value for tall frames so the skewed bands still cover the corners
 }) => {
   const f = useCurrentFrame();
   return (
@@ -225,8 +226,8 @@ export const Wipe: React.FC<{ colors?: string[]; half?: number }> = ({
               position: "absolute",
               top: "-20%",
               bottom: "-20%",
-              left: "-20%",
-              right: "-20%",
+              left: spread,
+              right: spread,
               background: c,
               transform: `translateX(${x}%) skewX(-18deg)`,
               // Later bands stack on top while entering, earlier ones while leaving,

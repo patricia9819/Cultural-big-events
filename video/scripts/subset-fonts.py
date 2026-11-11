@@ -8,7 +8,7 @@ import re
 import subprocess
 import urllib.parse
 
-txt = "".join(open(f, encoding="utf-8").read() for f in glob.glob("src/Visit/*.ts*"))
+txt = "".join(open(f, encoding="utf-8").read() for f in glob.glob("src/Visit/*.ts*") + glob.glob("src/Reel/*.ts*"))
 chars = "".join(sorted(set(c for c in txt + "0123456789" if not c.isspace())))
 ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
 for fam, key, weights in [

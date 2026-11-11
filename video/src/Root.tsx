@@ -3,12 +3,21 @@ import { HelloWorld } from "./HelloWorld";
 import { Logo } from "./HelloWorld/Logo";
 import { Title } from "./HelloWorld/Title";
 import { VisitReel } from "./Visit";
+import { REEL_FRAMES, VisitReels } from "./Reel";
 
 // Each <Composition> is an entry in the sidebar!
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="VisitReels"
+        component={VisitReels}
+        durationInFrames={REEL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
       <Composition
         id="VisitReel"
         component={VisitReel}

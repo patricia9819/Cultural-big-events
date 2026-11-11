@@ -1,0 +1,19 @@
+{
+  "bpm": 144,
+  "fps": 30,
+  "framesPerBar": 50,
+  "scenes": [
+    { "id": "title", "bars": 4 },
+    { "id": "guests", "bars": 4 },
+    { "id": "schedule", "bars": 6 },
+    { "id": "hall", "bars": 4 },
+    { "id": "hallShows", "bars": 6 },
+    { "id": "lunch", "bars": 4 },
+    { "id": "show", "bars": 6 },
+    { "id": "works", "bars": 6 },
+    { "id": "curator", "bars": 4 },
+    { "id": "tea", "bars": 4 },
+    { "id": "gifts", "bars": 4 },
+    { "id": "outro", "bars": 4 }
+  ]
+}
