@@ -54,17 +54,18 @@ PHRASE = {
     "B": [("Bm", "B1"), ("Em", "B2"), ("A", "B3"), ("D", "B4")],
     "C": [("G", "C1"), ("D", "C2"), ("G", "C3"), ("A", "C4")],
     "T": [("Em", "D1"), ("A7", "D2")],  # 2-bar turnaround onto V
+    "S": [("G", "C1"), ("A", "C4")],  # short 2-bar phrase ending on V
     "END": [("D", "A1"), ("G", "A2"), ("A7", "A3"), ("D", "F1")],
 }
 
 # Per scene: phrases and orchestration level (1 light … 3 full), extra colour.
 PLAN = {
     "title": (["A"], 1, {}),
-    "guests": (["B"], 2, {}),
-    "schedule": (["A", "T"], 2, {}),
+    "guests": (["B", "T"], 2, {}),
+    "schedule": (["S"], 2, {}),
     "hall": (["C"], 3, {}),
     "hallShows": (["B", "T"], 2, {"lead": "oboe"}),
-    "lunch": (["A"], 2, {"lead": "clarinet"}),
+    "lunch": (["A", "T"], 2, {"lead": "clarinet"}),
     "show": (["C", "T"], 3, {}),
     "works": (["A", "T"], 3, {"glock": True}),
     "curator": (["B"], 2, {}),

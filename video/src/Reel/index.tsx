@@ -45,8 +45,8 @@ const Hud: React.FC = () => {
   const g = local + HUD_FROM;
   const prog = interpolate(
     g,
-    [at("hall"), at("lunch"), at("lunch") + 4 * BAR, at("show") + BAR, at("show") + 2 * BAR, at("tea"), at("tea") + 4 * BAR],
-    [0, 1, 1.85, 3, 3.1, 4, 4.85],
+    [at("hall"), at("lunch"), at("show"), at("show") + BAR, at("show") + 2 * BAR, at("tea"), at("tea") + 4 * BAR],
+    [0, 1, 2, 3, 3.1, 4, 4.85],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
   const o = ap(local, [10, 22], [1e-3, 1]) * ap(local, [HUD_TO - HUD_FROM - 14, HUD_TO - HUD_FROM - 4], [1, 0]);

@@ -326,22 +326,22 @@ export const RGifts: React.FC = () => {
   return (
     <AbsoluteFill style={{ background: C.paper, overflow: "hidden" }}>
       <div style={{ position: "absolute", left: 80, top: 260, display: "flex", alignItems: "center", gap: 30 }}>
-        <RiseText text="伴手禮提案" delay={2} stagger={2} style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 110, color: C.ink }} />
+        <RiseText text="伴手禮" delay={2} stagger={2} style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 110, color: C.ink }} />
         <Tag delay={beat(1)} size={36} color={C.ink} text={C.paper}>
-          二擇一
+          致贈貴賓
         </Tag>
       </div>
-      {/* A */}
-      <div style={{ position: "absolute", left: 80, top: 450, width: 920, ...drop(beat(1), -1.5) }}>
+      {/* 典藏明信片＋手札 */}
+      <div style={{ position: "absolute", left: 150, top: 440, width: 780, ...drop(beat(1), -1.5) }}>
         <div style={{ background: "#fff", padding: 18, boxShadow: "0 30px 60px rgba(0,0,0,0.18)" }}>
           <Img src={staticFile("visit/postcards.jpg")} style={{ width: "100%", display: "block" }} />
         </div>
         <div style={{ marginTop: 22, fontFamily: SERIF, fontWeight: 900, fontSize: 58, color: C.ink }}>
-          <span style={{ color: C.red, marginRight: 20 }}>A</span>官方典藏明信片＋手札
+          官方典藏明信片＋手札
         </div>
       </div>
-      {/* B */}
-      <div style={{ position: "absolute", left: 80, top: 1130, width: 920 }}>
+      {/* 金馬聯名酒禮 */}
+      <div style={{ position: "absolute", left: 80, top: 1160, width: 920 }}>
         <div style={{ position: "relative", height: 330 }}>
           <div style={{ position: "absolute", left: 0, top: 0, width: 470, ...drop(beat(4), -3) }}>
             <Img src={staticFile("visit/wine1.jpg")} style={{ width: "100%", display: "block", border: "12px solid #fff", boxShadow: "0 24px 50px rgba(0,0,0,0.2)" }} />
@@ -351,7 +351,7 @@ export const RGifts: React.FC = () => {
           </div>
         </div>
         <div style={{ marginTop: 26, fontFamily: SERIF, fontWeight: 900, fontSize: 58, color: C.ink, opacity: ap(f, [beat(6), beat(6) + 8], [0, 1]) }}>
-          <span style={{ color: C.red, marginRight: 20 }}>B</span>金馬聯名酒禮
+          金馬聯名酒禮
         </div>
       </div>
     </AbsoluteFill>
