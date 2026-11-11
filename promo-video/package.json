@@ -5,7 +5,8 @@
   "scripts": {
     "music": "python3 scripts/music.py public/music.wav",
     "studio": "remotion studio src/index.ts",
-    "render": "remotion render src/index.ts Promo out/promo.mp4 --codec=h264 --crf=18 --audio-codec=aac --audio-bitrate=256k"
+    "render": "remotion render src/index.ts Promo out/promo.mp4 --codec=h264 --crf=18 --audio-codec=aac --audio-bitrate=256k",
+    "render:reels": "remotion render src/index.ts PromoVertical out/reels.mp4 --codec=h264 --crf=18 --audio-codec=aac --audio-bitrate=256k"
   },
   "dependencies": {
     "@fontsource/noto-sans-tc": "^5.1.0",

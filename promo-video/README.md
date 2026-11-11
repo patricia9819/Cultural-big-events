@@ -1,6 +1,10 @@
 # 2026 臺中纖維藝術雙年展｜30 秒宣傳動畫
 
-成品：`臺中纖維藝術雙年展_30秒宣傳.mp4`（1920×1080、30fps、H.264 + AAC）
+成品：
+- 橫式 16:9：`臺中纖維藝術雙年展_30秒宣傳.mp4`（1920×1080）
+- 直式 9:16（IG Reels / Shorts）：`臺中纖維藝術雙年展_30秒宣傳_Reels直式.mp4`（1080×1920）
+
+兩版皆為 30fps、H.264 + AAC，時間軸與配樂相同。直式版重新排版（主題直書、策展人上下分割、合照完整呈現），重要文字避開 Reels 上下介面區域。
 
 - 內容來源：[非池中藝術網報導](https://artemperor.tw/focus/7439)
 - 照片：圖片提供／臺中市纖維工藝博物館（取自上述報導）
@@ -23,6 +27,7 @@
 ```bash
 npm install
 npm run music     # 產生 public/music.wav（需 python3 + numpy）
-npm run render    # 輸出 out/promo.mp4
+npm run render    # 輸出 out/promo.mp4（橫式）
+npm run render:reels  # 輸出 out/reels.mp4（直式）
 npm run studio    # 在瀏覽器即時預覽、調整
 ```
