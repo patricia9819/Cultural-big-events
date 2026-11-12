@@ -145,21 +145,27 @@ def bar_music(t0, chord, cell, level, extra):
         note(t0 + 2 * TPB, 7, timp, 60, TPB)
 
 
-bar = 0
+pos = 0  # ticks
 cuts = []
 for sc in TL["scenes"]:
     phrases, level, extra = PLAN[sc["id"]]
     bars = [b for ph in phrases for b in PHRASE[ph]]
-    assert len(bars) == sc["bars"], (sc["id"], len(bars))
-    cuts.append(bar)
-    for chord, cell in bars:
-        bar_music(bar * BAR, chord, M[cell], level, extra)
-        bar += 1
-TOTAL_BARS = bar
+    n_full = int(sc["bars"])
+    part = sc["bars"] - n_full  # a scene may end with a shortened bar (e.g. 3.5 bars)
+    assert len(bars) == n_full + (1 if part else 0), (sc["id"], len(bars))
+    cuts.append(pos)
+    for k, (chord, cell) in enumerate(bars):
+        limit = BAR if k < n_full else int(part * BAR)
+        first = len(events)
+        bar_music(pos, chord, M[cell], level, extra)
+        # drop / clip anything past a shortened bar
+        kept = [e for e in events[first:] if e[0] < pos + limit]
+        events[first:] = [(t, ch, n, v, min(d, pos + limit - t)) for t, ch, n, v, d in kept]
+        pos += limit
+TOTAL_TICKS = pos
 
 # Scene downbeats: timpani + triangle + soft cymbal; harp glissando on the beat before.
-for i, b in enumerate(cuts):
-    t = b * BAR
+for i, t in enumerate(cuts):
     if i > 0:
         perc(t, 81, 70)
         perc(t, 49, 46)
@@ -171,8 +177,7 @@ for i, b in enumerate(cuts):
         perc(t, 81, 60)
 
 # Ending: timpani roll into the final chord, then a held tutti D major.
-end_bar = TOTAL_BARS - 1
-t_end = end_bar * BAR
+t_end = TOTAL_TICKS - BAR
 for k in range(16):
     note(t_end - 2 * TPB + k * TPB / 8, 7, 45, 50 + k * 3, TPB / 8)
 for ch, ns, v in [(10, [50, 54, 57, 62], 70), (5, [57, 62, 66], 76), (12, [62, 66, 69], 70), (6, [38], 84)]:
@@ -200,7 +205,7 @@ for t, m in msgs:
 mid.save("public/music/score.mid")
 
 RAW = "public/music/.score_raw.wav"
-seconds = TOTAL_BARS * 4 * 60 / BPM
+seconds = TOTAL_TICKS / TPB * 60 / BPM
 subprocess.check_call([
     "fluidsynth", "-ni", "-g", "0.5", "-r", "48000",
     "-o", "synth.reverb.room-size=0.7", "-o", "synth.reverb.level=0.6",
@@ -212,4 +217,4 @@ subprocess.check_call([
     "-ar", "48000", "-c:a", "libmp3lame", "-b:a", "192k", "public/music/score.mp3",
 ])
 os.remove(RAW)
-print(f"{TOTAL_BARS} bars, {seconds:.2f}s → public/music/score.mp3")
+print(f"{TOTAL_TICKS / BAR:g} bars, {seconds:.2f}s → public/music/score.mp3")

@@ -115,6 +115,7 @@ const HOST_GROUPS = [
     items: [
       { n: "欒治誼", r: "局長" },
       { n: "張婉榆", r: "專門委員" },
+      { n: "張智瑋", r: "專門委員" },
     ],
   },
   {
@@ -138,24 +139,24 @@ export const RGuests: React.FC = () => {
         <div style={{ display: "flex", alignItems: "flex-end", gap: 36, marginTop: 6 }}>
           <div style={{ display: "flex", alignItems: "baseline" }}>
             <div style={{ fontFamily: SANS, fontWeight: 900, fontSize: 280, lineHeight: 1, color: C.mint, fontVariantNumeric: "tabular-nums" }}>
-              <Count to={20} delay={0} dur={beat(4)} />
+              <Count to={20} delay={0} dur={beat(3)} />
             </div>
-            <RiseText text="位" delay={beat(2)} style={{ fontFamily: SERIF, fontWeight: 700, fontSize: 90, color: C.paper, marginLeft: 14 }} />
+            <RiseText text="位" delay={beat(1.5)} style={{ fontFamily: SERIF, fontWeight: 700, fontSize: 90, color: C.paper, marginLeft: 14 }} />
           </div>
           <div style={{ paddingBottom: 26 }}>
-            <RiseText text="台北 10 家電視台" delay={beat(3)} stagger={1} style={{ fontFamily: SERIF, fontWeight: 700, fontSize: 54, color: C.paper }} />
-            <RiseText text="每家 2 位媒體高層" delay={beat(4)} stagger={1} style={{ fontFamily: SANS, fontSize: 38, color: C.dim, marginTop: 8 }} />
+            <RiseText text="台北 10 家電視台" delay={beat(2)} stagger={1} style={{ fontFamily: SERIF, fontWeight: 700, fontSize: 54, color: C.paper }} />
+            <RiseText text="每家 2 位媒體高層" delay={beat(2.5)} stagger={1} style={{ fontFamily: SANS, fontSize: 38, color: C.dim, marginTop: 8 }} />
           </div>
         </div>
         <div style={{ position: "relative", height: 70 }}>
-          <Rule delay={beat(5)} dur={20} style={{ top: 34, left: 0, width: 920 }} />
+          <Rule delay={beat(3)} dur={20} style={{ top: 34, left: 0, width: 920 }} />
         </div>
-        <Kicker delay={beat(6)} color={C.paper}>
+        <Kicker delay={beat(4)} color={C.paper}>
           餐敘出席長官
         </Kicker>
         {HOST_GROUPS.map((grp, gi) => {
           // All cards flow in together: one quick cascade across the three groups.
-          const base = beat(6) + gi * 6;
+          const base = beat(4) + gi * 5;
           return (
             <div key={grp.g} style={{ marginTop: gi === 0 ? 26 : 30 }}>
               <div
