@@ -11,7 +11,7 @@ const FPS = 30, DUR = 66.5, NF = Math.round(FPS * DUR), WORKERS = 4;
     const f0 = w * per, f1 = Math.min(NF, f0 + per);
     const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
     p.on('pageerror', e => console.log('ERR', e.message));
-    await p.goto(`http://localhost:${port}/reel.html`); await p.waitForFunction(() => window.__ready, null, { timeout: 120000 });
+    await p.goto(`http://localhost:${port}/${process.env.PAGE||'reel.html'}`); await p.waitForFunction(() => window.__ready, null, { timeout: 120000 });
     const ff = spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-', '-c:v', 'libx264', '-preset', 'medium', '-crf', '16', '-pix_fmt', 'yuv420p', `seg${w}.mp4`], { stdio: ['pipe', 'inherit', 'inherit'] });
     const done = new Promise(r => ff.on('close', r));
     for (let f = f0; f < f1; f++) {

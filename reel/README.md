@@ -1,6 +1,7 @@
 # 藝文網 115年9–10月填報快報（直式 Reels 動畫）
 
 - 影片：`藝文網_9-10月填報快報_reels.mp4`（1080×1920、30fps、66.5 秒、含原創配樂 120 BPM）
+- 風格：藝文感——宣紙底、墨色襯線字（思源宋體）、朱紅印章、毛筆圓相與水墨山景；配樂以木琴、鋼琴、低音提琴與輕打擊為主
 - 資料來源：115年11月藝文網策進會議資料第2–8頁（統計至 115.10.31，非最終數據）
 
 ## 分鏡與重點
@@ -17,7 +18,7 @@
 
 ## 重新產生
 `source/` 內含動畫（`reel.html`，Canvas 逐格渲染）、配樂合成（`music.py`）與輸出腳本（`render.js`）。
-需求：Node + Playwright、Python + numpy、ffmpeg，以及 npm 套件 `@fontsource/noto-sans-tc`、`@fontsource/barlow-condensed`（請放在 `source/node_modules`）。
+需求：Node + Playwright、Python + numpy、ffmpeg，以及 npm 套件 `@fontsource/noto-serif-tc`、`@fontsource/noto-sans-tc`、`@fontsource/cormorant-garamond`（請放在 `source/node_modules`）。
 ```
 python3 music.py music.wav && node render.js
 ffmpeg -f concat -safe 0 -i segs.txt -i music.wav -map 0:v -map 1:a -c:v libx264 -crf 21 -c:a aac -shortest out.mp4
