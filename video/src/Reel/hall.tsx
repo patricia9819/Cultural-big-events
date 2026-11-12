@@ -86,24 +86,27 @@ const WINGS: [number, number][][] = [
 ];
 const LAWN: [number, number][] = [[185, 485], [285, 485], [285, 575], [252, 608], [185, 608]];
 
-type Stop = { id: string; label: string; floor: string; x: number; y: number; lx: number; ly: number; anchor?: "start" | "end" };
+type Stop = { id: string; label: string; floor: string; x: number; y: number; lx: number; ly: number; anchor?: "start" | "middle" | "end" };
 const STOPS: Stop[] = [
   { id: "gate", label: "大門", floor: "1F", x: 132, y: 690, lx: -16, ly: 52, anchor: "end" },
-  { id: "hall", label: "中央門廳", floor: "1F", x: 162, y: 640, lx: 24, ly: 58 },
-  { id: "stair", label: "中央門廳樓梯", floor: "1F", x: 190, y: 598, lx: 26, ly: -6 },
-  { id: "zz", label: "中正廳", floor: "2F", x: 140, y: 600, lx: -28, ly: -10, anchor: "end" },
-  { id: "zs", label: "中山廳", floor: "2F", x: 352, y: 500, lx: 0, ly: -34 },
-  { id: "shelter", label: "地下防護室", floor: "1F", x: 322, y: 560, lx: -26, ly: 12, anchor: "end" },
+  { id: "hall", label: "中央門廳", floor: "1F", x: 150, y: 648, lx: 36, ly: 60 },
+  // The stair sits in the corner between the two wings, right next to 中央門廳.
+  { id: "stair", label: "中央門廳樓梯", floor: "1F", x: 172, y: 628, lx: 30, ly: -10 },
+  // 中正廳 is directly above 中央門廳: same plan position, one floor up.
+  { id: "zz", label: "中正廳", floor: "2F", x: 150, y: 648, lx: -40, ly: -22, anchor: "end" },
+  { id: "zs", label: "中山廳", floor: "2F", x: 352, y: 500, lx: 0, ly: -40, anchor: "middle" },
+  // 地下防護室 is directly below 中山廳: same plan position, different floor.
+  { id: "shelter", label: "地下防護室", floor: "1F", x: 352, y: 500, lx: 0, ly: 66, anchor: "middle" },
   { id: "galleryA", label: "A 展覽廳", floor: "1F", x: 145, y: 520, lx: 34, ly: 12 },
 ];
 // Walk through the corridors between stops (way-points in plan units).
 const LEGS: [number, number][][] = [
-  [[132, 690], [162, 640]],
-  [[162, 640], [190, 598]],
-  [[190, 598], [140, 600]],
-  [[140, 600], [175, 638], [300, 638], [332, 600], [352, 500]],
-  [[352, 500], [322, 560]],
-  [[322, 560], [332, 600], [300, 638], [175, 638], [145, 600], [145, 520]],
+  [[132, 690], [150, 648]],
+  [[150, 648], [172, 628]],
+  [[172, 628], [150, 648]], // up the stair to 中正廳, above the hall
+  [[150, 648], [175, 640], [300, 640], [332, 600], [352, 500]],
+  [[352, 500], [352, 500]], // straight down the stairs, no horizontal move
+  [[352, 500], [332, 600], [300, 640], [175, 640], [145, 610], [145, 520]],
 ];
 
 const legLen = (pts: [number, number][]) =>
@@ -216,7 +219,12 @@ export const RRoute: React.FC = () => {
           const col = isA ? C.red : C.mint;
           return (
             <g key={s.id} opacity={ap(f, [beat(2) + i * 2, beat(2) + i * 2 + 8], [0, 1])}>
-              <circle cx={x} cy={y} r={on ? 15 : 11} fill={on ? col : C.ink} stroke={col} strokeWidth={4} />
+              {s.id === "shelter" || s.id === "zz" ? (
+                // stacked rooms (中正廳 over 中央門廳, 地下防護室 under 中山廳) are drawn as an outer ring
+                <circle cx={x} cy={y} r={28} fill="none" stroke={col} strokeWidth={4} strokeDasharray={on ? undefined : "6 6"} />
+              ) : (
+                <circle cx={x} cy={y} r={on ? 15 : 11} fill={on ? col : C.ink} stroke={col} strokeWidth={4} />
+              )}
               <text
                 x={x + s.lx}
                 y={y + s.ly}
