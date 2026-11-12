@@ -4,7 +4,7 @@ SR = 44100
 BPM = 120
 BEAT = 60 / BPM
 BAR = BEAT * 4
-TOTAL = 52.5
+TOTAL = 60.5
 N = int(SR * TOTAL)
 L = np.zeros(N); R = np.zeros(N)
 rng = np.random.default_rng(7)
@@ -118,7 +118,7 @@ CH = {
 prog = (['D', 'Dsus', 'A'] +                                   # 0-2 intro
         ['D', 'A', 'Bm', 'G', 'D', 'G', 'A', 'D'] +            # 3-10 A
         ['G', 'A', 'F#m', 'Bm', 'G', 'A', 'D', 'D'] +          # 11-18 B
-        ['D', 'A', 'Bm', 'G', 'A', 'D'])                       # 19-24 A' + cadence
+        ['D', 'A', 'Bm', 'G', 'D', 'G', 'A', 'D', 'A', 'D'])  # 19-28 A' + cadence
 
 themeA = [
     [(0, 69, 1), (1, 74, .5), (1.5, 76, .5), (2, 78, 1.5), (3.5, 76, .5)],
@@ -146,7 +146,7 @@ for b, sym in enumerate(prog):
     t0 = b * BAR
     root, tones = CH[sym]
     ext = [tones[0] - 12, tones[1] - 12, tones[2] - 12, tones[0], tones[1], tones[2]]
-    final = b == 24
+    final = b == 28
     sec = 'intro' if b < 3 else 'A' if b < 11 else 'B' if b < 19 else 'A2'
     # pad
     if not final:
@@ -174,7 +174,7 @@ for b, sym in enumerate(prog):
     if sec == 'A': mel = themeA[b - 3]
     elif sec == 'B': mel = themeB[b - 11]
     elif sec == 'A2' and not final:
-        mel = themeA[b - 19] if b < 23 else themeA[6]
+        mel = themeA[b - 19] if b < 27 else themeA[6]
     if mel:
         for bt, m, d in mel:
             add(flute(mf(m), d * BEAT), t0 + bt * BEAT, 0.1, 1.0 if sec != 'B' else 1.1)
@@ -199,15 +199,17 @@ add(riser(BAR), 2 * BAR, 0, 1.0)
 add(timpani(mf(38)), 3 * BAR, 0, 0.8)
 add(bell_hit(), 3 * BAR, -0.2, 0.8)
 add(riser(BAR), 10 * BAR, 0, 0.8)
+add(riser(BAR), 26 * BAR, 0, 0.5)
+add(timpani(mf(38)), 12 * BAR + 2 * BEAT, 0, 0.5)
 add(timpani(mf(38)), 11 * BAR, 0, 0.6)
-add(timpani(mf(38)), 24 * BAR, 0, 1.0)
-add(bell_hit(), 24 * BAR, 0, 1.2)
-add(kick(), 24 * BAR, 0, 1.0)
+add(timpani(mf(38)), 28 * BAR, 0, 1.0)
+add(bell_hit(), 28 * BAR, 0, 1.2)
+add(kick(), 28 * BAR, 0, 1.0)
 final_root = 50
 for m in (38, 50, 57, 62, 66, 69, 74):
-    add(harpsichord(mf(m + 12), 2.5), 24 * BAR + (m - 38) * 0.004, 0, 0.6)
-add(flute(mf(74), 3.0), 24 * BAR, 0.1, 1.0)
-add(celesta(mf(86), 2), 24 * BAR, -0.3, 0.8)
+    add(harpsichord(mf(m + 12), 2.5), 28 * BAR + (m - 38) * 0.004, 0, 0.6)
+add(flute(mf(74), 3.0), 28 * BAR, 0.1, 1.0)
+add(celesta(mf(86), 2), 28 * BAR, -0.3, 0.8)
 
 # reverb (FFT convolution)
 def reverb(x, seed):
