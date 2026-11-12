@@ -228,8 +228,43 @@ scene(10.6,17.3,root=>{
   }
 },1);
 
+/* ---------- S3b GRAND STAIRCASE 17–21 ---------- */
+scene(16.5,21.4,root=>{
+  paperBg(root,'#F4EEE3');
+  const ph=el('div',root,{left:0,top:'190px',width:'1080px',height:'720px'},'','a card');
+  const inner=el('div',ph,{position:'absolute',left:0,top:0,width:'1080px',height:'720px',transformOrigin:'50% 55%'});
+  const im=el('img',inner,{width:'1080px',height:'720px',objectFit:'cover'});im.src='img/stair.jpg';
+  const dl=el('div',root,{left:0,top:'190px',width:'540px',height:'720px',background:'#ECE3D2',borderRight:'3px solid #B8925A'},'','a');
+  const dr=el('div',root,{left:'540px',top:'190px',width:'540px',height:'720px',background:'#ECE3D2',borderLeft:'3px solid #B8925A'},'','a');
+  const cs=svg(inner,'0 0 1080 720',{left:0,top:0,width:'1080px',height:'720px'});
+  const axis=prepDash(path(cs,'M540 20 V700',{stroke:'#F6E3B0','stroke-width':3,'stroke-dasharray':'0'}));
+  const axl=el('div',inner,{left:'440px',top:'24px',width:'200px',textAlign:'center'},'<span style="display:inline-block;background:rgba(28,38,49,.85);color:#F6E3B0;font-size:24px;font-weight:700;padding:6px 14px;border:1px solid #D6AF6E;letter-spacing:4px">對稱佈局</span>','a');
+  const calls=[{x:375,y:300,lx:150,ly:150,label:'古典柱式',t:18.3,side:-1},{x:595,y:420,lx:880,ly:250,label:'深色木扶手',t:18.65,side:1},{x:705,y:560,lx:900,ly:640,label:'灰色雕刻石材',t:19.0,side:1}];
+  const ce=calls.map(c=>{const ring=path(cs,circ(c.x,c.y,16),{stroke:'#fff','stroke-width':3});const dot=path(cs,circ(c.x,c.y,6),{fill:'#F6E3B0',stroke:'none'});
+    const ln=prepDash(path(cs,`M${c.x} ${c.y} L${c.lx} ${c.ly}`,{stroke:'#fff','stroke-width':2.5}));
+    const lab=el('div',inner,{left:(c.side<0?c.lx-20:c.lx-240)+'px',top:(c.ly-26)+'px',width:'260px',textAlign:c.side<0?'left':'right'},`<span style="display:inline-block;background:rgba(28,38,49,.88);color:#F6E3B0;font-size:26px;font-weight:700;padding:8px 16px;border:1px solid #D6AF6E;letter-spacing:2px;white-space:nowrap">${c.label}</span>`,'a');
+    return {c,ring,dot,ln,lab}});
+  const tag=text(root,'GRAND STAIRCASE ・ 中央主棟梯廳',{left:'60px',top:'960px',fontSize:'28px',letterSpacing:'5px',color:'#B8925A',fontWeight:600},'cz');
+  const h=text(root,'古典氣派',{left:'54px',top:'1000px',fontSize:'132px',fontWeight:900,color:'#1C2631',letterSpacing:'12px'});const hc=split(h);
+  const sub=text(root,'新古典主義官署的威嚴與優雅',{left:'60px',top:'1175px',fontSize:'44px',fontWeight:700,color:'#9E4630',letterSpacing:'3px'});const subc=split(sub);
+  const rows=['對稱佈局，莊重又大器','古典柱式撐起挑高梯廳','深色木扶手 × 灰色雕刻石材'].map((v,i)=>{const r=el('div',root,{left:'60px',top:(1270+i*80)+'px',width:'960px',height:'70px'},'','a');
+    el('div',r,{left:0,top:'10px',width:'22px',height:'22px',transform:'rotate(45deg)',border:'3px solid #B8925A',boxSizing:'border-box'},'','a');
+    el('div',r,{left:'46px',top:0,fontSize:'38px',color:'#1C2631',fontWeight:700,whiteSpace:'nowrap'},v,'a');
+    const u=el('div',r,{left:0,top:'62px',width:'960px',height:'1px',background:'rgba(184,146,90,.55)',transformOrigin:'0 0'},'','a');return {r,u}});
+  return t=>{
+    setComb(root,t,16.55,.55,6,true);
+    const op=P(t,17.0,17.9,EZ.ioe);tr(dl,{x:-op*560});tr(dr,{x:op*560});
+    tr(inner,{s:lerp(1.18,1.0,P(t,17.0,21.2,EZ.oq))});
+    draw(axis,P(t,17.6,18.2,EZ.ioc));axis.style.opacity=1-P(t,19.6,20.1);tr(axl,{o:P(t,17.9,18.2)*(1-P(t,19.6,20.1)),y:lerp(-14,0,P(t,17.9,18.3))});
+    ce.forEach(e=>{const t0=e.c.t,p=P(t,t0,t0+.35,EZ.ob);[e.ring,e.dot].forEach(q=>{q.style.transformOrigin=`${e.c.x}px ${e.c.y}px`;q.style.transform=`scale(${p})`});
+      draw(e.ln,P(t,t0+.12,t0+.45,EZ.ioc));const lp=P(t,t0+.35,t0+.7,EZ.oq);tr(e.lab,{x:(1-lp)*30*e.c.side,o:lp})});
+    tr(tag,{o:P(t,17.6,18),x:lerp(-30,0,P(t,17.6,18.1))});chars(hc,t,17.7,{st:.08,d:.55,y:80,b:14,s:1.2});chars(subc,t,18.2,{st:.03,d:.4,y:24,b:6});
+    rows.forEach((r,i)=>{const p=P(t,18.6+i*.3,19.2+i*.3,EZ.oq);tr(r.r,{x:(1-p)*-60,o:p});r.u.style.transform=`scaleX(${P(t,18.8+i*.3,19.6+i*.3,EZ.ioc)})`});
+  }
+});
+
 /* ---------- S4 COLUMNS 16–24 ---------- */
-scene(16.5,25.3,root=>{
+scene(20.5,29.3,root=>{
   paperBg(root,'#ECE3D2','rgba(120,90,50,.08)');
   const tag=text(root,'THE THREE CLASSICAL ORDERS',{left:0,width:'1080px',top:'190px',textAlign:'center',fontSize:'26px',letterSpacing:'9px',color:'#B8925A',fontWeight:600},'cz');
   const h=text(root,'柱子三兄妹',{left:0,width:'1080px',top:'230px',textAlign:'center',fontSize:'118px',fontWeight:900,color:'#1C2631',letterSpacing:'14px'});const hc=split(h);
@@ -269,10 +304,10 @@ scene(16.5,25.3,root=>{
     });
     const ex=P(t,23.7,24.25,EZ.ic);root.style.transform=`translateY(${-ex*120}px)`;
   }
-},1);
+},5);
 
 /* ---------- S5 DETAILS 24–30 ---------- */
-scene(24.6,37.5,root=>{
+scene(28.6,41.5,root=>{
   el('div',root,{position:'absolute',inset:0,background:'linear-gradient(180deg,#1E2834 0%,#151B23 100%)'});
   const pt=particles(root,24,'#D9BC8A');
   const out=text(root,'DETAILS',{left:'0',top:'640px',fontSize:'300px',fontWeight:700,color:'transparent',WebkitTextStroke:'2px rgba(226,200,146,.35)',letterSpacing:'20px'},'cz');
@@ -301,10 +336,10 @@ scene(24.6,37.5,root=>{
       if(t>s1-.12&&k<4){const q=P(t,s1-.12,s1+.05,EZ.ic);tr(c.g,{o:1-q,y:-q*30})}else tr(c.g,{});
     });
   }
-});
+},4);
 
 /* ---------- S6 CHUNG-CHENG HALL 30–34 ---------- */
-scene(36.6,41.6,root=>{
+scene(40.6,45.6,root=>{
   el('div',root,{position:'absolute',inset:0,background:'#F4EEE3'});
   const ph=el('div',root,{left:0,top:0,width:'1080px',height:'1180px'},'','a card');const im=el('img',ph);im.src='img/ionichall.jpg';
   el('div',root,{left:0,top:'700px',width:'1080px',height:'490px',background:'linear-gradient(180deg,rgba(244,238,227,0) 0%,rgba(244,238,227,.85) 70%,#F4EEE3 100%)'},'','a');
@@ -326,10 +361,41 @@ scene(36.6,41.6,root=>{
     tr(im2,{s:1.08-P(t,31.3,34,EZ.lin)*.08});
     const ex=P(t,33.7,34.4,EZ.ic);root.style.transform=`translateY(${-ex*500}px)`;
   }
-},7);
+},11);
+
+/* ---------- S6b CORRIDORS 45–51 ---------- */
+scene(44.6,51.4,root=>{
+  el('div',root,{position:'absolute',inset:0,background:'#1C2631'});
+  const A=el('div',root,{left:0,top:0,width:'1080px',height:'1920px'},'','a card');const ia=el('img',A,{objectPosition:'50% 50%'});ia.src='img/arcade_white.jpg';ia.style.transformOrigin='84% 50%';
+  const ws=svg(root,'0 0 1080 1920',{left:0,top:0,width:'1080px',height:'1920px'});
+  ws.style.filter='drop-shadow(0 0 6px rgba(60,140,100,.6))';
+  const winds=[0,1,2,3,4].map(i=>{const y0=420+i*210,d=`M-120 ${y0} C 260 ${y0-40+i*30}, 620 ${y0*.5+330}, 935 ${700+i*22}`;
+    return {p:path(ws,d,{stroke:i%2?'rgba(150,215,175,.95)':'rgba(205,240,215,.95)','stroke-width':7-i*.8,'stroke-dasharray':'240 420'}),ph:i*.53}});
+  const B=el('div',root,{left:0,top:0,width:'1080px',height:'1920px'},'','a card');const ib=el('img',B);ib.src='img/arcade_brick.jpg';ib.style.transformOrigin='70% 50%';
+  el('div',root,{left:0,top:'960px',width:'1080px',height:'960px',background:'linear-gradient(180deg,rgba(28,38,49,0) 0%,rgba(28,38,49,.82) 38%,rgba(20,26,34,.96) 100%)'},'','a');
+  const mk=(tg,hd,lines,gold)=>{const g=el('div',root,{left:0,top:0,width:'1080px',height:'1920px'},'','a');
+    const tag=text(g,tg,{left:'60px',top:'1190px',fontSize:'28px',letterSpacing:'6px',color:'#E2C892',fontWeight:600},'cz');
+    const h=text(g,hd,{left:'54px',top:'1230px',fontSize:'112px',fontWeight:900,letterSpacing:'8px',color:'#F4EEE3'},gold?'gold':'');const hc=split(h);
+    const ls=lines.map((v,i)=>split(text(g,v,{left:'60px',top:(1395+i*62)+'px',fontSize:'38px',fontWeight:700,color:'rgba(244,238,227,.9)'})));
+    return {g,tag,hc,ls}};
+  const ta=mk('VENTILATION ・ 通風設計','綠色通風智慧',['寬敞廊道＋挑高空間，促進空氣對流','搭配屋頂老虎窗、牛眼窗引導氣流','沒有冷氣的年代，也能自然散熱'],false);
+  const tb=mk('RED BRICK ARCADE ・ 一樓紅磚拱廊','經典紅磚拱廊',['連續半圓拱 × 古典柱式','對稱之美，展現巴洛克建築風格'],true);
+  return t=>{
+    const p=P(t,44.65,45.35,EZ.ioe);root.style.transform=`translateY(${(1-p)*1920 - P(t,50.7,51.4,EZ.ic)*500}px)`;
+    tr(ia,{s:lerp(1.0,1.22,P(t,44.7,48.6,EZ.lin))});
+    winds.forEach(w=>{const v=P(t,45.4,45.9)*(1-P(t,47.6,48.0));w.p.style.opacity=v*.9;w.p.style.strokeDashoffset=-((t-45)*620+w.ph*330)});
+    tr(ta.tag,{o:P(t,45.3,45.7)*(1-P(t,47.7,47.95)),x:lerp(-30,0,P(t,45.3,45.8))});chars(ta.hc,t,45.4,{st:.07,d:.5,y:70,b:14});
+    ta.ls.forEach((l,i)=>chars(l,t,45.9+i*.3,{st:.015,d:.35,y:18,b:5}));
+    if(t>47.7){charsOut(ta.hc,t,47.7);ta.ls.forEach(l=>charsOut(l,t,47.72,{st:.004}))}
+    ta.g.style.display=t<48.1?'block':'none';tb.g.style.display=t>=47.9?'block':'none';
+    B.style.display=t>=47.9?'block':'none';setArch(B,P(t,47.9,48.6,EZ.ioe));tr(ib,{s:lerp(1.2,1.0,P(t,47.9,51.4,EZ.oq))});
+    tr(tb.tag,{o:P(t,48.4,48.8),x:lerp(-30,0,P(t,48.4,48.9))});chars(tb.hc,t,48.45,{st:.07,d:.5,y:70,b:14,s:1.2});
+    tb.ls.forEach((l,i)=>chars(l,t,49.0+i*.3,{st:.02,d:.35,y:18,b:5}));
+  }
+},0);
 
 /* ---------- S7 SHELTER 34–38 ---------- */
-scene(40.6,45.6,root=>{
+scene(50.6,55.6,root=>{
   el('div',root,{position:'absolute',inset:0,background:'radial-gradient(ellipse 90% 60% at 50% 30%,#2A2E31 0%,#141617 70%,#0C0D0E 100%)'});
   const c1=el('div',root,{left:'60px',top:'250px',width:'960px',height:'590px'},'','a card');const i1=el('img',c1);i1.src='img/shelter3.jpg';i1.style.filter='sepia(.25) saturate(.8)';
   el('div',c1,{position:'absolute',inset:0,background:'linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(0,0,0,.45))'});
@@ -351,10 +417,10 @@ scene(40.6,45.6,root=>{
     lines.forEach((l,i)=>chars(l,t,35.6+i*.3,{st:.015,d:.35,y:18,b:5}));bar.style.transform=`scaleY(${P(t,35.5,36.4,EZ.ioc)})`;
     const ex=P(t,37.75,38.35,EZ.ic);root.style.opacity=1-ex*.5;
   }
-},7);
+},17);
 
 /* ---------- S8 EXHIBITION 38–44 ---------- */
-scene(44.6,51.5,root=>{
+scene(54.6,61.5,root=>{
   el('div',root,{position:'absolute',inset:0,background:'radial-gradient(ellipse 100% 70% at 50% 35%,#2B4338 0%,#1E3029 60%,#15221D 100%)'});
   paperBg(root,'transparent','rgba(226,200,146,.07)');
   const tag=text(root,'EXHIBITION ・ A 展覽廳',{left:0,width:'1080px',top:'190px',textAlign:'center',fontSize:'26px',letterSpacing:'8px',color:'#D6AF6E',fontWeight:600},'cz');
@@ -386,10 +452,10 @@ scene(44.6,51.5,root=>{
     mq.style.opacity=P(t,40.6,41.1);mq.style.transform=`translateX(${-((t-38)*90)}px)`;
     const ex=P(t,43.7,44.3,EZ.ic);root.style.opacity=1-ex*.4;
   }
-},7);
+},17);
 
 /* ---------- S9 ROUTE 51–56 (real floor plan) ---------- */
-scene(50.6,56.15,root=>{
+scene(60.6,66.15,root=>{
   el('div',root,{position:'absolute',inset:0,background:'radial-gradient(ellipse 100% 70% at 60% 45%,#26313D 0%,#1A222C 60%,#12171E 100%)'});
   paperBg(root,'transparent','rgba(226,200,146,.06)');
   const tag=text(root,'GUIDED ROUTE ・ 6 STOPS ・ 60 MIN',{left:'60px',top:'176px',fontSize:'26px',letterSpacing:'6px',color:'#D6AF6E',fontWeight:600},'cz');
@@ -444,10 +510,10 @@ scene(50.6,56.15,root=>{
       tr(o.it,{x:lerp(-30,0,P(t,o.tt,o.tt+.35)),o:P(t,o.tt,o.tt+.3)})});
     stairs.forEach(o=>{const p=P(t,o.tt-.1,o.tt+.25,EZ.ob);o.e.style.transform=`scale(${p})`});
   }
-});
+},10);
 
 /* ---------- S10 OUTRO 48–52.5 ---------- */
-scene(55.95,60.6,root=>{
+scene(65.95,70.6,root=>{
   el('div',root,{position:'absolute',inset:0,background:'radial-gradient(ellipse 90% 60% at 50% 32%,#2E3D4E 0%,#1A222C 60%,#10141A 100%)'});
   const pt=particles(root,60,'#E8CC90');
   const rs=svg(root,'0 0 1080 1920',{left:0,top:0,width:'1080px',height:'1920px'});
@@ -471,13 +537,13 @@ scene(55.95,60.6,root=>{
     tc.forEach(c=>{c.style.backgroundSize='420px 100%, 100% 100%';c.style.backgroundImage=`linear-gradient(100deg,rgba(255,250,235,0) 30%,rgba(255,250,235,.95) 50%,rgba(255,250,235,0) 70%),linear-gradient(180deg,#F6E3B0 0%,#D6AF6E 45%,#A57A42 100%)`;c.style.backgroundPosition=`${shine-c.offsetLeft}px 0, 0 0`});
     chars(sc,t,49.4,{st:.05,d:.5,y:30,b:8});lat.style.opacity=P(t,49.9,50.5);lat.style.letterSpacing=lerp(16,7,P(t,49.9,50.8,EZ.oq))+'px';
   }
-},8);
+},18);
 
 /* ---------- global overlays ---------- */
 const hud=el('div',stage,{},'','');hud.id='hud';
 const hudL=el('div',hud,{left:'60px',top:'96px',fontSize:'26px',fontWeight:900,letterSpacing:'6px'},'臺中州廳 ・ 導覽','a');
 const hudNum=el('div',hud,{right:'60px',top:'90px',width:'360px',height:'40px',overflow:'hidden',textAlign:'right'},'','a');hudNum.style.left='auto';
-const chap=[[6,'01','百年歷程'],[11,'02','建築特色'],[17,'03','柱子三兄妹'],[25,'04','建築細節'],[37,'05','中正廳'],[41,'06','地下防護室'],[45,'07','藝術特展'],[51,'08','導覽動線']];
+const chap=[[6,'01','百年歷程'],[11,'02','建築特色'],[17,'03','中央梯廳'],[21,'04','柱子三兄妹'],[29,'05','建築細節'],[41,'06','中正廳'],[45,'07','通風廊道'],[51,'08','地下防護室'],[55,'09','藝術特展'],[61,'10','導覽動線']];
 const hudStrip=el('div',hudNum,{left:0,top:0,width:'360px'},'','a');chap.forEach(c=>el('div',hudStrip,{height:'40px',lineHeight:'40px',fontSize:'26px',fontWeight:700,letterSpacing:'3px',whiteSpace:'nowrap'},`<span class="cz" style="color:#B8925A">${c[1]}</span>　${c[2]}`));
 const hudBar=el('div',hud,{left:'60px',top:'146px',width:'960px',height:'2px',background:'rgba(184,146,90,.25)'},'','a');
 const hudFill=el('div',hudBar,{left:0,top:0,width:'960px',height:'2px',background:'#B8925A',transformOrigin:'0 0'},'','a');
@@ -487,22 +553,22 @@ const vig=el('div',stage,{},'','');vig.id='vig';
 const grain=el('div',stage,{},'','');grain.id='grain';
 {const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const d=x.createImageData(256,256);for(let i=0;i<d.data.length;i+=4){const v=Math.random()*255;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255}x.putImageData(d,0,0);grain.style.backgroundImage=`url(${c.toDataURL()})`}
 const black=el('div',stage,{},'','');black.id='black';
-const darkAt=t=>(t>=25&&t<56);
+const darkAt=t=>(t>=29&&t<45)||(t>=51&&t<66);
 
 function seek(t){
   for(const s of scenes){const on=t>=s.start&&t<s.end;s.root.style.display=on?'block':'none';if(on)s.up(t-s.shift)}
   // arch outline for arch transitions
-  let ad=null;for(const [a,b] of [[5.55,6.35],[36.65,37.45],[50.65,51.4]]){if(t>=a&&t<b){const p=EZ.ioe(cl((t-a)/(b-a)));const w=lerp(0,2700,p),B=2060,h=w*1.35,top=B-h+w/2;ad=`M${540-w/2} ${B} V${top} A${w/2} ${w/2} 0 0 1 ${540+w/2} ${top} V${B}`;archP.style.opacity=1-p}}
+  let ad=null;for(const [a,b] of [[5.55,6.35],[40.65,41.45],[47.9,48.6],[60.65,61.4]]){if(t>=a&&t<b){const p=EZ.ioe(cl((t-a)/(b-a)));const w=lerp(0,2700,p),B=2060,h=w*1.35,top=B-h+w/2;ad=`M${540-w/2} ${B} V${top} A${w/2} ${w/2} 0 0 1 ${540+w/2} ${top} V${B}`;archP.style.opacity=1-p}}
   archP.setAttribute('d',ad||'M0 0');archSvg.style.display=ad?'block':'none';
   // hud
-  const hv=P(t,6.3,6.8)*(1-P(t,55.6,56));hud.style.opacity=hv;hud.style.display=hv>0?'block':'none';
+  const hv=P(t,6.3,6.8)*(1-P(t,65.6,66));hud.style.opacity=hv;hud.style.display=hv>0?'block':'none';
   let ci=0;chap.forEach((c,i)=>{if(t>=c[0])ci=i});const prev=Math.max(0,ci-1);const roll=lerp(prev,ci,P(t,chap[ci][0]+.2,chap[ci][0]+.6,EZ.ioc));hudStrip.style.transform=`translateY(${-roll*40}px)`;
   const col=darkAt(t)?'#F4EEE3':'#1C2631';hudL.style.color=col;hudStrip.style.color=col;
-  hudFill.style.transform=`scaleX(${cl((t-6)/50)})`;
+  hudFill.style.transform=`scaleX(${cl((t-6)/60)})`;
   // flash at drop + finale
-  flash.style.opacity=Math.max(.0,(1-P(t,56,56.7,EZ.oc))*(t>=56?.85:0));
+  flash.style.opacity=Math.max(.0,(1-P(t,66,66.7,EZ.oc))*(t>=66?.85:0));
   grain.style.backgroundPosition=`${(Math.sin(t*91.7)*1000)|0}px ${(Math.cos(t*53.3)*1000)|0}px`;
-  black.style.opacity=P(t,59.7,60.5,EZ.ioc)+ (1-P(t,0,.4));
+  black.style.opacity=P(t,69.7,70.5,EZ.ioc)+ (1-P(t,0,.4));
 }
 window.seek=seek;
 window.ready=Promise.all([document.fonts.ready,...[...document.images].map(i=>i.complete?1:new Promise(r=>{i.onload=r;i.onerror=r}))]);

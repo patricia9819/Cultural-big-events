@@ -235,6 +235,63 @@ for inst in ('hn', 'pad'):
     ramp(inst, 41, 44.8, 80, 110); ramp(inst, 51, 55.9, 90, 127)
 ramp('vln1', 17, 17.1, 127, 112); ramp('vln1', 21, 23.8, 105, 127)
 
+# ================= v2: insert staircase (17-21) and corridor (45-51) passages =================
+def remap(t): return t if t < 17 - 1e-9 else t + 4 if t < 41 - 1e-9 else t + 10
+EV[:] = [(remap(t), d, i, m, v) for t, d, i, m, v in EV]
+CC[:] = [(remap(t), i, c, v) for t, i, c, v in CC]
+PG[:] = [(remap(t), i, b, p) for t, i, b, p in PG]
+VSCO_SPIC[:] = [(remap(t), m, v) for t, m, v in VSCO_SPIC]
+BD[:] = [(remap(t), l) for t, l in BD]
+def new_bar(s, beats, chs, style, d, mel=None, melinst=(), mel_vel=6):
+    def ch_at(t):
+        x = s
+        for name, cb in chs:
+            if t < x + cb * BEAT - 1e-9: return name
+            x += cb * BEAT
+        return chs[-1][0]
+    for i in range(int(beats * 2)):
+        t = s + i * BEAT / 2; name = ch_at(t); pcs = CH[name][1]; on = i % 2 == 0; acc = 6 if i % 8 == 0 else 0
+        hv = voicing(pcs, 55, 86)
+        if style == 'stately':
+            N(t, .2, 'vln2', voicing(pcs, 62, 76)[[0, 2, 1, 2][i % 4]], d - 16 + acc)
+            if not on:
+                for m in voicing(pcs, 55, 67)[:2]: N(t, .14, 'vla', m, d - 20)
+            if on: N(t, .45, 'vc', bass_of(name, 38, 49) + (0 if i % 4 == 0 else 7), d - 6 + acc)
+            N(t, .5, 'hp', hv[(i * 2) % len(hv)], d - 14)
+        else:  # airy
+            N(t, .7, 'hp', hv[(i * 3) % len(hv)] if i % 4 < 2 else hv[-1 - (i * 2) % len(hv)], d - 8)
+            if on: N(t, .2, 'vln2', voicing(pcs, 64, 79)[i // 2 % 3], d - 18)
+    x = s
+    for name, cb in chs:
+        dur = cb * BEAT
+        for k in range(0, int(cb), 2): N(x + k * BEAT, .4, 'cb', bass_of(name, 31, 42), d)
+        for m in voicing(CH[name][1], 66, 81)[:3]: N(x, dur * .99, 'pad', m, d - 18, hum=False)
+        if style == 'stately':
+            for m in voicing(CH[name][1], 55, 69)[:3]: N(x, dur * .98, 'hn', m, d - 16, hum=False)
+        x += dur
+    if mel:
+        for off, m, ln in mel:
+            for inst, sh in melinst: N(s + off * BEAT, ln * BEAT * .98, inst, m + sh, d + mel_vel)
+# staircase: noble horn & cello melody, harp and strings (G  D/F# | Em  A) -> columns (G)
+new_bar(17, 4, [('G', 2), ('D/F#', 2)], 'stately', 84, [(0, 67, 1.5), (1.5, 71, .5), (2, 74, 1), (3, 69, 1)], [('hn', 0), ('vc', -12), ('vln1', 12)])
+new_bar(19, 4, [('Em', 2), ('A', 2)], 'stately', 86, [(0, 71, 1), (1, 67, 1), (2, 69, 1.5), (3.5, 73, .5)], [('hn', 0), ('vc', -12), ('vln1', 12)])
+ramp('vln1', 16.9, 17.0, 127, 105); ramp('vln1', 19.5, 20.95, 105, 127)
+timp(17.0, 43, 92); crash(17.0, 58)
+for k in range(14): N(17.0 + k * .055, .8, 'hp', voicing([2, 4, 6, 7, 9, 11, 1], 55, 98)[k], 62 + k * 2, hum=False)   # doors open
+for t, m in [(17.6, 86), (18.3, 91), (18.65, 95), (19.0, 98)]: N(t, .7, 'glk', m, 66, hum=False)                          # axis + callouts
+for i in range(int(.5 / 0.0625)): N(20.5 + i * 0.0625, .07, 'timp', 45, 50 + i * 6, hum=False)
+# corridors: airy flute over harp (ventilation) -> warm strings (brick arcade); 2/4 bars put the photo change on a downbeat
+new_bar(45, 4, [('D', 2), ('Bm', 2)], 'airy', 74, [(0, 81, 1), (1, 78, .5), (1.5, 74, .5), (2, 83, 1), (3, 78, 1)], [('fl', 0), ('cl', -12)])
+new_bar(47, 2, [('A', 2)], 'airy', 74, [(0, 76, .5), (.5, 78, .5), (1, 81, 1)], [('fl', 0), ('cl', -12)])
+new_bar(48, 4, [('G', 2), ('D/F#', 2)], 'stately', 80, [(0, 79, 1.5), (1.5, 78, .5), (2, 74, 1), (3, 78, 1)], [('vln1', 0), ('vc', -24), ('ob', -12)])
+new_bar(50, 2, [('A', 2)], 'stately', 80, [(0, 76, 1), (1, 73, 1)], [('vln1', 0), ('vc', -24), ('ob', -12)])
+PG.append((44.95, 'vln1', 20, 49)); PG.append((50.95, 'vln1', 20, 48))
+timp(45.0, 38, 80)
+for k in range(5): N(45.5 + k * .5, 1.2, 'glk', [93, 98, 95, 100, 98][k], 52, hum=False)    # breeze sparkle
+for k in range(14): N(47.3 + k * .05, .8, 'hp', voicing([2, 4, 6, 7, 9, 11, 1], 60, 98)[k], 60 + k * 2, hum=False)  # into arch reveal
+timp(48.0, 43, 90); crash(48.0, 56); N(48.0, .8, 'glk', 91, 70, hum=False)
+ramp('pad', 45, 47.8, 70, 100); ramp('pad', 48, 50.9, 95, 115)
+
 # ---------------- write MIDI ----------------
 TPS = 960
 msgs = []
@@ -277,7 +334,7 @@ def load(f):
     if ch == 1: d = np.repeat(d, 2, 1)
     return d
 mix = load(dry)
-L = int(SR * 60.5); mix = np.pad(mix, ((0, max(0, L - len(mix))), (0, 0)))[:L]
+L = int(SR * 70.5); mix = np.pad(mix, ((0, max(0, L - len(mix))), (0, 0)))[:L]
 
 # VSCO real cello spiccato layer (pitch-shifted from nearest sample, round-robin)
 spic = {}
