@@ -1,8 +1,8 @@
 import React from "react";
 import { AbsoluteFill, Img, staticFile, useCurrentFrame } from "remotion";
 import { Count, Photo, RiseText, Rule, Tag } from "../Visit/primitives";
-import { ap, C, INOUT, SANS, SERIF } from "../Visit/theme";
-import { BAR, beat, BlurFill, Kicker, Shade, usePulse } from "./kit";
+import { ap, C, SANS, SERIF } from "../Visit/theme";
+import { BAR, beat, Kicker, Shade, usePulse } from "./kit";
 
 /* ───────────── Title (4 bars) ───────────── */
 
@@ -210,7 +210,7 @@ export const RGuests: React.FC = () => {
 /* ───────────── Schedule (6 bars) ───────────── */
 
 const SCHEDULE = [
-  { t: "11:00", a: "州廳參訪", b: "含兩檔州廳特展" },
+  { t: "11:00", a: "州廳參訪", b: "建築導覽＋市長邀請展" },
   { t: "12:00", a: "市役所午餐", b: "長官餐敘" },
   { t: "14:00", a: "車程至綠美圖", b: "約 30 分鐘" },
   { t: "14:30", a: "國巨展導覽", b: "策展人親自導覽" },
@@ -269,141 +269,6 @@ export const RSchedule: React.FC = () => {
           })}
         </div>
       </div>
-    </AbsoluteFill>
-  );
-};
-
-/* ───────────── 州廳 (4 bars) ───────────── */
-
-export const RHall: React.FC = () => {
-  const f = useCurrentFrame();
-  return (
-    <AbsoluteFill style={{ background: C.ink, overflow: "hidden" }}>
-      <BlurFill src="hall.jpg" />
-      <Photo
-        src="hall.jpg"
-        delay={0}
-        dir="down"
-        zoom={[1.2, 1.02]}
-        revealDur={beat(2)}
-        style={{ left: 0, top: 240, width: 1080, height: 760 }}
-      />
-      <Rule delay={beat(2)} dur={beat(2)} color={C.mint} style={{ left: 0, top: 1000, width: 1080, height: 8 }} />
-      <div style={{ position: "absolute", left: 80, top: 1070 }}>
-        <Tag delay={beat(2)} size={38}>
-          11:00 – 12:00 · 第一站
-        </Tag>
-        <RiseText
-          text="台中州廳"
-          delay={beat(3)}
-          stagger={3}
-          style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 190, color: C.paper, marginTop: 26, letterSpacing: "0.04em" }}
-        />
-        <RiseText
-          text="州廳參訪 · 含兩檔特展"
-          delay={beat(5)}
-          stagger={1}
-          style={{ fontFamily: SANS, fontWeight: 500, fontSize: 46, color: C.paper, marginTop: 14 }}
-        />
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          right: 80,
-          top: 280,
-          fontFamily: SANS,
-          fontWeight: 900,
-          fontSize: 120,
-          color: C.paper,
-          textShadow: "0 6px 30px rgba(0,0,0,0.5)",
-          opacity: ap(f, [beat(4), beat(4) + 8], [0, 1]),
-          transform: `translateY(${ap(f, [beat(4), beat(4) + 20], [40, 0])}px)`,
-        }}
-      >
-        01
-      </div>
-    </AbsoluteFill>
-  );
-};
-
-/* ───────────── 州廳兩檔特展 (6 bars = 3 + 3) ───────────── */
-
-const ShowPage: React.FC<{
-  idx: string;
-  photo: React.ReactNode;
-  title: string;
-  title2?: string;
-  sub: string;
-  o?: number; // frame offset added to every reveal
-}> = ({ idx, photo, title, title2, sub, o = 0 }) => {
-  return (
-    <AbsoluteFill style={{ overflow: "hidden", background: C.ink }}>
-      {photo}
-      <Shade from={38} to={66} />
-      <div style={{ position: "absolute", left: 80, right: 80, top: 1000 }}>
-        <Tag delay={o + beat(1)} size={36} color={C.red} text={C.paper}>
-          州廳特展 {idx}
-        </Tag>
-        <RiseText
-          text={title}
-          delay={o + beat(1.5)}
-          stagger={2.5}
-          style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 150, color: C.paper, marginTop: 30 }}
-        />
-        {title2 ? (
-          <RiseText
-            text={title2}
-            delay={o + beat(2.5)}
-            stagger={1.5}
-            style={{ fontFamily: SERIF, fontWeight: 700, fontSize: 64, color: C.paper, marginTop: 10 }}
-          />
-        ) : null}
-        <RiseText
-          text={sub}
-          delay={o + beat(3.5)}
-          stagger={0.8}
-          style={{ fontFamily: SANS, fontWeight: 500, fontSize: 46, color: C.mint, marginTop: 22 }}
-        />
-      </div>
-    </AbsoluteFill>
-  );
-};
-
-export const RHallShows: React.FC = () => {
-  const f = useCurrentFrame();
-  const swap = 3 * BAR;
-  const yB = ap(f, [swap - 10, swap + 8], [1920, 0], INOUT);
-  const yA = ap(f, [swap - 10, swap + 8], [0, -500], INOUT);
-  return (
-    <AbsoluteFill style={{ background: C.ink, overflow: "hidden" }}>
-      <AbsoluteFill style={{ transform: `translateY(${yA}px)` }}>
-        <ShowPage
-          idx="①"
-          title="麗春．清韻"
-          title2="向臺中前輩藝術家致敬特展"
-          sub="州廳展間 · 前輩畫家經典作品"
-          photo={
-            <Photo
-              src="gallery.jpg"
-              delay={0}
-              dir="left"
-              position="62% center"
-              zoom={[1.15, 1.0]}
-              style={{ left: 0, top: 0, width: 1080, height: 1300 }}
-            />
-          }
-        />
-      </AbsoluteFill>
-      <AbsoluteFill style={{ transform: `translateY(${yB}px)` }}>
-        <ShowPage
-          idx="②"
-          o={swap}
-          title="前世今生"
-          title2="臺中州廳的前世今生特展"
-          sub="走進百年建築的時光長廊"
-          photo={<Photo src="corridor.jpg" delay={swap - 10} dir="up" zoom={[1.12, 1.0]} revealDur={1} style={{ inset: 0 }} />}
-        />
-      </AbsoluteFill>
     </AbsoluteFill>
   );
 };

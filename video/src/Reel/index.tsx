@@ -4,7 +4,8 @@ import { Finish, Wipe } from "../Visit/primitives";
 import { ap, C, SANS } from "../Visit/theme";
 import { BAR } from "./kit";
 import timeline from "./timeline.json";
-import { RGuests, RHall, RHallShows, RLunch, RSchedule, RTitle } from "./scenesA";
+import { RGuests, RLunch, RSchedule, RTitle } from "./scenesA";
+import { RHall, RMayorShow, RRoute } from "./hall";
 import { RCurator, RGifts, ROutro, RShow, RTea, RWorks } from "./scenesB";
 
 const COMPONENTS: Record<string, React.FC> = {
@@ -12,7 +13,8 @@ const COMPONENTS: Record<string, React.FC> = {
   guests: RGuests,
   schedule: RSchedule,
   hall: RHall,
-  hallShows: RHallShows,
+  route: RRoute,
+  mayorShow: RMayorShow,
   lunch: RLunch,
   show: RShow,
   works: RWorks,

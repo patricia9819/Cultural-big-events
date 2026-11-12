@@ -20,7 +20,11 @@
       "bars": 4
     },
     {
-      "id": "hallShows",
+      "id": "route",
+      "bars": 6
+    },
+    {
+      "id": "mayorShow",
       "bars": 6
     },
     {
