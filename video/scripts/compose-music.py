@@ -61,11 +61,11 @@ PHRASE = {
 # Per scene: phrases and orchestration level (1 light … 3 full), extra colour.
 PLAN = {
     "title": (["A"], 1, {}),
-    "guests": (["B", "T"], 2, {}),
+    "guests": (["B"], 2, {}),
     "schedule": (["S"], 2, {}),
     "hall": (["C"], 3, {}),
     "hallShows": (["B", "T"], 2, {"lead": "oboe"}),
-    "lunch": (["A", "T"], 2, {"lead": "clarinet"}),
+    "lunch": (["A"], 2, {"lead": "clarinet"}),
     "show": (["C", "T"], 3, {}),
     "works": (["A", "T"], 3, {"glock": True}),
     "curator": (["B"], 2, {}),

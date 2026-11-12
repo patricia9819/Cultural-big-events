@@ -9,7 +9,7 @@
     },
     {
       "id": "guests",
-      "bars": 6
+      "bars": 4
     },
     {
       "id": "schedule",
@@ -25,7 +25,7 @@
     },
     {
       "id": "lunch",
-      "bars": 6
+      "bars": 4
     },
     {
       "id": "show",

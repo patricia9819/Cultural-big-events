@@ -99,15 +99,33 @@ export const RTitle: React.FC = () => {
 
 /* ───────────── Guests (4 bars) ───────────── */
 
-const HOSTS = [
-  { n: "市長", r: "" },
-  { n: "鄭照新", r: "副市長" },
-  { n: "林谷龍", r: "副秘書長" },
-  { n: "欒治誼", r: "新聞局局長" },
-  { n: "張婉榆", r: "新聞局專門委員" },
-  { n: "陳佳君", r: "文化局局長" },
-  { n: "賴依欣", r: "市立美術館館長" },
-  { n: "曾惠君", r: "市立圖書館館長" },
+const HOST_GROUPS = [
+  {
+    g: "市府",
+    cols: 3,
+    items: [
+      { n: "市長", r: "" },
+      { n: "鄭照新", r: "副市長" },
+      { n: "林谷龍", r: "副秘書長" },
+    ],
+  },
+  {
+    g: "新聞局",
+    cols: 3,
+    items: [
+      { n: "欒治誼", r: "局長" },
+      { n: "張婉榆", r: "專門委員" },
+    ],
+  },
+  {
+    g: "文化局",
+    cols: 3,
+    items: [
+      { n: "陳佳君", r: "局長" },
+      { n: "賴依欣", r: "市立美術館館長" },
+      { n: "曾惠君", r: "市立圖書館館長" },
+    ],
+  },
 ];
 
 export const RGuests: React.FC = () => {
@@ -135,33 +153,54 @@ export const RGuests: React.FC = () => {
         <Kicker delay={beat(6)} color={C.paper}>
           餐敘出席長官
         </Kicker>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18, marginTop: 28 }}>
-          {HOSTS.map((h, i) => {
-            const d = beat(8 + i);
-            const lead = i === 0;
-            return (
+        {HOST_GROUPS.map((grp, gi) => {
+          // All cards flow in together: one quick cascade across the three groups.
+          const base = beat(6) + gi * 6;
+          return (
+            <div key={grp.g} style={{ marginTop: gi === 0 ? 26 : 30 }}>
               <div
-                key={h.n}
                 style={{
-                  height: 150,
-                  boxSizing: "border-box",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  padding: "0 28px",
-                  background: lead ? C.paper : "rgba(244,240,232,0.04)",
-                  border: `2px solid ${lead ? C.paper : "rgba(244,240,232,0.3)"}`,
-                  borderLeft: `8px solid ${lead ? C.mint : C.mint}`,
-                  opacity: ap(f, [d, d + 6], [0, 1]),
-                  transform: `translateY(${ap(f, [d, d + 16], [40, 0])}px)`,
+                  fontFamily: SANS,
+                  fontWeight: 700,
+                  fontSize: 32,
+                  color: C.mint,
+                  letterSpacing: "0.2em",
+                  marginBottom: 12,
+                  opacity: ap(f, [base, base + 8], [0, 1]),
                 }}
               >
-                <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 58, color: lead ? C.ink : C.paper, lineHeight: 1.1 }}>{h.n}</div>
-                {h.r ? <div style={{ fontFamily: SANS, fontWeight: 500, fontSize: 32, color: C.mint, marginTop: 8 }}>{h.r}</div> : null}
+                {grp.g}
               </div>
-            );
-          })}
-        </div>
+              <div style={{ display: "grid", gridTemplateColumns: `repeat(${grp.cols}, 1fr)`, gap: 14 }}>
+                {grp.items.map((h, i) => {
+                  const d = base + i * 2;
+                  const lead = gi === 0 && i === 0;
+                  return (
+                    <div
+                      key={h.n}
+                      style={{
+                        height: 136,
+                        boxSizing: "border-box",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        padding: "0 22px",
+                        background: lead ? C.paper : "rgba(244,240,232,0.04)",
+                        border: `2px solid ${lead ? C.paper : "rgba(244,240,232,0.3)"}`,
+                        borderLeft: `8px solid ${C.mint}`,
+                        opacity: ap(f, [d, d + 8], [0, 1]),
+                        transform: `translateY(${ap(f, [d, d + 18], [40, 0])}px)`,
+                      }}
+                    >
+                      <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 54, color: lead ? C.ink : C.paper, lineHeight: 1.1 }}>{h.n}</div>
+                      {h.r ? <div style={{ fontFamily: SANS, fontWeight: 500, fontSize: 28, color: lead ? C.ink : C.dim, marginTop: 8, whiteSpace: "nowrap" }}>{h.r}</div> : null}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </AbsoluteFill>
   );
@@ -383,8 +422,8 @@ const MENU: { n: string; sub?: string }[] = [
 
 export const RLunch: React.FC = () => {
   const f = useCurrentFrame();
-  // Bars 1–2: the room. Bars 3–6: the chef's menu card rises over it.
-  const m0 = 2 * BAR - 8;
+  // The room for ~2s, then the chef's menu card rises with all courses flowing in together.
+  const m0 = BAR + beat(2);
   const cardY = ap(f, [m0, m0 + 22], [1800, 0]);
   const dim = ap(f, [m0, m0 + 20], [0, 0.6]);
   return (
@@ -447,7 +486,7 @@ export const RLunch: React.FC = () => {
         <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 70, color: C.ink, marginTop: 14 }}>主廚特開菜單</div>
         <div style={{ width: 120, height: 3, background: C.red, margin: "28px auto 22px" }} />
         {MENU.map((m, i) => {
-          const d = 2 * BAR + beat(1 + i * 1.5);
+          const d = m0 + 14 + i * 3;
           return (
             <div
               key={m.n}

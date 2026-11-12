@@ -397,7 +397,7 @@ export const ROutro: React.FC = () => {
           );
         })}
       </div>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 1300, display: "flex", justifyContent: "center" }}>
+      <div style={{ position: "absolute", left: 0, right: 0, top: 1430, display: "flex", justifyContent: "center" }}>
         <RiseText text="敬邀蒞臨" delay={3 * BAR} stagger={3} style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 150, color: C.paper, letterSpacing: "0.25em" }} />
       </div>
     </AbsoluteFill>
