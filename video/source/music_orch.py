@@ -21,7 +21,7 @@ BARS = [
  (25, 4, [('D', 4)]), (27, 4, [('G', 4)]), (29, 4, [('A', 4)]), (31, 4, [('F#m', 2), ('Bm', 2)]),
  (33, 4, [('G', 2), ('A', 2)]), (35, 4, [('A7', 4)]),                                   # S5 details
  (37, 4, [('D', 4)]), (39, 4, [('G', 2), ('A', 2)]),                                    # S6 hall
- (41, 4, [('Bm', 4)]), (43, 4, [('Em', 2), ('F#7', 2)]),                                # S7 shelter
+ (41, 4, [('Bm', 4)]), (43, 4, [('Em', 2), ('A7', 2)]),                                # S7 shelter
  (45, 4, [('G', 4)]), (47, 4, [('A', 4)]), (49, 4, [('D', 4)]),                         # S8 exhibition
  (51, 4, [('Bm', 2), ('G', 2)]), (53, 4, [('Em', 2), ('A', 2)]), (55, 2, [('A7', 2)]),  # S9 route
  (56, 9, [('D', 9)]),                                                                   # S10 finale
@@ -94,7 +94,7 @@ MEL = {
 FANFARE = {13: [(0, 74, .75), (.75, 69, .25), (1, 74, 1), (2, 78, 1), (3, 81, 1)],
            19: [(0, 74, 1.5), (1.5, 69, .5), (2, 74, 1), (3, 78, 1)],
            20: [(0, 79, 1.5), (1.5, 78, .5), (2, 76, 1), (3, 73, 1)]}
-DARK = {21: [(0, 59, 1), (1, 61, .5), (1.5, 62, .5), (2, 66, 2)], 22: [(0, 64, 1), (1, 67, 1), (2, 66, 1), (3, 58, 1)]}
+DARK = {21: [(0, 59, 1), (1, 61, .5), (1.5, 62, .5), (2, 66, 2)], 22: [(0, 64, 1), (1, 67, 1), (2, 69, 1), (3, 73, 1)]}
 
 def play_mel(bi, table, insts, shift=0, vel=0, legato=0.96):
     s = BARS[bi][0]
@@ -292,6 +292,21 @@ for k in range(14): N(47.3 + k * .05, .8, 'hp', voicing([2, 4, 6, 7, 9, 11, 1], 
 timp(48.0, 43, 90); crash(48.0, 56); N(48.0, .8, 'glk', 91, 70, hum=False)
 ramp('pad', 45, 47.8, 70, 100); ramp('pad', 48, 50.9, 95, 115)
 
+# ================= v3: remove exhibition + route (55-66), finale moves to 55 =================
+CUT0, CUT1 = 55.0, 66.0
+def keep(t): return t < CUT0 - 1e-9 or t >= CUT1 - 1e-9
+def mv(t): return t if t < CUT0 else t - (CUT1 - CUT0)
+EV[:] = [(mv(t), min(d, CUT0 - t) if t < CUT0 else d, i, m, v) for t, d, i, m, v in EV if keep(t)]
+CC[:] = [(mv(t), i, c, v) for t, i, c, v in CC if keep(t)]
+PG[:] = [(mv(t), i, b, p) for t, i, b, p in PG if keep(t)]
+VSCO_SPIC[:] = [(mv(t), m, v) for t, m, v in VSCO_SPIC if keep(t)]
+BD[:] = [(mv(t), l) for t, l in BD if keep(t)]
+PG.append((54.0, 'pad', 20, 49)); PG.append((54.0, 'vln2', 25, 48)); PG.append((54.0, 'vln1', 20, 48))
+for inst in ('hn', 'pad', 'vln1', 'vln2', 'vla'): ramp(inst, 53.0, 54.95, 90, 127)
+for i in range(int(1.0 / 0.0625)): N(54.0 + i * 0.0625, .07, 'timp', 45, 55 + i * 4, hum=False)        # roll into finale
+for k in range(10): N(54.0 + k * .1, .1, 'perc', 51, 30 + k * 7, hum=False)                            # cymbal swell
+for k, m in enumerate([69, 71, 73, 74, 76, 78, 79, 81]): N(54.0 + k * .125, .14, 'fl', m + 12, 74 + k * 3); N(54.0 + k * .125, .14, 'vln1', m, 78 + k * 3)  # rising run
+
 # ---------------- write MIDI ----------------
 TPS = 960
 msgs = []
@@ -334,7 +349,7 @@ def load(f):
     if ch == 1: d = np.repeat(d, 2, 1)
     return d
 mix = load(dry)
-L = int(SR * 70.5); mix = np.pad(mix, ((0, max(0, L - len(mix))), (0, 0)))[:L]
+L = int(SR * 59.5); mix = np.pad(mix, ((0, max(0, L - len(mix))), (0, 0)))[:L]
 
 # VSCO real cello spiccato layer (pitch-shifted from nearest sample, round-robin)
 spic = {}

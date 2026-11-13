@@ -419,101 +419,8 @@ scene(50.6,55.6,root=>{
   }
 },17);
 
-/* ---------- S8 EXHIBITION 38–44 ---------- */
-scene(54.6,61.5,root=>{
-  el('div',root,{position:'absolute',inset:0,background:'radial-gradient(ellipse 100% 70% at 50% 35%,#2B4338 0%,#1E3029 60%,#15221D 100%)'});
-  paperBg(root,'transparent','rgba(226,200,146,.07)');
-  const tag=text(root,'EXHIBITION ・ A 展覽廳',{left:0,width:'1080px',top:'190px',textAlign:'center',fontSize:'26px',letterSpacing:'8px',color:'#D6AF6E',fontWeight:600},'cz');
-  const pre=text(root,'臺中州廳首檔・市長邀請展',{left:0,width:'1080px',top:'236px',textAlign:'center',fontSize:'38px',color:'#E2C892',fontWeight:700,letterSpacing:'6px'});const prec=split(pre);
-  const h1=text(root,'向臺中前輩',{left:0,width:'1080px',top:'292px',textAlign:'center',fontSize:'92px',fontWeight:900,color:'#F4EEE3',letterSpacing:'8px'});const h1c=split(h1);
-  const h2=text(root,'藝術家致敬特展',{left:0,width:'1080px',top:'398px',textAlign:'center',fontSize:'92px',fontWeight:900,color:'#F4EEE3',letterSpacing:'8px'});const h2c=split(h2);
-  const stat=(x,lab)=>{const g=el('div',root,{left:x+'px',top:'560px',width:'400px',textAlign:'center'},'','a');const n=el('div',g,{fontSize:'112px',lineHeight:'1',fontWeight:700},'0','cz gold solo');const l=el('div',g,{fontSize:'34px',color:'#F4EEE3',fontWeight:700,letterSpacing:'6px',marginTop:'6px'},lab);return {g,n}};
-  const s1=stat(100,'位藝術家'),s2=stat(580,'件大作');
-  const sep=el('div',root,{left:'539px',top:'572px',width:'2px',height:'140px',background:'rgba(226,200,146,.5)',transformOrigin:'50% 50%'},'','a');
-  const arts=[['art_liao',67,770,384,320,'廖繼春〈庭院〉1966'],['art_chents',528,770,479,320,'陳庭詩〈晝與夜#25〉1973'],
-    ['art_chenhq',47,1180,143,190],['art_lin',230,1180,142,190],['art_chenxy',412,1180,133,190],['art_zhang',585,1180,143,190],['art_yeh',768,1180,238,190]];
-  const frames=arts.map((a,i)=>{const f=el('div',root,{left:a[1]+'px',top:a[2]+'px',padding:'8px',background:'#F4EEE3',border:'5px solid #C9A063',boxShadow:'0 18px 40px rgba(0,0,0,.45)',transformOrigin:'50% -40px'},'','a');
-    const im=el('img',f,{width:a[3]+'px',height:a[4]+'px',objectFit:'cover',display:'block'});im.src='img/'+a[0]+'.jpg';
-    let cap=null;if(a[5]){cap=text(root,a[5],{left:a[1]+'px',width:(a[3]+26)+'px',top:(a[2]+a[4]+34)+'px',textAlign:'center',fontSize:'24px',color:'#E2C892',fontWeight:700})}
-    return {f,cap,side:i%2?1:-1}});
-  const date=el('div',root,{left:'90px',top:'1440px',width:'900px',height:'76px',border:'2px solid #D6AF6E',textAlign:'center',lineHeight:'76px',fontSize:'38px',color:'#F4EEE3',fontWeight:700,letterSpacing:'3px'},'展期　115.10.15（四）— 12.24（四）','a');
-  const mq=el('div',root,{left:0,top:'1550px',width:'5000px',fontSize:'30px',color:'rgba(226,200,146,.75)',fontWeight:700,letterSpacing:'6px',whiteSpace:'nowrap'},('廖繼春 ◆ 葉火城 ◆ 張錫卿 ◆ 呂佛庭 ◆ 陳庭詩 ◆ 陳火慶 ◆ 林葆家 ◆ 林之助 ◆ 陳夏雨 ◆ ').repeat(3),'a');
-  return t=>{
-    setComb(root,t,37.65,.5,6,true);
-    tag.style.opacity=P(t,38.1,38.5);chars(prec,t,38.15,{st:.03,d:.4,y:20,b:6});
-    chars(h1c,t,38.3,{st:.05,d:.5,y:60,b:12});chars(h2c,t,38.5,{st:.05,d:.5,y:60,b:12});
-    const c=P(t,38.8,39.9,EZ.oc);s1.n.textContent=Math.round(9*c);s2.n.textContent=Math.round(64*c);
-    tr(s1.g,{o:P(t,38.75,39),y:lerp(30,0,P(t,38.75,39.2))});tr(s2.g,{o:P(t,38.85,39.1),y:lerp(30,0,P(t,38.85,39.3))});sep.style.transform=`scaleY(${P(t,38.9,39.4)})`;
-    frames.forEach((f,i)=>{const t0=39.2+i*.13;const tau=Math.max(0,t-t0);const p=P(t,t0,t0+.45,EZ.oc);const tb=Math.max(0,tau-.45);
-      const y=t<t0?-1400:-700*(1-p)-(tau>.45?14*Math.exp(-5.5*tb)*Math.sin(tb*14):0);
-      const r=t<t0?0:f.side*9*Math.exp(-4*tau)*Math.sin(tau*9+.5);
-      tr(f.f,{y,r,o:t<t0?0:1});if(f.cap)tr(f.cap,{o:P(t,t0+.5,t0+.8),y:lerp(10,0,P(t,t0+.5,t0+.9))})});
-    const dp=P(t,40.4,40.9,EZ.oq);date.style.clipPath=`inset(0 ${(1-dp)*50}% 0 ${(1-dp)*50}%)`;
-    mq.style.opacity=P(t,40.6,41.1);mq.style.transform=`translateX(${-((t-38)*90)}px)`;
-    const ex=P(t,43.7,44.3,EZ.ic);root.style.opacity=1-ex*.4;
-  }
-},17);
-
-/* ---------- S9 ROUTE 51–56 (real floor plan) ---------- */
-scene(60.6,66.15,root=>{
-  el('div',root,{position:'absolute',inset:0,background:'radial-gradient(ellipse 100% 70% at 60% 45%,#26313D 0%,#1A222C 60%,#12171E 100%)'});
-  paperBg(root,'transparent','rgba(226,200,146,.06)');
-  const tag=text(root,'GUIDED ROUTE ・ 6 STOPS ・ 60 MIN',{left:'60px',top:'176px',fontSize:'26px',letterSpacing:'6px',color:'#D6AF6E',fontWeight:600},'cz');
-  const h=text(root,'導覽動線',{left:'54px',top:'210px',fontSize:'104px',fontWeight:900,color:'#F4EEE3',letterSpacing:'16px'});const hc=split(h);
-  const sc=560/900, X=450, Y2=372, Y1=1002;
-  const f2=(x,y)=>[X+x*sc,Y2+y*sc], f1=(x,y)=>[X+x*sc,Y1+y*sc];
-  const p2=el('img',root,{left:X+'px',top:Y2+'px',width:'560px'},'','a');p2.src='img/plan2f.png';
-  const p1=el('img',root,{left:X+'px',top:Y1+'px',width:'560px'},'','a');p1.src='img/plan1f.png';
-  const s=svg(root,'0 0 1080 1920',{left:0,top:0,width:'1080px',height:'1920px'});
-  const lawn=[[292,325],[600,325],[600,700],[380,700],[292,612]].map(q=>f1(...q));
-  const lw=path(s,'M'+lawn.map(q=>q.join(' ')).join(' L')+' Z',{fill:'rgba(120,150,110,.16)',stroke:'rgba(140,170,120,.45)','stroke-width':1.5});
-  const lwt=text(root,'中央草坪',{left:(f1(446,0)[0]-60)+'px',top:(f1(0,500)[1]-18)+'px',width:'120px',textAlign:'center',fontSize:'24px',color:'rgba(170,195,150,.8)',fontWeight:700,letterSpacing:'4px'});
-  const fl=[['2F','二樓',Y2],['1F','一樓',Y1]].map(([a,b,y])=>{const g=el('div',root,{left:'60px',top:(y+6)+'px'},'','a');el('div',g,{fontSize:'96px',fontWeight:700,lineHeight:1,color:'transparent',WebkitTextStroke:'2px #D6AF6E'},a,'cz');el('div',g,{fontSize:'26px',color:'#D6AF6E',fontWeight:700,letterSpacing:'8px',marginTop:'4px'},b);return g});
-  // route (stage coords): walking segments per floor + dotted stair connectors
-  const segDef=[
-    {k:'w',pts:[f1(108,872),f1(170,812),f1(228,752),f1(196,700),f1(182,560),f1(186,655),f1(240,706),f1(282,690)],stops:{0:0,2:1,4:2}},
-    {k:'c',pts:[f1(282,690),f2(238,722)],lab:'上樓 ↑'},
-    {k:'w',pts:[f2(238,722),f2(196,770),f2(150,810),f2(112,745),f2(92,664),f2(112,745),f2(150,800),f2(250,806),f2(468,806),f2(492,828)],stops:{2:3,4:4}},
-    {k:'c',pts:[f2(492,828),f1(545,776)],lab:'下樓 ↓'},
-    {k:'w',pts:[f1(545,776),f1(600,748),f1(652,748),f1(652,450),f1(752,432)],stops:{4:5}}];
-  const dist=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
-  let W=0;const segs=segDef.map(d=>{const o=Object.assign({},d);o.cum=[0];for(let i=1;i<d.pts.length;i++)o.cum.push(o.cum[i-1]+dist(d.pts[i-1],d.pts[i]));o.L=o.cum[o.cum.length-1];o.w=d.k==='w'?o.L:o.L*.55;o.s=W;W+=o.w;
-    if(d.k==='w'){const D='M'+d.pts.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' L');path(s,D,{stroke:'rgba(226,200,146,.16)','stroke-width':4,'stroke-dasharray':'2 10'});o.g=prepDash(path(s,D,{stroke:'rgba(232,150,110,.32)','stroke-width':16}));o.p=prepDash(path(s,D,{stroke:'#E8967A','stroke-width':6}))}
-    else{const n=Math.floor(o.L/24);o.dots=[];for(let i=0;i<=n;i++){const q=[lerp(d.pts[0][0],d.pts[1][0],i/n),lerp(d.pts[0][1],d.pts[1][1],i/n)];o.dots.push(path(s,circ(q[0],q[1],5.5),{fill:'#F6E3B0',stroke:'rgba(232,150,122,.6)','stroke-width':2}))}}
-    return o});
-  const T0=51.75,T1=55.35;const inv=f=>{let lo=0,hi=1;for(let k=0;k<30;k++){const m=(lo+hi)/2;if(EZ.ioc(m)<f)lo=m;else hi=m}return T0+lo*(T1-T0)};
-  const trav=el('div',root,{left:'-13px',top:'-13px',width:'26px',height:'26px',borderRadius:'50%',background:'#FFE9D8',boxShadow:'0 0 0 6px rgba(232,150,122,.4),0 0 30px #E8967A'},'','a');
-  const names=[['州廳大門','5'],['中央門廳','8'],['A 展覽廳','25'],['中正廳','10'],['市長室','6'],['地下防護室','6']];
-  const listY={0:1150,1:1250,2:1350,5:1450,3:540,4:640};
-  const st=[];segs.forEach(o=>{if(!o.stops)return;for(const j in o.stops){const i=o.stops[j];const q=o.pts[j];const tt=inv((o.s+o.cum[j]/o.L*o.w)/W);st[i]={q,tt}}});
-  st.forEach((o,i)=>{const q=o.q;
-    o.m=el('div',root,{left:(q[0]-25)+'px',top:(q[1]-25)+'px',width:'50px',height:'50px',borderRadius:'50%',background:'#1C2631',border:'3px solid #F6E3B0',boxSizing:'border-box',textAlign:'center',lineHeight:'44px',fontSize:'28px',color:'#F6E3B0',fontWeight:700,boxShadow:'0 4px 14px rgba(0,0,0,.5)',zIndex:3},String(i+1),'a cz');
-    o.pulse=el('div',root,{left:(q[0]-25)+'px',top:(q[1]-25)+'px',width:'50px',height:'50px',borderRadius:'50%',border:'3px solid #E8967A',boxSizing:'border-box'},'','a');
-    o.it=el('div',root,{left:'60px',top:listY[i]+'px',width:'370px',height:'90px'},'','a');
-    el('div',o.it,{left:0,top:'4px',width:'58px',height:'58px',borderRadius:'50%',border:'3px solid #D6AF6E',boxSizing:'border-box',textAlign:'center',lineHeight:'52px',fontSize:'30px',color:'#F6E3B0',fontWeight:700},String(i+1),'a cz');
-    el('div',o.it,{left:'76px',top:'-2px',fontSize:'40px',fontWeight:900,color:'#F4EEE3',whiteSpace:'nowrap',letterSpacing:'2px'},names[i][0],'a');
-    el('div',o.it,{left:'78px',top:'52px',fontSize:'24px',fontWeight:700,color:'#D6AF6E',letterSpacing:'2px'},`約 ${names[i][1]} 分鐘`,'a')});
-  const stairs=segs.filter(o=>o.k==='c').map((o,ci)=>{const gy=985;const f=(gy-o.pts[0][1])/(o.pts[1][1]-o.pts[0][1]);const q=[lerp(o.pts[0][0],o.pts[1][0],f)+(ci?78:-78),gy];
-    return {tt:inv((o.s+o.w*.35)/W),e:el('div',root,{left:(q[0]-62)+'px',top:(q[1]-22)+'px',width:'124px',height:'44px',lineHeight:'44px',textAlign:'center',background:'#9E4630',color:'#F4EEE3',fontSize:'24px',fontWeight:900,borderRadius:'22px',letterSpacing:'3px',boxShadow:'0 4px 14px rgba(0,0,0,.45)',zIndex:3},o.lab,'a')}});
-  return t=>{
-    setArch(root,P(t,50.65,51.4,EZ.ioe));
-    tag.style.opacity=P(t,51.1,51.5);chars(hc,t,51.1,{st:.07,d:.45,y:60,b:12});
-    tr(p2,{o:P(t,51.2,51.7),y:lerp(-30,0,P(t,51.2,51.8))});tr(p1,{o:P(t,51.3,51.8),y:lerp(30,0,P(t,51.3,51.9))});
-    lw.style.opacity=P(t,51.4,51.9);lwt.style.opacity=P(t,51.5,52);
-    fl.forEach((g,i)=>tr(g,{o:P(t,51.3+i*.1,51.7+i*.1),x:lerp(-30,0,P(t,51.3+i*.1,51.8+i*.1))}));
-    const u=P(t,T0,T1,EZ.ioc)*W;let cur=null;
-    segs.forEach(o=>{const lp=cl((u-o.s)/o.w);if(o.k==='w'){draw(o.p,lp);draw(o.g,lp)}else o.dots.forEach((d,i)=>d.style.opacity=(i/(o.dots.length-1))<=lp+1e-6&&u>o.s?1:0);if(u>=o.s&&u<=o.s+o.w)cur=[o,lp]});
-    if(!cur)cur=[segs[segs.length-1],1];
-    {const [o,lp]=cur;const d=lp*o.L;let i=1;while(i<o.cum.length-1&&o.cum[i]<d)i++;const f=(d-o.cum[i-1])/Math.max(1e-6,o.cum[i]-o.cum[i-1]);const q=[lerp(o.pts[i-1][0],o.pts[i][0],f),lerp(o.pts[i-1][1],o.pts[i][1],f)];
-     tr(trav,{x:q[0],y:q[1],o:P(t,T0-.1,T0+.05)*(1-P(t,T1+.1,T1+.4))})}
-    st.forEach(o=>{const p=P(t,o.tt-.05,o.tt+.3,EZ.ob);o.m.style.transform=`scale(${p})`;const pp=cl((t-o.tt)/.8);o.pulse.style.transform=`scale(${1+pp*1.8})`;o.pulse.style.opacity=t>o.tt?(1-pp):0;
-      tr(o.it,{x:lerp(-30,0,P(t,o.tt,o.tt+.35)),o:P(t,o.tt,o.tt+.3)})});
-    stairs.forEach(o=>{const p=P(t,o.tt-.1,o.tt+.25,EZ.ob);o.e.style.transform=`scale(${p})`});
-  }
-},10);
-
 /* ---------- S10 OUTRO 48–52.5 ---------- */
-scene(65.95,70.6,root=>{
+scene(54.95,59.6,root=>{
   el('div',root,{position:'absolute',inset:0,background:'radial-gradient(ellipse 90% 60% at 50% 32%,#2E3D4E 0%,#1A222C 60%,#10141A 100%)'});
   const pt=particles(root,60,'#E8CC90');
   const rs=svg(root,'0 0 1080 1920',{left:0,top:0,width:'1080px',height:'1920px'});
@@ -537,13 +444,13 @@ scene(65.95,70.6,root=>{
     tc.forEach(c=>{c.style.backgroundSize='420px 100%, 100% 100%';c.style.backgroundImage=`linear-gradient(100deg,rgba(255,250,235,0) 30%,rgba(255,250,235,.95) 50%,rgba(255,250,235,0) 70%),linear-gradient(180deg,#F6E3B0 0%,#D6AF6E 45%,#A57A42 100%)`;c.style.backgroundPosition=`${shine-c.offsetLeft}px 0, 0 0`});
     chars(sc,t,49.4,{st:.05,d:.5,y:30,b:8});lat.style.opacity=P(t,49.9,50.5);lat.style.letterSpacing=lerp(16,7,P(t,49.9,50.8,EZ.oq))+'px';
   }
-},18);
+},7);
 
 /* ---------- global overlays ---------- */
 const hud=el('div',stage,{},'','');hud.id='hud';
 const hudL=el('div',hud,{left:'60px',top:'96px',fontSize:'26px',fontWeight:900,letterSpacing:'6px'},'臺中州廳 ・ 導覽','a');
 const hudNum=el('div',hud,{right:'60px',top:'90px',width:'360px',height:'40px',overflow:'hidden',textAlign:'right'},'','a');hudNum.style.left='auto';
-const chap=[[6,'01','百年歷程'],[11,'02','建築特色'],[17,'03','中央梯廳'],[21,'04','柱子三兄妹'],[29,'05','建築細節'],[41,'06','中正廳'],[45,'07','通風廊道'],[51,'08','地下防護室'],[55,'09','藝術特展'],[61,'10','導覽動線']];
+const chap=[[6,'01','百年歷程'],[11,'02','建築特色'],[17,'03','中央梯廳'],[21,'04','柱子三兄妹'],[29,'05','建築細節'],[41,'06','中正廳'],[45,'07','通風廊道'],[51,'08','地下防護室']];
 const hudStrip=el('div',hudNum,{left:0,top:0,width:'360px'},'','a');chap.forEach(c=>el('div',hudStrip,{height:'40px',lineHeight:'40px',fontSize:'26px',fontWeight:700,letterSpacing:'3px',whiteSpace:'nowrap'},`<span class="cz" style="color:#B8925A">${c[1]}</span>　${c[2]}`));
 const hudBar=el('div',hud,{left:'60px',top:'146px',width:'960px',height:'2px',background:'rgba(184,146,90,.25)'},'','a');
 const hudFill=el('div',hudBar,{left:0,top:0,width:'960px',height:'2px',background:'#B8925A',transformOrigin:'0 0'},'','a');
@@ -553,22 +460,22 @@ const vig=el('div',stage,{},'','');vig.id='vig';
 const grain=el('div',stage,{},'','');grain.id='grain';
 {const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const d=x.createImageData(256,256);for(let i=0;i<d.data.length;i+=4){const v=Math.random()*255;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255}x.putImageData(d,0,0);grain.style.backgroundImage=`url(${c.toDataURL()})`}
 const black=el('div',stage,{},'','');black.id='black';
-const darkAt=t=>(t>=29&&t<45)||(t>=51&&t<66);
+const darkAt=t=>(t>=29&&t<45)||(t>=51&&t<55);
 
 function seek(t){
   for(const s of scenes){const on=t>=s.start&&t<s.end;s.root.style.display=on?'block':'none';if(on)s.up(t-s.shift)}
   // arch outline for arch transitions
-  let ad=null;for(const [a,b] of [[5.55,6.35],[40.65,41.45],[47.9,48.6],[60.65,61.4]]){if(t>=a&&t<b){const p=EZ.ioe(cl((t-a)/(b-a)));const w=lerp(0,2700,p),B=2060,h=w*1.35,top=B-h+w/2;ad=`M${540-w/2} ${B} V${top} A${w/2} ${w/2} 0 0 1 ${540+w/2} ${top} V${B}`;archP.style.opacity=1-p}}
+  let ad=null;for(const [a,b] of [[5.55,6.35],[40.65,41.45],[47.9,48.6]]){if(t>=a&&t<b){const p=EZ.ioe(cl((t-a)/(b-a)));const w=lerp(0,2700,p),B=2060,h=w*1.35,top=B-h+w/2;ad=`M${540-w/2} ${B} V${top} A${w/2} ${w/2} 0 0 1 ${540+w/2} ${top} V${B}`;archP.style.opacity=1-p}}
   archP.setAttribute('d',ad||'M0 0');archSvg.style.display=ad?'block':'none';
   // hud
-  const hv=P(t,6.3,6.8)*(1-P(t,65.6,66));hud.style.opacity=hv;hud.style.display=hv>0?'block':'none';
+  const hv=P(t,6.3,6.8)*(1-P(t,54.6,55));hud.style.opacity=hv;hud.style.display=hv>0?'block':'none';
   let ci=0;chap.forEach((c,i)=>{if(t>=c[0])ci=i});const prev=Math.max(0,ci-1);const roll=lerp(prev,ci,P(t,chap[ci][0]+.2,chap[ci][0]+.6,EZ.ioc));hudStrip.style.transform=`translateY(${-roll*40}px)`;
   const col=darkAt(t)?'#F4EEE3':'#1C2631';hudL.style.color=col;hudStrip.style.color=col;
-  hudFill.style.transform=`scaleX(${cl((t-6)/60)})`;
+  hudFill.style.transform=`scaleX(${cl((t-6)/49)})`;
   // flash at drop + finale
-  flash.style.opacity=Math.max(.0,(1-P(t,66,66.7,EZ.oc))*(t>=66?.85:0));
+  flash.style.opacity=Math.max(.0,(1-P(t,55,55.7,EZ.oc))*(t>=55?.85:0));
   grain.style.backgroundPosition=`${(Math.sin(t*91.7)*1000)|0}px ${(Math.cos(t*53.3)*1000)|0}px`;
-  black.style.opacity=P(t,69.7,70.5,EZ.ioc)+ (1-P(t,0,.4));
+  black.style.opacity=P(t,58.7,59.5,EZ.ioc)+ (1-P(t,0,.4));
 }
 window.seek=seek;
 window.ready=Promise.all([document.fonts.ready,...[...document.images].map(i=>i.complete?1:new Promise(r=>{i.onload=r;i.onerror=r}))]);
