@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>1035 Collab Reel</title>
+<link rel="stylesheet" href="node_modules/@fontsource/noto-sans-tc/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/noto-sans-tc/700.css">
+<link rel="stylesheet" href="node_modules/@fontsource/noto-sans-tc/900.css">
+<link rel="stylesheet" href="node_modules/@fontsource/noto-serif-tc/400.css">
+<link rel="stylesheet" href="node_modules/@fontsource/noto-serif-tc/700.css">
+<link rel="stylesheet" href="node_modules/@fontsource/noto-serif-tc/900.css">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+const W = 1080, H = 1920, CX = W / 2, CY = H / 2;
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+
+// ---------- palette ----------
+const INK = '#0B1524', INK2 = '#13233A', GOLD = '#E8B44C', GOLD_L = '#FFE7A3', GOLD_D = '#A8741A',
+  BRICK = '#B4442C', BRICK_D = '#7E2A1A', CREAM = '#F4EBDA', WOOD = '#8A5634', SAGE = '#7E9B7A', WHITE = '#FFFFFF';
+const SANS = '"Noto Sans TC"', SERIF = '"Noto Serif TC"';
+
+// ---------- math ----------
+const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const pr = (t, a, b) => cl((t - a) / (b - a));
+const lerp = (a, b, x) => a + (b - a) * x;
+const eo3 = x => 1 - Math.pow(1 - x, 3);
+const eo5 = x => 1 - Math.pow(1 - x, 5);
+const ei3 = x => x * x * x;
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eexp = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const back = (x, s = 1.70158) => { x = cl(x); const c3 = s + 1; return 1 + c3 * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2); };
+const elastic = x => { x = cl(x); if (x === 0 || x === 1) return x; return Math.pow(2, -10 * x) * Math.sin((x * 10 - .75) * (2 * Math.PI / 3)) + 1; };
+function rng(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const BEAT = 0.5;
+const beatPulse = t => (t < 4 || t >= 28) ? 0 : Math.exp(-((t % BEAT) / BEAT) * 7);
+
+// ---------- text helpers ----------
+function font(size, weight = 900, fam = SANS) { return `${weight} ${size}px ${fam}`; }
+function txt(s, x, y, o = {}) {
+  ctx.save();
+  ctx.font = font(o.size || 60, o.weight || 900, o.fam || SANS);
+  ctx.fillStyle = o.color || WHITE;
+  ctx.textAlign = o.align || 'center';
+  ctx.textBaseline = o.base || 'middle';
+  ctx.letterSpacing = (o.ls || 0) + 'px';
+  if (o.alpha !== undefined) ctx.globalAlpha *= cl(o.alpha);
+  if (o.shadow) { ctx.shadowColor = o.shadow; ctx.shadowBlur = o.blur || 30; }
+  if (o.stroke) { ctx.lineWidth = o.lw || 3; ctx.strokeStyle = o.stroke; ctx.strokeText(s, x, y); }
+  else ctx.fillText(s, x, y);
+  ctx.restore();
+}
+function measure(s, o) { ctx.save(); ctx.font = font(o.size || 60, o.weight || 900, o.fam || SANS); ctx.letterSpacing = (o.ls || 0) + 'px'; const w = ctx.measureText(s).width; ctx.restore(); return w; }
+// masked slide-up reveal (and optional exit)
+function maskText(s, x, y, p, o = {}, out = 0) {
+  const size = o.size || 60, w = measure(s, o) + 40;
+  ctx.save();
+  ctx.beginPath();
+  const ax = o.align === 'left' ? x - 20 : (o.align === 'right' ? x - w + 20 : x - w / 2);
+  ctx.rect(ax, y - size * 0.75, w, size * 1.5);
+  ctx.clip();
+  const e = eo5(cl(p)), eOut = ei3(cl(out));
+  txt(s, x, y + (1 - e) * size * 1.3 - eOut * size * 1.3, o);
+  ctx.restore();
+}
+// per-character staggered pop
+function charsPop(s, x, y, t, t0, stagger, o = {}, mode = 'rise') {
+  const chars = [...s];
+  const widths = chars.map(c => measure(c, { ...o, ls: 0 }));
+  const ls = o.ls || 0;
+  const total = widths.reduce((a, b) => a + b, 0) + ls * (chars.length - 1);
+  let cx = o.align === 'left' ? x : x - total / 2;
+  chars.forEach((c, i) => {
+    const lp = cl((t - t0 - i * stagger) / (o.dur || 0.45));
+    if (lp > 0) {
+      ctx.save();
+      const mx = cx + widths[i] / 2;
+      ctx.translate(mx, y);
+      if (mode === 'rise') { const e = back(lp, 2.2); ctx.translate(0, (1 - e) * (o.size || 60) * 0.8); ctx.globalAlpha *= cl(lp * 2.5); }
+      if (mode === 'scale') { const e = back(lp, 3); ctx.scale(e, e); ctx.globalAlpha *= cl(lp * 3); }
+      if (mode === 'flip') { const e = eo5(lp); ctx.scale(1, Math.max(0.001, e)); ctx.rotate((1 - e) * 0.4); ctx.globalAlpha *= cl(lp * 3); }
+      txt(c, 0, 0, { ...o, align: 'center', ls: 0 });
+      ctx.restore();
+    }
+    cx += widths[i] + ls;
+  });
+  return total;
+}
+function goldGrad(x0, y0, x1, y1, shimmer = -1) {
+  const g = ctx.createLinearGradient(x0, y0, x1, y1);
+  g.addColorStop(0, '#FFF1C1'); g.addColorStop(0.35, GOLD); g.addColorStop(0.62, GOLD_D); g.addColorStop(1, '#F7D57E');
+  if (shimmer >= 0 && shimmer <= 1) {
+    const s = cl(shimmer, 0.02, 0.98);
+    g.addColorStop(Math.max(0, s - 0.02), '#F5D27A'); g.addColorStop(s, '#FFFFFF'); g.addColorStop(Math.min(1, s + 0.02), '#F0C565');
+  }
+  return g;
+}
+
+// ---------- fx ----------
+const grain = [];
+(function () { for (let k = 0; k < 6; k++) { const c = document.createElement('canvas'); c.width = 360; c.height = 640; const g = c.getContext('2d'); const id = g.createImageData(360, 640); const r = rng(77 + k); for (let i = 0; i < id.data.length; i += 4) { const v = r() * 255; id.data[i] = id.data[i + 1] = id.data[i + 2] = v; id.data[i + 3] = 255; } g.putImageData(id, 0, 0); grain.push(c); } })();
+
+function confetti(t, t0, seed, n, ox, oy, o = {}) {
+  const tt = t - t0; if (tt < 0) return;
+  const r = rng(seed);
+  const cols = o.colors || [GOLD, GOLD_L, BRICK, CREAM, '#F0C565', WHITE];
+  const k = 1.6, g = o.g || 900;
+  for (let i = 0; i < n; i++) {
+    const a = (o.dir ?? -Math.PI / 2) + (r() - .5) * (o.spread ?? Math.PI * 1.6);
+    const sp = (o.speed || 2200) * (0.35 + r() * 0.75);
+    const vx = Math.cos(a) * sp, vy = Math.sin(a) * sp;
+    const x = ox + vx * (1 - Math.exp(-k * tt)) / k + Math.sin(tt * (2 + r() * 3) + i) * 30 * tt;
+    const y = oy + vy * (1 - Math.exp(-k * tt)) / k + (g / k) * (tt - (1 - Math.exp(-k * tt)) / k);
+    const life = (o.life || 3.2) * (0.7 + r() * 0.5);
+    const al = cl(1 - (tt - life * 0.7) / (life * 0.3));
+    if (al <= 0) continue;
+    const sz = (o.size || 22) * (0.6 + r() * 0.8);
+    const spin = 4 + r() * 10, ph = r() * 6;
+    ctx.save();
+    ctx.translate(x, y); ctx.rotate(ph + tt * spin * 0.6);
+    ctx.scale(1, Math.cos(ph + tt * spin));
+    ctx.globalAlpha *= al;
+    ctx.fillStyle = cols[i % cols.length];
+    if (i % 3 === 0) { ctx.beginPath(); ctx.arc(0, 0, sz * 0.4, 0, Math.PI * 2); ctx.fill(); }
+    else ctx.fillRect(-sz / 2, -sz * 0.22, sz, sz * 0.44);
+    ctx.restore();
+  }
+}
+function firework(t, t0, seed, x0, y0, o = {}) {
+  const tt = t - t0; if (tt < 0 || tt > 2.2) return;
+  const r = rng(seed), n = o.n || 70, col = o.color || GOLD_L;
+  ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round';
+  for (let i = 0; i < n; i++) {
+    const a = i / n * Math.PI * 2 + r() * 0.1, sp = (o.speed || 650) * (0.75 + r() * 0.35);
+    const pos = s => { const d = sp * (1 - Math.exp(-2.6 * s)) / 2.6; return [x0 + Math.cos(a) * d, y0 + Math.sin(a) * d + 120 * s * s]; };
+    const [x, y] = pos(tt), [px, py] = pos(Math.max(0, tt - 0.12));
+    const al = cl(1 - tt / 2.0) * (0.6 + 0.4 * Math.sin(tt * 30 + i));
+    ctx.strokeStyle = col; ctx.globalAlpha = al; ctx.lineWidth = 4 * (1 - tt / 2.4);
+    ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(x, y); ctx.stroke();
+  }
+  // core flash
+  const f = cl(1 - tt / 0.35);
+  if (f > 0) { const g = ctx.createRadialGradient(x0, y0, 0, x0, y0, 220); g.addColorStop(0, `rgba(255,240,200,${f})`); g.addColorStop(1, 'rgba(255,240,200,0)'); ctx.fillStyle = g; ctx.globalAlpha = 1; ctx.fillRect(x0 - 220, y0 - 220, 440, 440); }
+  ctx.restore();
+}
+function sparkles(t, seed, n, area, col = GOLD_L) {
+  const r = rng(seed);
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < n; i++) {
+    const x = area[0] + r() * area[2], y = area[1] + r() * area[3] - ((t * (20 + r() * 40)) % area[3]);
+    const yy = y < area[1] ? y + area[3] : y;
+    const tw = 0.5 + 0.5 * Math.sin(t * (3 + r() * 5) + i);
+    const s = (2 + r() * 5) * tw;
+    ctx.globalAlpha = tw * 0.8; ctx.fillStyle = col;
+    star(x, yy, s * 3, s * 0.6); ctx.fill();
+  }
+  ctx.restore();
+}
+function star(x, y, R, r) { ctx.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4 - Math.PI / 2, rr = i % 2 ? r : R; ctx.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); } ctx.closePath(); }
+function rings(t, t0, x, y, col, n = 3, maxR = 900, lw = 6) {
+  ctx.save();
+  for (let i = 0; i < n; i++) {
+    const p = pr(t, t0 + i * 0.08, t0 + i * 0.08 + 1.0); if (p <= 0 || p >= 1) continue;
+    ctx.strokeStyle = col; ctx.globalAlpha = (1 - p) * 0.9; ctx.lineWidth = lw * (1 - p) + 1;
+    ctx.beginPath(); ctx.arc(x, y, eo3(p) * maxR, 0, Math.PI * 2); ctx.stroke();
+  }
+  ctx.restore();
+}
+function rays(t, x, y, n, col, alpha, rot) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.globalAlpha = alpha; ctx.fillStyle = col;
+  for (let i = 0; i < n; i++) { ctx.rotate(Math.PI * 2 / n); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-40, -1400); ctx.lineTo(40, -1400); ctx.closePath(); ctx.fill(); }
+  ctx.restore();
+}
+function blueprintGrid(t, col, alpha, p) {
+  ctx.save(); ctx.strokeStyle = col; ctx.globalAlpha = alpha; ctx.lineWidth = 1;
+  for (let x = 0; x <= W; x += 60) { const pp = eo3(cl(p * 2 - x / W)); ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H * pp); ctx.stroke(); }
+  for (let y = 0; y <= H; y += 60) { const pp = eo3(cl(p * 2 - y / H)); ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W * pp, y); ctx.stroke(); }
+  ctx.restore();
+}
+function segs(list, p, col, lw, stagger = 0.6) {
+  ctx.save(); ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const n = list.length;
+  list.forEach((s, i) => {
+    const lp = eio(cl((p - (i / n) * stagger) / (1 - stagger)));
+    if (lp <= 0) return;
+    ctx.beginPath(); ctx.moveTo(s[0], s[1]); ctx.lineTo(lerp(s[0], s[2], lp), lerp(s[1], s[3], lp)); ctx.stroke();
+  });
+  ctx.restore();
+}
+function rectSegs(x, y, w, h) { return [[x, y, x + w, y], [x + w, y, x + w, y + h], [x + w, y + h, x, y + h], [x, y + h, x, y]]; }
+function bg(c1, c2) { const g = ctx.createRadialGradient(CX, CY * 0.9, 100, CX, CY, 1300); g.addColorStop(0, c1); g.addColorStop(1, c2); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
+function cam(t, z0, z1, a, b, punch = 0) {
+  const z = lerp(z0, z1, eio(pr(t, a, b))) * (1 + punch);
+  ctx.translate(CX, CY); ctx.scale(z, z); ctx.translate(-CX, -CY);
+}
+function pill(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); }
+
+// ---------- building geometry ----------
+const GY = 1240;
+const facade = [
+  [180, 880, 900, 880],               // tie beam
+  [180, 880, 540, 660], [900, 880, 540, 660],   // rafters
+  [540, 660, 540, 880],               // king post
+  [540, 880, 360, 770], [540, 880, 720, 770],   // struts
+  [450, 715, 450, 880], [630, 715, 630, 880],   // queen posts
+  ...rectSegs(230, 880, 620, GY - 880),
+  ...rectSegs(285, 960, 130, 170), [350, 960, 350, 1130], [285, 1045, 415, 1045],
+  ...rectSegs(665, 960, 130, 170), [730, 960, 730, 1130], [665, 1045, 795, 1045],
+  ...rectSegs(475, 1000, 130, 240), [540, 1000, 540, 1240],
+  [80, GY, 1000, GY],
+];
+
+// ---------- scenes ----------
+function S1(t) { // 0-4 intro
+  bg(INK2, INK);
+  blueprintGrid(t, '#3B5C86', 0.25, pr(t, 0, 1.6));
+  ctx.save();
+  cam(t, 1.08, 1.0, 0, 4, 0);
+  // building line art
+  const bp = pr(t, 0.2, 3.0);
+  ctx.save(); ctx.translate(0, 60);
+  ctx.shadowColor = 'rgba(232,180,76,0.6)'; ctx.shadowBlur = 18;
+  segs(facade, bp, GOLD, 5, 0.7);
+  ctx.restore();
+  // dimension marks
+  const dp = eo3(pr(t, 1.6, 2.6));
+  ctx.save(); ctx.strokeStyle = '#6E8FB8'; ctx.lineWidth = 2; ctx.globalAlpha = dp;
+  ctx.beginPath(); ctx.moveTo(230, 1360); ctx.lineTo(230 + 620 * dp, 1360); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(230, 1345); ctx.lineTo(230, 1375); ctx.moveTo(850, 1345); ctx.lineTo(850, 1375); ctx.stroke();
+  txt('市府路 73', 540, 1395, { size: 26, weight: 400, color: '#8FB0D8', ls: 8, alpha: dp });
+  ctx.restore();
+  ctx.restore();
+  // title
+  const yr = Math.floor(lerp(1910, 2026, eo5(pr(t, 0.3, 1.6))));
+  txt(String(yr), CX, 330, { size: 120, weight: 900, color: GOLD, ls: 18, alpha: pr(t, 0.3, 0.6) });
+  maskText('第八屆', CX, 480, pr(t, 1.2, 1.8), { size: 64, weight: 700, color: CREAM, ls: 20 });
+  maskText('ADA 新銳建築獎', CX, 575, pr(t, 1.45, 2.1), { size: 92, weight: 900, color: WHITE, ls: 8 });
+  // converge flash before drop
+  const f = pr(t, 3.5, 4.0);
+  if (f > 0) { ctx.save(); ctx.globalAlpha = ei3(f); ctx.fillStyle = GOLD_L; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+}
+
+function S2(t) { // 4-8 首獎 drop
+  const lt = t - 4;
+  bg('#2A1C08', INK);
+  const bpz = beatPulse(t);
+  rays(t, CX, 900, 18, GOLD, 0.09 + 0.05 * bpz, t * 0.15);
+  rings(t, 4, CX, 900, GOLD_L, 4, 1100, 10);
+  rings(t, 6, CX, 900, GOLD, 2, 900, 5);
+  ctx.save();
+  cam(t, 1.0, 1.06, 4, 8, bpz * 0.012);
+  // laurel arcs
+  laurel(CX, 900, 400, eo3(pr(lt, 0.2, 1.2)), t);
+  // 首獎
+  const s = elastic(pr(lt, 0.0, 1.1));
+  ctx.save(); ctx.translate(CX, 900); ctx.scale(s, s);
+  ctx.font = font(330, 900, SERIF); ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.letterSpacing = '10px';
+  ctx.shadowColor = 'rgba(255,200,90,0.55)'; ctx.shadowBlur = 60;
+  ctx.fillStyle = goldGrad(-330, -170, 330, 170, pr(lt, 1.2, 2.2));
+  ctx.fillText('首獎', 0, 0);
+  ctx.shadowBlur = 0; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,245,210,0.6)'; ctx.strokeText('首獎', 0, 0);
+  ctx.restore();
+  maskText('榮 獲', CX, 590, pr(lt, 0.4, 0.9), { size: 62, weight: 700, color: CREAM, ls: 30 });
+  // badge line
+  const lp = eo5(pr(lt, 0.8, 1.6));
+  ctx.save(); ctx.strokeStyle = GOLD; ctx.lineWidth = 3; ctx.globalAlpha = lp;
+  ctx.beginPath(); ctx.moveTo(CX - 330 * lp, 1150); ctx.lineTo(CX + 330 * lp, 1150); ctx.stroke(); ctx.restore();
+  maskText('FIRST PRIZE', CX, 1215, pr(lt, 1.0, 1.6), { size: 50, weight: 700, color: GOLD_L, ls: 26 });
+  maskText('2026 第八屆 ADA 新銳建築獎', CX, 1300, pr(lt, 1.3, 1.9), { size: 40, weight: 400, color: CREAM, ls: 6 });
+  ctx.restore();
+  sparkles(t, 9, 40, [0, 300, W, 1300]);
+  confetti(t, 4.0, 11, 160, CX, 1000, { speed: 2600 });
+  confetti(t, 4.0, 12, 70, 0, 1500, { dir: -Math.PI / 3, spread: 0.8, speed: 2500 });
+  confetti(t, 4.0, 13, 70, W, 1500, { dir: -Math.PI * 2 / 3, spread: 0.8, speed: 2500 });
+  const f = 1 - pr(t, 4.0, 4.35);
+  if (f > 0) { ctx.save(); ctx.globalAlpha = f; ctx.fillStyle = WHITE; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+}
+function laurel(x, y, R, p, t) {
+  ctx.save(); ctx.translate(x, y);
+  for (const side of [-1, 1]) {
+    const n = 9;
+    for (let i = 0; i < n; i++) {
+      const lp = cl(p * (n + 3) - i) / 1; if (lp <= 0) continue;
+      const a = Math.PI / 2 + side * (0.35 + i * 0.27);
+      const lx = Math.cos(a) * R, ly = Math.sin(a) * R * 0.95;
+      ctx.save(); ctx.translate(lx, ly); ctx.rotate(a + side * 0.9 + Math.PI / 2 * (side > 0 ? 1 : -1) * 0);
+      ctx.rotate(side > 0 ? -0.5 : 0.5 + Math.PI);
+      const s = back(cl(lp), 2.5);
+      ctx.scale(s, s);
+      ctx.fillStyle = goldGrad(-40, -15, 40, 15);
+      ctx.beginPath(); ctx.ellipse(0, 0, 44, 15, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+  }
+  ctx.restore();
+}
+
+function S3(t) { // 8-12 1035 dial
+  const lt = t - 8;
+  bg('#1A2B45', INK);
+  const bpz = beatPulse(t);
+  ctx.save(); cam(t, 1.0, 1.04, 8, 12, bpz * 0.01);
+  // digits typed in on each beat-second
+  const digits = ['1', '0', '3', '5'];
+  const dx = [-255, -85, 85, 255];
+  digits.forEach((d, i) => {
+    const td = 8 + i * 0.75 + 0.45;
+    const p = pr(t, td, td + 0.35);
+    if (p <= 0) { // placeholder slot
+      ctx.save(); ctx.strokeStyle = 'rgba(232,180,76,0.35)'; ctx.lineWidth = 4; ctx.setLineDash([14, 12]);
+      pill(CX + dx[i] - 70, 330, 140, 190, 20); ctx.stroke(); ctx.restore();
+      return;
+    }
+    const s = back(p, 3);
+    ctx.save(); ctx.translate(CX + dx[i], 430); ctx.scale(s, s);
+    ctx.font = font(230, 900, SANS); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = goldGrad(-80, -110, 80, 110, pr(lt, 3.2, 3.9));
+    ctx.shadowColor = 'rgba(232,180,76,0.5)'; ctx.shadowBlur = 40;
+    ctx.fillText(d, 0, 0); ctx.restore();
+    rings(t, td, CX + dx[i], 430, GOLD_L, 1, 160, 4);
+  });
+  maskText('Collab', CX, 640, pr(t, 11.0, 11.5), { size: 110, weight: 400, fam: SERIF, color: CREAM, ls: 22 });
+  // rotary dial
+  const dialY = 1130, R = 300;
+  const dp = back(pr(lt, 0, 0.6), 1.6);
+  ctx.save(); ctx.translate(CX, dialY); ctx.scale(dp, dp);
+  // body
+  ctx.fillStyle = BRICK; ctx.beginPath(); ctx.arc(0, 0, R + 30, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = GOLD; ctx.lineWidth = 6; ctx.beginPath(); ctx.arc(0, 0, R + 30, 0, Math.PI * 2); ctx.stroke();
+  // number ring (static)
+  const order = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+  const holeA = k => -Math.PI / 3 - k * (Math.PI * 1.45 / 9); // counter-clockwise from upper-right
+  order.forEach((n, k) => { const a = holeA(k); txt(n, Math.cos(a) * (R - 55), Math.sin(a) * (R - 55), { size: 44, weight: 700, color: CREAM }); });
+  // rotating finger wheel
+  let rot = 0;
+  digits.forEach((d, i) => {
+    const k = order.indexOf(d), stopA = Math.PI / 3; // finger stop at ~4 o'clock
+    let span = stopA - holeA(k); while (span < 0) span += Math.PI * 2;
+    const ts = 8 + i * 0.75;
+    const a1 = eio(pr(t, ts, ts + 0.4)), a2 = eio(pr(t, ts + 0.42, ts + 0.72));
+    if (t >= ts && t < ts + 0.75) rot = span * (a1 - a2);
+  });
+  ctx.rotate(rot);
+  ctx.fillStyle = 'rgba(11,21,36,0.82)'; ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2);
+  order.forEach((n, k) => { const a = holeA(k); ctx.moveTo(Math.cos(a) * (R - 55) + 42, Math.sin(a) * (R - 55)); ctx.arc(Math.cos(a) * (R - 55), Math.sin(a) * (R - 55), 42, 0, Math.PI * 2, true); });
+  ctx.fill('evenodd');
+  order.forEach((n, k) => { const a = holeA(k); ctx.strokeStyle = GOLD; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(Math.cos(a) * (R - 55), Math.sin(a) * (R - 55), 42, 0, Math.PI * 2); ctx.stroke(); });
+  ctx.rotate(-rot);
+  // center label
+  ctx.fillStyle = CREAM; ctx.beginPath(); ctx.arc(0, 0, 120, 0, Math.PI * 2); ctx.fill();
+  txt('TEL', 0, -36, { size: 30, weight: 700, color: BRICK_D, ls: 10 });
+  const shown = digits.filter((d, i) => t >= 8 + i * 0.75 + 0.45).join('');
+  txt(shown || '—', 0, 20, { size: 58, weight: 900, color: INK, ls: 6 });
+  // finger stop
+  ctx.rotate(Math.PI / 3); ctx.fillStyle = GOLD; ctx.fillRect(R - 20, -10, 60, 20);
+  ctx.restore();
+  ctx.restore();
+  // caption
+  maskText('作品名稱源自修復時', CX, 1530, pr(t, 9.6, 10.1), { size: 50, weight: 700, color: CREAM, ls: 4 });
+  maskText('於櫃中發現的老診所電話號碼', CX, 1605, pr(t, 9.8, 10.3), { size: 50, weight: 700, color: GOLD_L, ls: 4 });
+}
+
+function S4(t) { // 12-16 place & history
+  const lt = t - 12;
+  bg('#C24E33', BRICK_D);
+  // brick pattern bg
+  ctx.save(); ctx.globalAlpha = 0.12; ctx.strokeStyle = '#2A0E07'; ctx.lineWidth = 3;
+  const off = (t * 40) % 70;
+  for (let y = -70; y < H + 70; y += 70) { const row = Math.round((y + 70) / 70); ctx.beginPath(); ctx.moveTo(0, y + off); ctx.lineTo(W, y + off); ctx.stroke(); for (let x = (row % 2) * 80; x < W; x += 160) { ctx.beginPath(); ctx.moveTo(x, y + off); ctx.lineTo(x, y + off + 70); ctx.stroke(); } }
+  ctx.restore();
+  const bpz = beatPulse(t);
+  ctx.save(); cam(t, 1.04, 1.0, 12, 16, bpz * 0.01);
+  // map card
+  const mp = eo5(pr(lt, 0, 0.6));
+  ctx.save(); ctx.translate(CX, 640 + (1 - mp) * 200); ctx.globalAlpha = mp; ctx.rotate((1 - mp) * -0.08);
+  ctx.fillStyle = CREAM; pill(-380, -260, 760, 520, 36); ctx.fill();
+  ctx.save(); pill(-380, -260, 760, 520, 36); ctx.clip();
+  // stylised streets
+  ctx.strokeStyle = '#D9CBB0'; ctx.lineWidth = 28; ctx.lineCap = 'butt';
+  const sp = eio(pr(lt, 0.2, 1.2));
+  [[-400, -120, 400, -60], [-400, 120, 400, 170], [-150, -300, -110, 300], [170, -300, 210, 300], [-400, 300, 400, -300]].forEach(s => { ctx.beginPath(); ctx.moveTo(s[0], s[1]); ctx.lineTo(lerp(s[0], s[2], sp), lerp(s[1], s[3], sp)); ctx.stroke(); });
+  ctx.fillStyle = '#E6D8BE'; ctx.fillRect(-90, -40, 240, 150);
+  ctx.restore();
+  // pin
+  const pp = pr(lt, 0.5, 1.1);
+  if (pp > 0) {
+    const py = lerp(-500, 0, eo3(pp)) - (pp >= 1 ? 0 : 0);
+    const sq = pp >= 1 ? 1 + 0.15 * Math.exp(-(lt - 1.1) * 8) * Math.sin((lt - 1.1) * 30) : 1;
+    ctx.save(); ctx.translate(30, py); ctx.scale(1 / sq, sq);
+    ctx.fillStyle = BRICK; ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(-70, -90, -70, -170, 0, -170); ctx.bezierCurveTo(70, -170, 70, -90, 0, 0); ctx.fill();
+    ctx.fillStyle = CREAM; ctx.beginPath(); ctx.arc(0, -115, 28, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+    if (pp >= 1) rings(t, 13.1, CX + 30, 640, BRICK, 2, 260, 6);
+  }
+  ctx.restore();
+  // text
+  maskText('臺中市中區', CX, 1030, pr(lt, 0.7, 1.2), { size: 58, weight: 700, color: CREAM, ls: 14 });
+  maskText('市府路 73 號', CX, 1125, pr(lt, 0.85, 1.35), { size: 92, weight: 900, color: WHITE, ls: 6 });
+  ctx.save(); ctx.globalAlpha = eo3(pr(lt, 1.2, 1.6)); ctx.fillStyle = GOLD; ctx.fillRect(CX - 60, 1205, 120, 6); ctx.restore();
+  maskText('原為 吳眼科診所 · 百年老屋再生', CX, 1275, pr(lt, 1.3, 1.8), { size: 44, weight: 700, color: GOLD_L, ls: 4 });
+  // tags on beats
+  const tags = ['咖啡', '烘焙', '展覽', '建築工作室'];
+  const tw = tags.map(s => measure(s, { size: 44, weight: 700 }) + 70);
+  const totalW = tw.reduce((a, b) => a + b, 0) + 24 * 3;
+  let x = CX - totalW / 2;
+  tags.forEach((s, i) => {
+    const p = pr(t, 14 + i * 0.5, 14.35 + i * 0.5);
+    if (p > 0) {
+      const e = back(p, 3);
+      ctx.save(); ctx.translate(x + tw[i] / 2, 1410); ctx.scale(e, e);
+      ctx.fillStyle = CREAM; pill(-tw[i] / 2, -42, tw[i], 84, 42); ctx.fill();
+      txt(s, 0, 2, { size: 44, weight: 700, color: BRICK_D });
+      ctx.restore();
+    }
+    x += tw[i] + 24;
+  });
+  ctx.restore();
+}
+
+function S5a(t) { // 16-18 bricks + truss
+  const lt = t - 16;
+  bg('#FBF5EA', '#E9DCC3');
+  const bpz = beatPulse(t);
+  ctx.save(); cam(t, 1.0, 1.05, 16, 18, bpz * 0.01);
+  // bricks
+  const bw = 96, bh = 44, gap = 8, x0 = 150, cols = 8, rows = 9, yBase = 1380;
+  let k = 0;
+  for (let r = 0; r < rows; r++) {
+    const shift = r % 2 ? -(bw + gap) / 2 : 0;
+    for (let c = -1; c <= cols; c++) {
+      const x = x0 + shift + c * (bw + gap);
+      if (x + bw < x0 - 10 || x > x0 + cols * (bw + gap) - gap + 10) continue;
+      const cx0 = Math.max(x, x0), cx1 = Math.min(x + bw, x0 + cols * (bw + gap) - gap);
+      const y = yBase - (r + 1) * (bh + gap);
+      const ord = r * 0.11 + c * 0.012 + ((c * 7 + r * 3) % 5) * 0.01;
+      const p = pr(lt, ord, ord + 0.35);
+      if (p > 0) {
+        const e = back(p, 1.8);
+        ctx.save(); ctx.globalAlpha = cl(p * 3);
+        ctx.translate(0, (1 - e) * -160);
+        const shade = ((c * 13 + r * 7) % 4);
+        ctx.fillStyle = ['#B4442C', '#A63D27', '#C0533A', '#9C3822'][shade];
+        ctx.fillRect(cx0, y, cx1 - cx0, bh);
+        ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(cx0, y, cx1 - cx0, 6);
+        ctx.restore();
+      }
+      k++;
+    }
+  }
+  // wooden truss above
+  const tp = pr(lt, 0.7, 1.7);
+  const ty = yBase - rows * (bh + gap) - 12;
+  ctx.save(); ctx.translate(0, 0);
+  const L = x0 - 40, Rr = x0 + cols * (bw + gap) + 30, peak = ty - 300, mid = (L + Rr) / 2;
+  segs([[L, ty, Rr, ty], [L, ty, mid, peak], [Rr, ty, mid, peak], [mid, peak, mid, ty], [mid, ty, lerp(L, mid, 0.5), lerp(ty, peak, 0.5)], [mid, ty, lerp(Rr, mid, 0.5), lerp(ty, peak, 0.5)]], tp, WOOD, 22, 0.5);
+  ctx.restore();
+  ctx.restore();
+  maskText('保留', CX, 280, pr(lt, 0.1, 0.5), { size: 60, weight: 700, color: BRICK_D, ls: 30 });
+  maskText('前棟木屋架', CX, 390, pr(lt, 0.25, 0.7), { size: 104, weight: 900, color: WOOD, ls: 6 });
+  maskText('與 紅磚牆', CX, 1530, pr(lt, 0.9, 1.3), { size: 104, weight: 900, color: BRICK, ls: 6 });
+}
+
+function S5b(t) { // 18-20 courtyard + corridor plan
+  const lt = t - 18;
+  bg('#20352F', '#101D1A');
+  blueprintGrid(t, '#5E8A7E', 0.18, 1);
+  const bpz = beatPulse(t);
+  ctx.save(); cam(t, 1.05, 1.0, 18, 20, bpz * 0.01);
+  const p1 = eo5(pr(lt, 0, 0.5)), p2 = eo5(pr(lt, 0.2, 0.7));
+  // front building
+  ctx.save(); ctx.globalAlpha = p1; ctx.fillStyle = BRICK; ctx.translate(0, (1 - p1) * -80);
+  pill(190, 560, 700, 260, 18); ctx.fill(); txt('前棟', CX, 690, { size: 54, weight: 900, color: CREAM, ls: 16 }); ctx.restore();
+  // rear building
+  ctx.save(); ctx.globalAlpha = p2; ctx.fillStyle = WOOD; ctx.translate(0, (1 - p2) * 80);
+  pill(190, 1180, 700, 260, 18); ctx.fill(); txt('後棟', CX, 1310, { size: 54, weight: 900, color: CREAM, ls: 16 }); ctx.restore();
+  // courtyard
+  const cp = back(pr(lt, 0.45, 0.9), 2);
+  ctx.save(); ctx.translate(430, 1000); ctx.scale(cp, cp);
+  ctx.fillStyle = SAGE; pill(-210, -150, 420, 300, 24); ctx.fill();
+  [[-110, -50, 60], [40, 40, 75], [130, -70, 45]].forEach(([x, y, r]) => { ctx.fillStyle = '#5F7E5B'; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#9CB896'; ctx.beginPath(); ctx.arc(x - r * 0.25, y - r * 0.25, r * 0.45, 0, Math.PI * 2); ctx.fill(); });
+  txt('庭院', 0, 115, { size: 40, weight: 700, color: CREAM, ls: 10 });
+  ctx.restore();
+  // corridor
+  const kp = eio(pr(lt, 0.6, 1.1));
+  ctx.save(); ctx.fillStyle = GOLD; ctx.fillRect(700, 820, 140, 360 * kp); ctx.restore();
+  if (kp > 0.8) txt('廊道', 770, 1000, { size: 40, weight: 900, color: INK, ls: 4, alpha: pr(lt, 0.9, 1.1) });
+  // walking dots along path
+  const wp = pr(lt, 1.0, 2.0);
+  ctx.save(); ctx.fillStyle = WHITE;
+  for (let i = 0; i < 6; i++) { const q = (wp * 1.4 - i * 0.08); if (q < 0 || q > 1) continue; const y = lerp(760, 1240, q); ctx.globalAlpha = 1 - i * 0.14; ctx.beginPath(); ctx.arc(770, y, 12 - i, 0, Math.PI * 2); ctx.fill(); }
+  ctx.restore();
+  ctx.restore();
+  maskText('以庭院與廊道', CX, 300, pr(lt, 0.15, 0.6), { size: 88, weight: 900, color: CREAM, ls: 8 });
+  maskText('串聯兩棟建築', CX, 410, pr(lt, 0.3, 0.75), { size: 88, weight: 900, color: GOLD_L, ls: 8 });
+  maskText('新舊交織 · 光影流動', CX, 1580, pr(lt, 0.9, 1.3), { size: 46, weight: 400, color: '#BFD6CC', ls: 12 });
+}
+
+function S6(t) { // 20-24 grant seal
+  const lt = t - 20;
+  bg('#1B2E4C', INK);
+  const bpz = beatPulse(t);
+  const shake = pr(t, 22.5, 24) * 6;
+  ctx.save();
+  ctx.translate(Math.sin(t * 90) * shake, Math.cos(t * 77) * shake);
+  cam(t, 1.0, 1.1, 20, 24, bpz * 0.012);
+  rays(t, CX, 860, 24, GOLD, 0.05 + pr(t, 22, 24) * 0.08, -t * 0.25);
+  // stamp
+  const sp = pr(lt, 0.1, 0.55);
+  const sc = lerp(2.6, 1, eo5(sp)) + (sp >= 1 ? 0.04 * Math.exp(-(lt - 0.55) * 10) * Math.sin((lt - 0.55) * 40) : 0);
+  ctx.save(); ctx.translate(CX, 860); ctx.scale(sc, sc); ctx.rotate(lerp(-0.6, -0.08, eo5(sp)) + t * 0.03);
+  ctx.globalAlpha = cl(sp * 3);
+  const R = 300;
+  ctx.fillStyle = 'rgba(232,180,76,0.08)'; ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = GOLD; ctx.lineWidth = 10; ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.stroke();
+  ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, R - 26, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0, 0, R - 110, 0, Math.PI * 2); ctx.stroke();
+  // ring text
+  const ring = '臺中市歷史老屋再生補助與活化計畫 ★ ';
+  const chars = [...ring];
+  ctx.font = font(42, 900, SANS); ctx.fillStyle = GOLD_L; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  chars.forEach((c, i) => { const a = i / chars.length * Math.PI * 2 - Math.PI / 2 + t * 0.2; ctx.save(); ctx.rotate(a + Math.PI / 2); ctx.translate(0, -(R - 68)); ctx.fillText(c, 0, 0); ctx.restore(); });
+  ctx.restore();
+  // center text (unrotated)
+  const cp = back(pr(lt, 0.5, 0.95), 2.5);
+  ctx.save(); ctx.translate(CX, 860); ctx.scale(cp, cp);
+  txt('受補助', 0, -45, { size: 76, weight: 900, color: WHITE, ls: 8 });
+  txt('單位', 0, 50, { size: 76, weight: 900, color: GOLD, ls: 26 });
+  ctx.restore();
+  ctx.restore();
+  rings(t, 20.55, CX, 860, GOLD_L, 3, 800, 8);
+  maskText('1035 Collab 同時是', CX, 330, pr(lt, 0.7, 1.1), { size: 54, weight: 700, color: CREAM, ls: 6 });
+  maskText('臺中市歷史老屋再生', CX, 1300, pr(lt, 1.0, 1.4), { size: 72, weight: 900, color: WHITE, ls: 6 });
+  maskText('補助與活化計畫', CX, 1395, pr(lt, 1.15, 1.55), { size: 72, weight: 900, color: GOLD_L, ls: 10 });
+  maskText('受補助單位', CX, 1500, pr(lt, 1.3, 1.7), { size: 52, weight: 700, color: CREAM, ls: 20 });
+  sparkles(t, 31, 30, [0, 200, W, 1500]);
+  const f = pr(t, 23.7, 24.0);
+  if (f > 0) { ctx.save(); ctx.globalAlpha = ei3(f); ctx.fillStyle = WHITE; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+}
+
+function S7(t) { // 24-28 finale
+  const lt = t - 24;
+  bg('#3A250A', '#120B03');
+  const bpz = beatPulse(t);
+  rays(t, CX, 760, 20, GOLD, 0.08 + 0.05 * bpz, t * 0.2);
+  firework(t, 24.1, 1, 260, 380, { color: GOLD_L });
+  firework(t, 24.6, 2, 820, 300, { color: '#FFD1C2' });
+  firework(t, 25.1, 3, 540, 220, { color: GOLD_L, n: 90 });
+  firework(t, 25.6, 4, 200, 1500, { color: CREAM });
+  firework(t, 26.1, 5, 880, 1450, { color: GOLD_L });
+  firework(t, 26.6, 6, 300, 260, { color: '#FFE3A0' });
+  firework(t, 27.1, 7, 780, 520, { color: CREAM, n: 90 });
+  ctx.save(); cam(t, 1.0, 1.05, 24, 28, bpz * 0.015);
+  // 恭喜
+  charsPop('恭喜', CX, 760, t, 24.0, 0.12, { size: 300, weight: 900, fam: SERIF, color: GOLD_L, ls: 30, shadow: 'rgba(255,190,80,0.6)', blur: 50, dur: 0.6 }, 'scale');
+  ctx.save(); ctx.globalCompositeOperation = 'source-atop'; ctx.restore();
+  maskText('1035 Collab', CX, 1050, pr(lt, 0.5, 1.0), { size: 110, weight: 900, color: WHITE, ls: 6 });
+  const lp = eo5(pr(lt, 0.9, 1.5));
+  ctx.save(); ctx.fillStyle = GOLD; ctx.fillRect(CX - 360 * lp, 1135, 720 * lp, 4); ctx.restore();
+  maskText('榮獲 第八屆 ADA 新銳建築獎', CX, 1205, pr(lt, 1.0, 1.4), { size: 52, weight: 700, color: CREAM, ls: 4 });
+  // 首獎 badge
+  const bp = back(pr(lt, 1.4, 1.9), 3);
+  ctx.save(); ctx.translate(CX, 1335); ctx.scale(bp, bp);
+  ctx.fillStyle = goldGrad(-170, -50, 170, 50, pr(lt, 2.2, 3.0)); pill(-170, -55, 340, 110, 55); ctx.fill();
+  txt('首 獎', 0, 3, { size: 66, weight: 900, fam: SERIF, color: '#3A250A', ls: 20 });
+  ctx.restore();
+  maskText('設計團隊  李預萍 · 高思豪', CX, 1470, pr(lt, 2.0, 2.4), { size: 44, weight: 400, color: GOLD_L, ls: 8 });
+  ctx.restore();
+  confetti(t, 24.0, 21, 180, CX, 900, { speed: 2700 });
+  confetti(t, 26.0, 22, 90, 0, 1700, { dir: -Math.PI / 3, spread: 0.7, speed: 2800 });
+  confetti(t, 26.0, 23, 90, W, 1700, { dir: -Math.PI * 2 / 3, spread: 0.7, speed: 2800 });
+  sparkles(t, 41, 50, [0, 0, W, H]);
+  const f = 1 - pr(t, 24.0, 24.35);
+  if (f > 0) { ctx.save(); ctx.globalAlpha = f; ctx.fillStyle = WHITE; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+}
+
+function S8(t) { // 28-30 end card
+  const lt = t - 28;
+  bg('#FBF5EA', '#EADFC8');
+  // subtle brick band
+  ctx.save(); ctx.globalAlpha = 0.07; ctx.fillStyle = BRICK; for (let y = 0; y < H; y += 56) for (let x = ((y / 56) % 2) * 60; x < W; x += 120) ctx.fillRect(x, y, 112, 48); ctx.restore();
+  ctx.save(); cam(t, 1.06, 1.0, 28, 30);
+  // 賀 stamp
+  const sp = pr(lt, 0.0, 0.35);
+  const sc = lerp(2.2, 1, eo5(sp)) + (sp >= 1 ? 0.05 * Math.exp(-(lt - 0.35) * 9) * Math.sin((lt - 0.35) * 35) : 0);
+  ctx.save(); ctx.translate(CX, 640); ctx.scale(sc, sc); ctx.rotate(-0.06); ctx.globalAlpha = cl(sp * 3);
+  ctx.fillStyle = BRICK; pill(-150, -150, 300, 300, 26); ctx.fill();
+  ctx.strokeStyle = CREAM; ctx.lineWidth = 6; pill(-128, -128, 256, 256, 16); ctx.stroke();
+  txt('賀', 0, 8, { size: 210, weight: 900, fam: SERIF, color: CREAM });
+  ctx.restore();
+  maskText('1035 Collab', CX, 935, pr(lt, 0.25, 0.65), { size: 120, weight: 900, color: INK, ls: 4 });
+  maskText('第八屆 ADA 新銳建築獎', CX, 1060, pr(lt, 0.4, 0.8), { size: 56, weight: 700, color: BRICK_D, ls: 6 });
+  maskText('首 獎', CX, 1160, pr(lt, 0.5, 0.9), { size: 84, weight: 900, fam: SERIF, color: GOLD_D, ls: 30 });
+  const lp = eo5(pr(lt, 0.7, 1.2));
+  ctx.save(); ctx.fillStyle = GOLD; ctx.fillRect(CX - 220 * lp, 1245, 440 * lp, 4); ctx.restore();
+  maskText('臺中市歷史老屋再生補助與活化計畫', CX, 1320, pr(lt, 0.8, 1.2), { size: 40, weight: 700, color: INK2, ls: 2 });
+  maskText('受補助單位', CX, 1380, pr(lt, 0.9, 1.3), { size: 40, weight: 400, color: INK2, ls: 12 });
+  ctx.restore();
+  confetti(t, 28.0, 51, 90, CX, -60, { dir: Math.PI / 2, spread: 2.4, speed: 900, g: 500, life: 4, colors: [GOLD, BRICK, GOLD_D, '#E9A23B'] });
+}
+
+// ---------- timeline & transitions ----------
+const scenes = [
+  { s: 0, e: 4, f: S1, tr: null },
+  { s: 4, e: 8, f: S2, tr: 'cut' },
+  { s: 8, e: 12, f: S3, tr: 'bars' },
+  { s: 12, e: 16, f: S4, tr: 'iris' },
+  { s: 16, e: 18, f: S5a, tr: 'diag' },
+  { s: 18, e: 20, f: S5b, tr: 'push' },
+  { s: 20, e: 24, f: S6, tr: 'bars2' },
+  { s: 24, e: 28, f: S7, tr: 'cut' },
+  { s: 28, e: 30.1, f: S8, tr: 'iris2' },
+];
+const TD = 0.4; // transition length, ends at the cut
+
+function drawScene(i, t) { ctx.save(); scenes[i].f(t); ctx.restore(); }
+
+function render(t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+  let i = scenes.findIndex(s => t >= s.s && t < s.e); if (i < 0) i = scenes.length - 1;
+  // incoming transition into scene i+1?
+  const nx = scenes[i + 1];
+  if (nx && nx.tr !== 'cut' && t >= nx.s - TD) {
+    const p = eio(pr(t, nx.s - TD, nx.s));
+    drawScene(i, t);
+    ctx.save();
+    transitionClip(nx.tr, p, t);
+    drawScene(i + 1, t);
+    ctx.restore();
+    transitionDecor(nx.tr, p);
+  } else drawScene(i, t);
+  overlay(t);
+}
+function transitionClip(type, p, t) {
+  ctx.beginPath();
+  if (type === 'bars' || type === 'bars2') {
+    const n = 6, bw = W / n;
+    for (let k = 0; k < n; k++) { const q = eio(cl(p * 1.6 - k * 0.12)); if (type === 'bars') ctx.rect(k * bw, H * (1 - q), bw + 1, H * q); else ctx.rect(k * bw, 0, bw + 1, H * q); }
+  } else if (type === 'iris') { ctx.arc(CX + 30, 640, p * 2300, 0, Math.PI * 2); }
+  else if (type === 'iris2') { ctx.arc(CX, 640, p * 2300, 0, Math.PI * 2); }
+  else if (type === 'diag') { const o = lerp(-1.3, 1.1, p) * (W + H); ctx.moveTo(o, 0); ctx.lineTo(o + 800, 0); ctx.lineTo(o + 800 - H * 0.6, H); ctx.lineTo(o - H * 0.6 - 3000, H); ctx.lineTo(o - 3000, 0); }
+  else if (type === 'push') { ctx.rect(W * (1 - p), 0, W * p + 1, H); }
+  ctx.clip();
+  if (type === 'push') ctx.translate(W * (1 - p) * 0.35, 0);
+}
+function transitionDecor(type, p) {
+  ctx.save();
+  if (type === 'bars' || type === 'bars2') {
+    const n = 6, bw = W / n; ctx.fillStyle = GOLD;
+    for (let k = 0; k < n; k++) { const q = eio(cl(p * 1.6 - k * 0.12)); if (q <= 0 || q >= 1) continue; const y = type === 'bars' ? H * (1 - q) : H * q; ctx.fillRect(k * bw, y - 14, bw + 1, 28); }
+  } else if (type === 'iris' || type === 'iris2') {
+    if (p > 0 && p < 1) { ctx.strokeStyle = type === 'iris' ? GOLD : BRICK; ctx.lineWidth = 40 * (1 - p) + 4; ctx.beginPath(); ctx.arc(type === 'iris' ? CX + 30 : CX, 640, p * 2300, 0, Math.PI * 2); ctx.stroke(); }
+  } else if (type === 'diag') {
+    if (p > 0 && p < 1) { const o = lerp(-1.3, 1.1, p) * (W + H); ctx.fillStyle = BRICK; ctx.beginPath(); ctx.moveTo(o + 800, 0); ctx.lineTo(o + 860, 0); ctx.lineTo(o + 860 - H * 0.6, H); ctx.lineTo(o + 800 - H * 0.6, H); ctx.fill(); }
+  } else if (type === 'push') {
+    if (p > 0 && p < 1) { ctx.fillStyle = GOLD; ctx.fillRect(W * (1 - p) - 12, 0, 24, H); }
+  }
+  ctx.restore();
+}
+function overlay(t) {
+  ctx.save();
+  // vignette
+  const v = ctx.createRadialGradient(CX, CY, 500, CX, CY, 1250); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,0.38)');
+  ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
+  // grain
+  ctx.globalAlpha = 0.05; ctx.globalCompositeOperation = 'overlay';
+  ctx.drawImage(grain[Math.floor(t * 30) % grain.length], 0, 0, W, H);
+  ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+  // showreel HUD
+  const light = t >= 16 && t < 18 || t >= 28;
+  const hc = light ? 'rgba(60,40,20,0.55)' : 'rgba(255,240,210,0.55)';
+  const hp = eo3(pr(t, 0.2, 0.8));
+  ctx.strokeStyle = hc; ctx.lineWidth = 3; ctx.globalAlpha = hp;
+  const m = 56, L = 54;
+  [[m, m, 1, 1], [W - m, m, -1, 1], [m, H - m, 1, -1], [W - m, H - m, -1, -1]].forEach(([x, y, sx, sy]) => { ctx.beginPath(); ctx.moveTo(x, y + sy * L); ctx.lineTo(x, y); ctx.lineTo(x + sx * L, y); ctx.stroke(); });
+  const fr = Math.floor(t * 30);
+  const tc = `00:${String(Math.floor(t)).padStart(2, '0')}:${String(fr % 30).padStart(2, '0')}`;
+  txt('1035 COLLAB · FIRST PRIZE', m + 20, m + 34, { size: 22, weight: 700, color: hc, align: 'left', ls: 4 });
+  txt(tc, W - m - 20, m + 34, { size: 22, weight: 700, color: hc, align: 'right', ls: 4 });
+  // progress line
+  ctx.fillStyle = light ? BRICK : GOLD; ctx.globalAlpha = hp * 0.9;
+  ctx.fillRect(m + 20, H - m - 22, (W - 2 * m - 40) * cl(t / 30), 4);
+  ctx.globalAlpha = hp * 0.25; ctx.fillRect(m + 20, H - m - 22, (W - 2 * m - 40), 4);
+  ctx.restore();
+}
+
+// ---------- font readiness ----------
+const ALLTEXT = '0123456789—TELADA 新銳建築獎第八屆首獎榮獲FIRSTPRZEColab作品名稱源自修復時於櫃中發現的老診所電話號碼臺中市區府路73號原為吳眼科百年屋再生咖啡烘焙展覽工作室保留前棟木架與紅磚牆以庭院廊道串聯兩後新舊交織光影流動受補助單位歷史活化計畫★同時是恭喜設團隊李預萍高思豪賀·COLLAB:';
+window.ready = (async () => {
+  const specs = [['400', SANS], ['700', SANS], ['900', SANS], ['700', SERIF], ['900', SERIF], ['400', SERIF]];
+  await Promise.all(specs.map(([w, f]) => document.fonts.load(`${w} 40px ${f}`, ALLTEXT).catch(() => {})));
+  await document.fonts.ready;
+  render(0);
+  return [...document.fonts].filter(f => f.status === 'loaded').length;
+})();
+window.render = render;
+// preview mode: play in real time when opened with #play
+if (location.hash === '#play') window.ready.then(() => { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % 30); requestAnimationFrame(loop); })(); });
+</script>
+</body>
+</html>
