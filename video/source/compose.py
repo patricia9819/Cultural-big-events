@@ -2,7 +2,7 @@
 import mido, random, sys
 random.seed(1035)
 PPQ = 480
-BPM = 90
+BPM = 112
 mid = mido.MidiFile(ticks_per_beat=PPQ)
 events = []  # (beat, order, channel, msg)
 
@@ -200,6 +200,23 @@ for i, p in enumerate(scale): note(VLN, bar(14) + 2 + i * (2 / len(scale)), p, 2
 # timpani roll + cymbal swell into the finale
 for i in range(int(4 / 0.125)): note(TIMP, bar(14) + i * 0.125, 45, 0.14, 50 + i * 2.4, human=False)
 for i in range(int(4 / 0.0833)): note(DR, bar(14) + i * 0.0833, 51, 0.1, 25 + i * 2, human=False)
+
+
+# ---------------- crisp rhythmic drive through the middle (bars 4-12) ----------------
+for b in range(4, 13):
+    s0 = bar(b)
+    for e in range(8):
+        acc = e in (0, 4)
+        note(DR, s0 + e * 0.5, 70, 0.1, 62 if e % 2 else 48)          # maracas/shaker 8ths
+        if e % 2 == 1: note(DR, s0 + e * 0.5 + 0.25, 70, 0.1, 40)
+    for o, v in ((0, 84), (2, 74)):
+        note(DR, s0 + o, 35, 0.3, v)                                     # concert bass drum
+    for o, v in ((1, 62), (3, 66), (3.5, 46), (3.75, 52)):
+        note(DR, s0 + o, 38, 0.1, v)                                     # snare backbeat + pickup
+    # staccato string chops on the off-beats
+    for name_pos, name, d in [(p_, n_, d_) for p_, n_, d_ in each_chord([b])]:
+        for k in range(int(d * 2)):
+            if k % 2: chord(STR, name_pos + k * 0.5, C[name][2:4], 0.18, 78)
 
 # ---------------- bar 17: final chord ----------------
 fb = bar(17)

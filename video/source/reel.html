@@ -35,10 +35,10 @@ const eexp = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
 const back = (x, s = 1.70158) => { x = cl(x); const c3 = s + 1; return 1 + c3 * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2); };
 const elastic = x => { x = cl(x); if (x === 0 || x === 1) return x; return Math.pow(2, -10 * x) * Math.sin((x * 10 - .75) * (2 * Math.PI / 3)) + 1; };
 function rng(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-const BEAT = 2 / 3; // 90 BPM
-const TOTAL = 50;
+const BEAT = 60 / 112; // 112 BPM
+const TOTAL = 40;
 let RT = 0; // real (output) time; scene functions may receive remapped time
-const beatPulse = () => (RT < 5.333 || RT >= 45.333) ? 0 : 0.6 * Math.exp(-((RT % BEAT) / BEAT) * 7);
+const beatPulse = () => (RT < 4.286 || RT >= 36.43) ? 0 : 0.6 * Math.exp(-((RT % BEAT) / BEAT) * 7);
 const IMG = {};
 function loadImg(k, src) { return new Promise(r => { const i = new Image(); i.onload = () => { IMG[k] = i; r(); }; i.onerror = () => r(); i.src = src; }); }
 function tintLogo(img, color) { // black-on-light logo -> solid colour with alpha from darkness
@@ -278,7 +278,8 @@ function S2(t) { // 4-8 首獎 drop
   ctx.fillText('首獎', 0, 0);
   ctx.shadowBlur = 0; ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,245,210,0.6)'; ctx.strokeText('首獎', 0, 0);
   ctx.restore();
-  maskText('榮 獲', CX, 590, pr(lt, 0.4, 0.9), { size: 62, weight: 700, color: CREAM, ls: 30 });
+  maskText('1035 Collab', CX, 470, pr(lt, 0.15, 0.6), { size: 104, weight: 900, color: WHITE, ls: 6, shadow: 'rgba(0,0,0,0.5)', blur: 20 });
+  maskText('榮 獲', CX, 595, pr(lt, 0.35, 0.8), { size: 58, weight: 700, color: GOLD_L, ls: 30 });
   // badge line
   const lp = eo5(pr(lt, 0.8, 1.6));
   ctx.save(); ctx.strokeStyle = GOLD; ctx.lineWidth = 3; ctx.globalAlpha = lp;
@@ -587,6 +588,15 @@ function S7(t) { // 24-28 finale
   confetti(t, 26.0, 22, 90, 0, 1700, { dir: -Math.PI / 3, spread: 0.7, speed: 2800 });
   confetti(t, 26.0, 23, 90, W, 1700, { dir: -Math.PI * 2 / 3, spread: 0.7, speed: 2800 });
   sparkles(t, 41, 50, [0, 0, W, H]);
+  // 臺中市政府文化局 敬賀
+  if (IMG.logoCream) {
+    const lp3 = eo5(pr(lt, 2.3, 2.9)), lw = 590, lh = lw * IMG.logoCream.height / IMG.logoCream.width;
+    const rowX = CX - 400, rowY = 1630;
+    ctx.save(); ctx.globalAlpha = lp3; ctx.fillStyle = GOLD; ctx.fillRect(CX - 400 * lp3, rowY - lh / 2 - 34, 800 * lp3, 2); ctx.restore();
+    ctx.save(); ctx.beginPath(); ctx.rect(rowX - 10, rowY - lh / 2 - 10, (lw + 20) * lp3, lh + 20); ctx.clip();
+    ctx.drawImage(IMG.logoCream, rowX, rowY - lh / 2 + (1 - lp3) * 16, lw, lh); ctx.restore();
+    maskText('敬賀', rowX + lw + 40, rowY + 4, pr(lt, 2.6, 3.0), { size: 72, weight: 900, fam: SERIF, color: GOLD_L, ls: 12, align: 'left' });
+  }
   const f = 1 - pr(t, 24.0, 24.35);
   if (f > 0) { ctx.save(); ctx.globalAlpha = f; ctx.fillStyle = WHITE; ctx.fillRect(0, 0, W, H); ctx.restore(); }
 }
@@ -699,6 +709,7 @@ function SIGN(t) {
 
 // ---------- timeline & transitions ----------
 // s/e = output time; os/k = original scene time base + speed (choreography kept, played more spaciously)
+const SC = 90 / 112; // global tempo scale vs. the 90 BPM layout
 const scenes = [
   { s: 0, e: 5.333, f: S1, os: 0, k: 0.75, tr: null },
   { s: 5.333, e: 10.667, f: S2, os: 4, k: 0.75, tr: 'cut' },
@@ -708,10 +719,9 @@ const scenes = [
   { s: 26.667, e: 30.667, f: S5a, os: 16, k: 0.5, tr: 'diag' },
   { s: 30.667, e: 34.667, f: S5b, os: 18, k: 0.5, tr: 'push' },
   { s: 34.667, e: 40, f: S6, os: 20, k: 0.75, tr: 'bars2' },
-  { s: 40, e: 45.333, f: S7, os: 24, k: 0.75, tr: 'cut' },
-  { s: 45.333, e: 50.1, f: S8, os: 28, k: 0.8, tr: 'iris2' },
-];
-const TD = 0.45; // transition length, ends at the cut
+  { s: 40, e: 60, f: S7, os: 24, k: 0.75, tr: 'cut' },
+].map(o => ({ ...o, s: o.s * SC, e: o.e * SC, k: o.k / SC }));
+const TD = 0.32; // transition length, ends at the cut
 
 function drawScene(i, t) { const sc = scenes[i]; ctx.save(); sc.f(sc.os + (t - sc.s) * sc.k); ctx.restore(); }
 
@@ -732,6 +742,8 @@ function render(t) {
     transitionDecor(nx.tr, p);
   } else drawScene(i, t);
   overlay(t);
+  const fo = pr(t, 39.3, 40);
+  if (fo > 0) { ctx.fillStyle = `rgba(0,0,0,${fo})`; ctx.fillRect(0, 0, W, H); }
 }
 function transitionClip(type, p, t) {
   ctx.beginPath();
@@ -769,7 +781,7 @@ function overlay(t) {
   ctx.drawImage(grain[Math.floor(t * 30) % grain.length], 0, 0, W, H);
   ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
   // showreel HUD
-  const light = t >= 26.667 && t < 30.667 || t >= 45.333;
+  const light = t >= 26.667 * SC && t < 30.667 * SC;
   const hc = light ? 'rgba(60,40,20,0.55)' : 'rgba(255,240,210,0.55)';
   const hp = eo3(pr(t, 0.2, 0.8));
   ctx.strokeStyle = hc; ctx.lineWidth = 3; ctx.globalAlpha = hp;
@@ -794,7 +806,7 @@ window.ready = (async () => {
   await document.fonts.ready;
   await Promise.all([loadImg('logo', 'logo.png'), ...[1, 2, 3, 4].map(i => loadImg('h' + (i - 1), 'hands/h' + i + '.svg'))]);
   for (let i = 0; i < 4; i++) if (IMG['h' + i]) { IMG['hInk' + i] = handSprite(IMG['h' + i], 900, '#14191F'); IMG['hGold' + i] = handSprite(IMG['h' + i], 900, '#F2C25E'); }
-  if (IMG.logo) IMG.logoInk = tintLogo(IMG.logo, [20, 28, 40]);
+  if (IMG.logo) IMG.logoCream = tintLogo(IMG.logo, [244, 235, 218]);
   render(0);
   return [...document.fonts].filter(f => f.status === 'loaded').length;
 })();
