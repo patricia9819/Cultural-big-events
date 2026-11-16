@@ -560,42 +560,42 @@ function S7(t) { // 24-28 finale
   const lt = t - 24;
   bg('#3A250A', '#120B03');
   const bpz = beatPulse(t);
-  rays(t, CX, 760, 20, GOLD, 0.08 + 0.05 * bpz, t * 0.2);
+  rays(t, CX, 620, 20, GOLD, 0.08 + 0.05 * bpz, t * 0.2);
   firework(t, 24.1, 1, 260, 380, { color: GOLD_L });
   firework(t, 24.6, 2, 820, 300, { color: '#FFD1C2' });
   firework(t, 25.1, 3, 540, 220, { color: GOLD_L, n: 90 });
-  firework(t, 25.6, 4, 200, 1500, { color: CREAM });
-  firework(t, 26.1, 5, 880, 1450, { color: GOLD_L });
+  firework(t, 25.6, 4, 200, 1560, { color: CREAM });
+  firework(t, 26.1, 5, 880, 1520, { color: GOLD_L });
   firework(t, 26.6, 6, 300, 260, { color: '#FFE3A0' });
   firework(t, 27.1, 7, 780, 520, { color: CREAM, n: 90 });
   ctx.save(); cam(t, 1.0, 1.05, 24, 28, bpz * 0.015);
   // 恭喜
-  charsPop('恭喜', CX, 760, t, 24.0, 0.12, { size: 300, weight: 900, fam: SERIF, color: GOLD_L, ls: 30, shadow: 'rgba(255,190,80,0.6)', blur: 50, dur: 0.6 }, 'scale');
+  charsPop('恭喜', CX, 600, t, 24.0, 0.12, { size: 300, weight: 900, fam: SERIF, color: GOLD_L, ls: 30, shadow: 'rgba(255,190,80,0.6)', blur: 50, dur: 0.6 }, 'scale');
   ctx.save(); ctx.globalCompositeOperation = 'source-atop'; ctx.restore();
-  maskText('1035 Collab', CX, 1050, pr(lt, 0.5, 1.0), { size: 110, weight: 900, color: WHITE, ls: 6 });
+  maskText('1035 Collab', CX, 875, pr(lt, 0.5, 1.0), { size: 110, weight: 900, color: WHITE, ls: 6 });
   const lp = eo5(pr(lt, 0.9, 1.5));
-  ctx.save(); ctx.fillStyle = GOLD; ctx.fillRect(CX - 360 * lp, 1135, 720 * lp, 4); ctx.restore();
-  maskText('榮獲 第八屆 ADA 新銳建築獎', CX, 1205, pr(lt, 1.0, 1.4), { size: 52, weight: 700, color: CREAM, ls: 4 });
+  ctx.save(); ctx.fillStyle = GOLD; ctx.fillRect(CX - 360 * lp, 955, 720 * lp, 4); ctx.restore();
+  maskText('榮獲 第八屆 ADA 新銳建築獎', CX, 1022, pr(lt, 1.0, 1.4), { size: 52, weight: 700, color: CREAM, ls: 4 });
   // 首獎 badge
   const bp = back(pr(lt, 1.4, 1.9), 3);
-  ctx.save(); ctx.translate(CX, 1335); ctx.scale(bp, bp);
+  ctx.save(); ctx.translate(CX, 1142); ctx.scale(bp, bp);
   ctx.fillStyle = goldGrad(-170, -50, 170, 50, pr(lt, 2.2, 3.0)); pill(-170, -55, 340, 110, 55); ctx.fill();
   txt('首 獎', 0, 3, { size: 66, weight: 900, fam: SERIF, color: '#3A250A', ls: 20 });
   ctx.restore();
-  maskText('設計團隊  李預萍 · 高思豪', CX, 1470, pr(lt, 2.0, 2.4), { size: 44, weight: 400, color: GOLD_L, ls: 8 });
+  maskText('設計團隊  李預萍 · 高思豪', CX, 1268, pr(lt, 2.0, 2.4), { size: 42, weight: 400, color: GOLD_L, ls: 8 });
   ctx.restore();
-  confetti(t, 24.0, 21, 180, CX, 900, { speed: 2700 });
+  confetti(t, 24.0, 21, 180, CX, 760, { speed: 2700 });
   confetti(t, 26.0, 22, 90, 0, 1700, { dir: -Math.PI / 3, spread: 0.7, speed: 2800 });
   confetti(t, 26.0, 23, 90, W, 1700, { dir: -Math.PI * 2 / 3, spread: 0.7, speed: 2800 });
   sparkles(t, 41, 50, [0, 0, W, H]);
   // 臺中市政府文化局 敬賀
   if (IMG.logoCream) {
-    const lp3 = eo5(pr(lt, 2.3, 2.9)), lw = 590, lh = lw * IMG.logoCream.height / IMG.logoCream.width;
-    const rowX = CX - 400, rowY = 1630;
-    ctx.save(); ctx.globalAlpha = lp3; ctx.fillStyle = GOLD; ctx.fillRect(CX - 400 * lp3, rowY - lh / 2 - 34, 800 * lp3, 2); ctx.restore();
+    const lp3 = eo5(pr(lt, 2.3, 2.9)), lw = 380, lh = lw * IMG.logoCream.height / IMG.logoCream.width;
+    const rowX = CX - 258, rowY = 1418;
+    ctx.save(); ctx.globalAlpha = lp3; ctx.fillStyle = GOLD; ctx.fillRect(CX - 70 * lp3, rowY - lh / 2 - 42, 140 * lp3, 2); ctx.restore();
     ctx.save(); ctx.beginPath(); ctx.rect(rowX - 10, rowY - lh / 2 - 10, (lw + 20) * lp3, lh + 20); ctx.clip();
     ctx.drawImage(IMG.logoCream, rowX, rowY - lh / 2 + (1 - lp3) * 16, lw, lh); ctx.restore();
-    maskText('敬賀', rowX + lw + 40, rowY + 4, pr(lt, 2.6, 3.0), { size: 72, weight: 900, fam: SERIF, color: GOLD_L, ls: 12, align: 'left' });
+    maskText('敬賀', rowX + lw + 30, rowY + 3, pr(lt, 2.6, 3.0), { size: 48, weight: 900, fam: SERIF, color: GOLD_L, ls: 8, align: 'left' });
   }
   const f = 1 - pr(t, 24.0, 24.35);
   if (f > 0) { ctx.save(); ctx.globalAlpha = f; ctx.fillStyle = WHITE; ctx.fillRect(0, 0, W, H); ctx.restore(); }
