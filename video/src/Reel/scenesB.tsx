@@ -312,7 +312,7 @@ export const RTea: React.FC = () => {
         <RiseText text="午茶交流" delay={beat(2)} stagger={2.5} style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 160, color: C.paper, marginTop: 24 }} />
         <RiseText text="Pharos Coffee · 綠美圖一樓" delay={beat(3)} stagger={0.8} style={{ fontFamily: SANS, fontWeight: 500, fontSize: 48, color: C.paper, marginTop: 10 }} />
         <div style={{ display: "flex", gap: 18, marginTop: 24 }}>
-          {["專屬包場空間", "手沖咖啡", "手作甜點"].map((t, i) => {
+          {["專屬包場空間", "咖啡飲品", "手作點心"].map((t, i) => {
             const d = beat(4) + i * 3;
             return (
               <div
@@ -340,32 +340,6 @@ export const RTea: React.FC = () => {
 
 /* ───────────── 伴手禮 (4 bars) ───────────── */
 
-/** Simple incense-stick mark, for the gift that has no photo. */
-const Incense: React.FC<{ d: number }> = ({ d }) => {
-  const f = useCurrentFrame();
-  const sway = Math.sin((f - d) / 9) * 6;
-  return (
-    <svg width={180} height={220} viewBox="0 0 180 220">
-      {[60, 90, 120].map((x, i) => (
-        <g key={x}>
-          <line x1={x} y1={110} x2={x} y2={210} stroke={C.gold} strokeWidth={5} strokeLinecap="round" />
-          <circle cx={x} cy={110} r={5} fill={C.red} />
-          <path
-            d={`M${x} 104 C ${x - 18 + sway} 80, ${x + 18 - sway} 60, ${x + sway / 2} 20`}
-            fill="none"
-            stroke="rgba(244,240,232,0.55)"
-            strokeWidth={3}
-            strokeLinecap="round"
-            pathLength={1}
-            strokeDasharray="1 1"
-            strokeDashoffset={1 - ap(f, [d + i * 3, d + i * 3 + 24], [0, 1])}
-          />
-        </g>
-      ))}
-    </svg>
-  );
-};
-
 export const RGifts: React.FC = () => {
   const f = useCurrentFrame();
   const drop = (d: number, rot: number) => ({
@@ -383,52 +357,55 @@ export const RGifts: React.FC = () => {
       </div>
 
       {/* 文化局 */}
-      <div style={{ position: "absolute", left: 80, top: 430, fontFamily: SANS, fontWeight: 700, fontSize: 34, color: C.red, letterSpacing: "0.2em", ...fade(beat(1)) }}>
+      <div style={{ position: "absolute", left: 80, top: 405, fontFamily: SANS, fontWeight: 700, fontSize: 34, color: C.red, letterSpacing: "0.2em", ...fade(beat(1)) }}>
         文化局致贈
       </div>
-      <div
-        style={{
-          position: "absolute",
-          left: 80,
-          top: 490,
-          width: 290,
-          height: 440,
-          background: C.ink,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: "0 30px 60px rgba(0,0,0,0.2)",
-          ...drop(beat(1.5), -1.5),
-        }}
-      >
-        <Incense d={beat(2)} />
-        <div style={{ fontFamily: SANS, fontSize: 28, color: C.gold, letterSpacing: "0.3em", marginTop: 10 }}>臺中州廳</div>
-        <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 72, color: C.paper, marginTop: 4 }}>心香</div>
+      {/* ① 州廳心香 */}
+      <div style={{ position: "absolute", left: 80, top: 460, width: 560, ...drop(beat(1.5), -1.5) }}>
+        <Img src={staticFile("visit/incense.jpg")} style={{ width: "100%", display: "block", border: "10px solid #fff", boxShadow: "0 30px 60px rgba(0,0,0,0.2)" }} />
       </div>
-      <div style={{ position: "absolute", left: 400, top: 490, width: 600, ...drop(beat(2), 1.5) }}>
-        <div style={{ background: "#fff", padding: 14, boxShadow: "0 30px 60px rgba(0,0,0,0.18)" }}>
+      <div style={{ position: "absolute", left: 680, top: 500, width: 330, ...fade(beat(2.5)) }}>
+        <div style={{ fontFamily: SANS, fontWeight: 900, fontSize: 36, color: C.red }}>①</div>
+        <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 52, color: C.ink, lineHeight: 1.2, marginTop: 6 }}>
+          臺中州廳
+          <br />
+          心香
+        </div>
+        <div style={{ fontFamily: SANS, fontSize: 28, color: "rgba(14,15,17,0.55)", marginTop: 10 }}>Prefectural Mist</div>
+      </div>
+      {/* ② 展覽圖錄＋套裝明信片 */}
+      <div style={{ position: "absolute", left: 70, top: 800, height: 310, ...drop(beat(2), -2) }}>
+        <Img src={staticFile("visit/catalog.png")} style={{ height: "100%", display: "block", filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.25))" }} />
+      </div>
+      <div style={{ position: "absolute", left: 290, top: 815, width: 380, ...drop(beat(2.5), 2) }}>
+        <div style={{ background: "#fff", padding: 10, boxShadow: "0 30px 60px rgba(0,0,0,0.18)" }}>
           <Img src={staticFile("visit/postcards.jpg")} style={{ width: "100%", display: "block" }} />
         </div>
       </div>
-      <div style={{ position: "absolute", left: 80, top: 955, width: 920, display: "flex", gap: 30, ...fade(beat(3)) }}>
-        <div style={{ width: 290, fontFamily: SERIF, fontWeight: 900, fontSize: 38, color: C.ink }}>① 臺中州廳心香</div>
-        <div style={{ flex: 1, fontFamily: SERIF, fontWeight: 900, fontSize: 36, color: C.ink, lineHeight: 1.3 }}>② 《蠍子與青蛙》圖錄＋套裝明信片</div>
+      <div style={{ position: "absolute", left: 700, top: 835, width: 320, ...fade(beat(3.5)) }}>
+        <div style={{ fontFamily: SANS, fontWeight: 900, fontSize: 36, color: C.red }}>②</div>
+        <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 40, color: C.ink, lineHeight: 1.3, marginTop: 6 }}>
+          《蠍子與青蛙》
+          <br />
+          展覽圖錄
+          <br />
+          ＋套裝明信片
+        </div>
       </div>
 
       {/* 新聞局 */}
-      <div style={{ position: "absolute", left: 80, top: 1090, fontFamily: SANS, fontWeight: 700, fontSize: 34, color: C.red, letterSpacing: "0.2em", ...fade(beat(4)) }}>
+      <div style={{ position: "absolute", left: 80, top: 1150, fontFamily: SANS, fontWeight: 700, fontSize: 34, color: C.red, letterSpacing: "0.2em", ...fade(beat(4)) }}>
         新聞局致贈
       </div>
-      <div style={{ position: "absolute", left: 80, top: 1150, width: 440, ...drop(beat(4.5), -2) }}>
-        <Img src={staticFile("visit/wine2.jpg")} style={{ width: "100%", display: "block", border: "12px solid #fff", boxShadow: "0 24px 50px rgba(0,0,0,0.2)" }} />
+      <div style={{ position: "absolute", left: 80, top: 1205, width: 400, ...drop(beat(4.5), -2) }}>
+        <Img src={staticFile("visit/wine2.jpg")} style={{ width: "100%", display: "block", border: "10px solid #fff", boxShadow: "0 24px 50px rgba(0,0,0,0.2)" }} />
       </div>
-      <div style={{ position: "absolute", left: 560, top: 1160, width: 440, ...drop(beat(5), 2) }}>
-        <Img src={staticFile("visit/wine1.jpg")} style={{ width: "100%", display: "block", border: "12px solid #fff", boxShadow: "0 24px 50px rgba(0,0,0,0.2)" }} />
+      <div style={{ position: "absolute", left: 520, top: 1212, width: 400, ...drop(beat(5), 2) }}>
+        <Img src={staticFile("visit/wine1.jpg")} style={{ width: "100%", display: "block", border: "10px solid #fff", boxShadow: "0 24px 50px rgba(0,0,0,0.2)" }} />
       </div>
-      <div style={{ position: "absolute", left: 80, top: 1475, width: 920, ...fade(beat(5.5)) }}>
-        <span style={{ fontFamily: SANS, fontWeight: 700, fontSize: 36, color: C.red, marginRight: 16 }}>金馬63聯名</span>
-        <span style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 46, color: C.ink }}>《史詩泡盛—道卡斯地酒》</span>
+      <div style={{ position: "absolute", left: 80, top: 1495, width: 940, ...fade(beat(5.5)) }}>
+        <span style={{ fontFamily: SANS, fontWeight: 700, fontSize: 34, color: C.red, marginRight: 14 }}>金馬63聯名</span>
+        <span style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 42, color: C.ink }}>《史詩泡盛—道卡斯地酒》</span>
       </div>
     </AbsoluteFill>
   );
