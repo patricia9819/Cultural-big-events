@@ -35,8 +35,23 @@ const eexp = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
 const back = (x, s = 1.70158) => { x = cl(x); const c3 = s + 1; return 1 + c3 * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2); };
 const elastic = x => { x = cl(x); if (x === 0 || x === 1) return x; return Math.pow(2, -10 * x) * Math.sin((x * 10 - .75) * (2 * Math.PI / 3)) + 1; };
 function rng(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-const BEAT = 0.5;
-const beatPulse = t => (t < 4 || t >= 28) ? 0 : Math.exp(-((t % BEAT) / BEAT) * 7);
+const BEAT = 2 / 3; // 90 BPM
+const TOTAL = 50;
+let RT = 0; // real (output) time; scene functions may receive remapped time
+const beatPulse = () => (RT < 5.333 || RT >= 45.333) ? 0 : 0.6 * Math.exp(-((RT % BEAT) / BEAT) * 7);
+const IMG = {};
+function loadImg(k, src) { return new Promise(r => { const i = new Image(); i.onload = () => { IMG[k] = i; r(); }; i.onerror = () => r(); i.src = src; }); }
+function tintLogo(img, color) { // black-on-light logo -> solid colour with alpha from darkness
+  const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+  const g = c.getContext('2d'); g.drawImage(img, 0, 0);
+  const d = g.getImageData(0, 0, c.width, c.height), [r0, g0, b0] = color;
+  for (let i = 0; i < d.data.length; i += 4) {
+    const lum = (d.data[i] * 0.299 + d.data[i + 1] * 0.587 + d.data[i + 2] * 0.114) / 255;
+    const a = (1 - lum) * (d.data[i + 3] / 255);
+    d.data[i] = r0; d.data[i + 1] = g0; d.data[i + 2] = b0; d.data[i + 3] = Math.round(cl(a * 1.15) * 255);
+  }
+  g.putImageData(d, 0, 0); return c;
+}
 
 // ---------- text helpers ----------
 function font(size, weight = 900, fam = SANS) { return `${weight} ${size}px ${fam}`; }
@@ -595,29 +610,93 @@ function S8(t) { // 28-30 end card
   maskText('首 獎', CX, 1160, pr(lt, 0.5, 0.9), { size: 84, weight: 900, fam: SERIF, color: GOLD_D, ls: 30 });
   const lp = eo5(pr(lt, 0.7, 1.2));
   ctx.save(); ctx.fillStyle = GOLD; ctx.fillRect(CX - 220 * lp, 1245, 440 * lp, 4); ctx.restore();
-  maskText('臺中市歷史老屋再生補助與活化計畫', CX, 1320, pr(lt, 0.8, 1.2), { size: 40, weight: 700, color: INK2, ls: 2 });
-  maskText('受補助單位', CX, 1380, pr(lt, 0.9, 1.3), { size: 40, weight: 400, color: INK2, ls: 12 });
+  // Cultural Affairs Bureau logo + 敬賀
+  if (IMG.logoInk) {
+    const lp2 = eo5(pr(lt, 0.85, 1.4)), lw = 700, lh = lw * IMG.logoInk.height / IMG.logoInk.width;
+    ctx.save(); ctx.globalAlpha = lp2;
+    ctx.beginPath(); ctx.rect(CX - lw / 2 - 10, 1300 - 10, (lw + 20) * lp2, lh + 20); ctx.clip();
+    ctx.drawImage(IMG.logoInk, CX - lw / 2, 1300 + (1 - lp2) * 20, lw, lh);
+    ctx.restore();
+  }
+  maskText('敬 賀', CX, 1500, pr(lt, 1.2, 1.6), { size: 76, weight: 900, fam: SERIF, color: BRICK_D, ls: 40 });
   ctx.restore();
   confetti(t, 28.0, 51, 90, CX, -60, { dir: Math.PI / 2, spread: 2.4, speed: 900, g: 500, life: 4, colors: [GOLD, BRICK, GOLD_D, '#E9A23B'] });
 }
 
-// ---------- timeline & transitions ----------
-const scenes = [
-  { s: 0, e: 4, f: S1, tr: null },
-  { s: 4, e: 8, f: S2, tr: 'cut' },
-  { s: 8, e: 12, f: S3, tr: 'bars' },
-  { s: 12, e: 16, f: S4, tr: 'iris' },
-  { s: 16, e: 18, f: S5a, tr: 'diag' },
-  { s: 18, e: 20, f: S5b, tr: 'push' },
-  { s: 20, e: 24, f: S6, tr: 'bars2' },
-  { s: 24, e: 28, f: S7, tr: 'cut' },
-  { s: 28, e: 30.1, f: S8, tr: 'iris2' },
-];
-const TD = 0.4; // transition length, ends at the cut
+// ---------- NEW: storefront hand-sign scene (native real time) ----------
+const HANDS_UP = [[198, 340], [259, 345], [325, 337], [387, 335]];
+const HANDS_LO = [[399, 630], [446, 635], [495, 629], [542, 629]];
+const SIGN_T = [17.0, 17.667, 18.333, 19.0]; // glockenspiel pings in the score
+function SIGN(t) {
+  const lt = t - 16;
+  ctx.fillStyle = '#1c1c1c'; ctx.fillRect(0, 0, W, H);
+  // camera path over the photo: full facade -> upper sign -> both signs
+  const z1 = eio(pr(t, 15.8, 16.9)), z2 = eio(pr(t, 19.6, 20.9));
+  let s = lerp(1.875, 2.5, z1), fx = lerp(342, 303, z1), fy = lerp(512, 342, z1);
+  s = lerp(s, 1.95, z2); fx = lerp(fx, 340, z2); fy = lerp(fy, 470, z2);
+  s *= 1 + 0.015 * Math.sin(lt * 0.9);
+  const toScr = (x, y) => [(x - fx) * s + CX, (y - fy) * s + CY];
+  if (IMG.store) {
+    ctx.save(); ctx.translate(CX, CY); ctx.scale(s, s); ctx.translate(-fx, -fy);
+    ctx.drawImage(IMG.store, 0, 0); ctx.restore();
+  }
+  // cinematic grade
+  const gtop = ctx.createLinearGradient(0, 0, 0, H);
+  gtop.addColorStop(0, 'rgba(11,21,36,0.88)'); gtop.addColorStop(0.24, 'rgba(11,21,36,0.15)');
+  gtop.addColorStop(0.62, 'rgba(11,21,36,0.2)'); gtop.addColorStop(1, 'rgba(11,21,36,0.92)');
+  ctx.fillStyle = gtop; ctx.fillRect(0, 0, W, H);
+  // digit badges over each hand (upper sign)
+  const digits = ['1', '0', '3', '5'];
+  HANDS_UP.forEach(([hx, hy], i) => {
+    const p = pr(t, SIGN_T[i] - 0.05, SIGN_T[i] + 0.35); if (p <= 0) return;
+    const [x, y] = toScr(hx, hy);
+    rings(t, SIGN_T[i] - 0.05, x, y, GOLD_L, 2, 170, 6);
+    ctx.save(); ctx.globalAlpha = cl(p * 3) * (1 - pr(t, 19.6, 20.2) * 0.35);
+    ctx.strokeStyle = GOLD; ctx.lineWidth = 6; ctx.beginPath(); ctx.arc(x, y, 72 * back(p, 2), 0, Math.PI * 2); ctx.stroke();
+    ctx.restore();
+    // badge above
+    const e = back(p, 2.6), by = y - 175 - (1 - eo3(p)) * 40;
+    ctx.save(); ctx.translate(x, by); ctx.scale(e, e);
+    ctx.strokeStyle = GOLD_L; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(0, 50); ctx.lineTo(0, 95); ctx.stroke();
+    ctx.fillStyle = goldGrad(-50, -50, 50, 50); ctx.beginPath(); ctx.arc(0, 0, 52, 0, Math.PI * 2); ctx.fill();
+    txt(digits[i], 0, 4, { size: 70, weight: 900, color: INK });
+    ctx.restore();
+  });
+  // lower (gold) sign glows when we pull back
+  HANDS_LO.forEach(([hx, hy], i) => {
+    const p = pr(t, 20.3 + i * 0.12, 20.7 + i * 0.12); if (p <= 0) return;
+    const [x, y] = toScr(hx, hy);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    const g = ctx.createRadialGradient(x, y, 0, x, y, 90); g.addColorStop(0, `rgba(255,200,90,${0.55 * p})`); g.addColorStop(1, 'rgba(255,200,90,0)');
+    ctx.fillStyle = g; ctx.fillRect(x - 90, y - 90, 180, 180); ctx.restore();
+  });
+  // copy
+  maskText('店家招牌', CX, 250, pr(t, 16.2, 16.7), { size: 56, weight: 700, color: GOLD_L, ls: 24 });
+  maskText('用手勢比出 1035', CX, 360, pr(t, 16.35, 16.85), { size: 94, weight: 900, color: WHITE, ls: 6 });
+  maskText('延續老診所的', CX, 1560, pr(t, 19.2, 19.6), { size: 60, weight: 700, color: CREAM, ls: 8 });
+  maskText('原有電話號碼', CX, 1650, pr(t, 19.35, 19.75), { size: 60, weight: 900, color: GOLD_L, ls: 8 });
+}
 
-function drawScene(i, t) { ctx.save(); scenes[i].f(t); ctx.restore(); }
+// ---------- timeline & transitions ----------
+// s/e = output time; os/k = original scene time base + speed (choreography kept, played more spaciously)
+const scenes = [
+  { s: 0, e: 5.333, f: S1, os: 0, k: 0.75, tr: null },
+  { s: 5.333, e: 10.667, f: S2, os: 4, k: 0.75, tr: 'cut' },
+  { s: 10.667, e: 16, f: S3, os: 8, k: 0.75, tr: 'bars' },
+  { s: 16, e: 21.333, f: SIGN, os: 16, k: 1, tr: 'push' },
+  { s: 21.333, e: 26.667, f: S4, os: 12, k: 0.75, tr: 'iris' },
+  { s: 26.667, e: 30.667, f: S5a, os: 16, k: 0.5, tr: 'diag' },
+  { s: 30.667, e: 34.667, f: S5b, os: 18, k: 0.5, tr: 'push' },
+  { s: 34.667, e: 40, f: S6, os: 20, k: 0.75, tr: 'bars2' },
+  { s: 40, e: 45.333, f: S7, os: 24, k: 0.75, tr: 'cut' },
+  { s: 45.333, e: 50.1, f: S8, os: 28, k: 0.8, tr: 'iris2' },
+];
+const TD = 0.45; // transition length, ends at the cut
+
+function drawScene(i, t) { const sc = scenes[i]; ctx.save(); sc.f(sc.os + (t - sc.s) * sc.k); ctx.restore(); }
 
 function render(t) {
+  RT = t;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
   let i = scenes.findIndex(s => t >= s.s && t < s.e); if (i < 0) i = scenes.length - 1;
@@ -670,7 +749,7 @@ function overlay(t) {
   ctx.drawImage(grain[Math.floor(t * 30) % grain.length], 0, 0, W, H);
   ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
   // showreel HUD
-  const light = t >= 16 && t < 18 || t >= 28;
+  const light = t >= 26.667 && t < 30.667 || t >= 45.333;
   const hc = light ? 'rgba(60,40,20,0.55)' : 'rgba(255,240,210,0.55)';
   const hp = eo3(pr(t, 0.2, 0.8));
   ctx.strokeStyle = hc; ctx.lineWidth = 3; ctx.globalAlpha = hp;
@@ -682,23 +761,25 @@ function overlay(t) {
   txt(tc, W - m - 20, m + 34, { size: 22, weight: 700, color: hc, align: 'right', ls: 4 });
   // progress line
   ctx.fillStyle = light ? BRICK : GOLD; ctx.globalAlpha = hp * 0.9;
-  ctx.fillRect(m + 20, H - m - 22, (W - 2 * m - 40) * cl(t / 30), 4);
+  ctx.fillRect(m + 20, H - m - 22, (W - 2 * m - 40) * cl(t / TOTAL), 4);
   ctx.globalAlpha = hp * 0.25; ctx.fillRect(m + 20, H - m - 22, (W - 2 * m - 40), 4);
   ctx.restore();
 }
 
 // ---------- font readiness ----------
-const ALLTEXT = '0123456789—TELADA 新銳建築獎第八屆首獎榮獲FIRSTPRZEColab作品名稱源自修復時於櫃中發現的老診所電話號碼臺中市區府路73號原為吳眼科百年屋再生咖啡烘焙展覽工作室保留前棟木架與紅磚牆以庭院廊道串聯兩後新舊交織光影流動受補助單位歷史活化計畫★同時是恭喜設團隊李預萍高思豪賀·COLLAB:';
+const ALLTEXT = '0123456789—TELADA 新銳建築獎第八屆首獎榮獲FIRSTPRZEColab作品名稱源自修復時於櫃中發現的老診所電話號碼臺中市區府路73號原為吳眼科百年屋再生咖啡烘焙展覽工作室保留前棟木架與紅磚牆以庭院廊道串聯兩後新舊交織光影流動受補助單位歷史活化計畫★同時是恭喜設團隊李預萍高思豪賀·COLLAB:店家招牌用手勢比出延續的原有電話號碼敬';
 window.ready = (async () => {
   const specs = [['400', SANS], ['700', SANS], ['900', SANS], ['700', SERIF], ['900', SERIF], ['400', SERIF]];
   await Promise.all(specs.map(([w, f]) => document.fonts.load(`${w} 40px ${f}`, ALLTEXT).catch(() => {})));
   await document.fonts.ready;
+  await Promise.all([loadImg('store', 'storefront.jpg'), loadImg('logo', 'logo.png')]);
+  if (IMG.logo) IMG.logoInk = tintLogo(IMG.logo, [20, 28, 40]);
   render(0);
   return [...document.fonts].filter(f => f.status === 'loaded').length;
 })();
 window.render = render;
 // preview mode: play in real time when opened with #play
-if (location.hash === '#play') window.ready.then(() => { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % 30); requestAnimationFrame(loop); })(); });
+if (location.hash === '#play') window.ready.then(() => { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % TOTAL); requestAnimationFrame(loop); })(); });
 </script>
 </body>
 </html>
