@@ -294,16 +294,18 @@ export const RTea: React.FC = () => {
         style={{
           position: "absolute",
           right: 70,
-          top: 780,
-          width: 300,
-          height: 300,
-          borderRadius: 150,
+          top: 620,
+          width: 440,
+          height: 440,
           overflow: "hidden",
-          border: `8px solid ${C.paper}`,
-          transform: `scale(${ap(f, [beat(4), beat(4) + 16], [0, 1])}) rotate(${ap(f, [beat(4), beat(7)], [-30, 0])}deg)`,
+          border: `10px solid ${C.paper}`,
+          boxShadow: "0 30px 60px rgba(0,0,0,0.45)",
+          opacity: ap(f, [beat(3), beat(3) + 6], [0, 1]),
+          transform: `translateY(${ap(f, [beat(3), beat(3) + 18], [200, 0])}px) rotate(${ap(f, [beat(3), beat(5)], [8, 3])}deg)`,
         }}
       >
-        <Img src={staticFile("visit/coffee.jpg")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        {/* 午茶茶點: coffee and handmade snacks */}
+        <Img src={staticFile("visit/snacks.jpg")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       </div>
       <div style={{ position: "absolute", left: 80, right: 80, top: 1100 }}>
         <Tag delay={beat(1)} size={38}>
@@ -397,15 +399,16 @@ export const RGifts: React.FC = () => {
       <div style={{ position: "absolute", left: 80, top: 1150, fontFamily: SANS, fontWeight: 700, fontSize: 34, color: C.red, letterSpacing: "0.2em", ...fade(beat(4)) }}>
         新聞局致贈
       </div>
-      <div style={{ position: "absolute", left: 80, top: 1205, width: 400, ...drop(beat(4.5), -2) }}>
-        <Img src={staticFile("visit/wine2.jpg")} style={{ width: "100%", display: "block", border: "10px solid #fff", boxShadow: "0 24px 50px rgba(0,0,0,0.2)" }} />
+      <div style={{ position: "absolute", left: 80, top: 1205, width: 480, ...drop(beat(4.5), -1.5) }}>
+        <Img src={staticFile("visit/awamori.jpg")} style={{ width: "100%", display: "block", border: "10px solid #fff", boxShadow: "0 24px 50px rgba(0,0,0,0.2)" }} />
       </div>
-      <div style={{ position: "absolute", left: 520, top: 1212, width: 400, ...drop(beat(5), 2) }}>
-        <Img src={staticFile("visit/wine1.jpg")} style={{ width: "100%", display: "block", border: "10px solid #fff", boxShadow: "0 24px 50px rgba(0,0,0,0.2)" }} />
-      </div>
-      <div style={{ position: "absolute", left: 80, top: 1495, width: 940, ...fade(beat(5.5)) }}>
-        <span style={{ fontFamily: SANS, fontWeight: 700, fontSize: 34, color: C.red, marginRight: 14 }}>金馬63聯名</span>
-        <span style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 42, color: C.ink }}>《史詩泡盛—道卡斯地酒》</span>
+      <div style={{ position: "absolute", left: 600, top: 1230, width: 420, ...fade(beat(5)) }}>
+        <div style={{ fontFamily: SANS, fontWeight: 900, fontSize: 36, color: C.red }}>金馬63聯名</div>
+        <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 48, color: C.ink, lineHeight: 1.3, marginTop: 8 }}>
+          《史詩泡盛—
+          <br />
+          道卡斯地酒》
+        </div>
       </div>
     </AbsoluteFill>
   );
