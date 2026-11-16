@@ -7,10 +7,10 @@ import { BAR, beat, BlurFill, Kicker, Shade } from "./kit";
 /* ───────────── 州廳 overview (4 bars) ───────────── */
 
 const HALL_FLOW = [
-  { t: "11:00", a: "迎賓 · 發放導覽機", p: "大門" },
-  { t: "11:05", a: "州廳建築導覽", p: "游英俊副局長" },
-  { t: "11:30", a: "市長邀請展", p: "A 展覽廳" },
-  { t: "11:50", a: "自由活動時間", p: "大門" },
+  { t: "11:00", a: "迎賓 · 發放導覽機", p: "" },
+  { t: "11:05", a: "州廳建築導覽", p: "游副局長" },
+  { t: "11:30", a: "A 展廳 市長邀請展", p: "許秀蘭科長" },
+  { t: "11:50", a: "中央門廳大合照 · 自由活動", p: "" },
 ];
 
 export const RHall: React.FC = () => {
@@ -24,10 +24,10 @@ export const RHall: React.FC = () => {
         dir="down"
         zoom={[1.2, 1.02]}
         revealDur={beat(2)}
-        style={{ left: 0, top: 240, width: 1080, height: 680 }}
+        style={{ left: 0, top: 240, width: 1080, height: 590 }}
       />
-      <Rule delay={beat(2)} dur={beat(2)} color={C.mint} style={{ left: 0, top: 920, width: 1080, height: 8 }} />
-      <div style={{ position: "absolute", left: 80, right: 80, top: 970 }}>
+      <Rule delay={beat(2)} dur={beat(2)} color={C.mint} style={{ left: 0, top: 830, width: 1080, height: 8 }} />
+      <div style={{ position: "absolute", left: 80, right: 80, top: 870 }}>
         <Tag delay={beat(1)} size={36}>
           11:00 – 12:00 · 第一站
         </Tag>
@@ -60,6 +60,22 @@ export const RHall: React.FC = () => {
               </div>
             );
           })}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: 20,
+              marginTop: 8,
+              padding: "10px 18px",
+              background: "rgba(212,176,106,0.16)",
+              borderLeft: `6px solid ${C.gold}`,
+              opacity: ap(f, [beat(4) + 14, beat(4) + 22], [0, 1]),
+              transform: `translateX(${ap(f, [beat(4) + 14, beat(4) + 30], [60, 0])}px)`,
+            }}
+          >
+            <span style={{ fontFamily: SANS, fontWeight: 900, fontSize: 36, color: C.gold }}>★ 11:55</span>
+            <span style={{ fontFamily: SERIF, fontWeight: 700, fontSize: 40, color: C.paper }}>市長抵達 · 與貴賓大合照</span>
+          </div>
         </div>
       </div>
     </AbsoluteFill>
@@ -90,8 +106,6 @@ type Stop = { id: string; label: string; floor: string; x: number; y: number; lx
 const STOPS: Stop[] = [
   { id: "gate", label: "大門", floor: "1F", x: 132, y: 690, lx: -16, ly: 52, anchor: "end" },
   { id: "hall", label: "中央門廳", floor: "1F", x: 150, y: 648, lx: 36, ly: 60 },
-  // The stair sits in the corner between the two wings, right next to 中央門廳.
-  { id: "stair", label: "中央門廳樓梯", floor: "1F", x: 172, y: 628, lx: 30, ly: -10 },
   // 中正廳 is directly above 中央門廳: same plan position, one floor up.
   { id: "zz", label: "中正廳", floor: "2F", x: 150, y: 648, lx: -40, ly: -22, anchor: "end" },
   { id: "zs", label: "中山廳", floor: "2F", x: 352, y: 500, lx: 0, ly: -40, anchor: "middle" },
@@ -102,8 +116,7 @@ const STOPS: Stop[] = [
 // Walk through the corridors between stops (way-points in plan units).
 const LEGS: [number, number][][] = [
   [[132, 690], [150, 648]],
-  [[150, 648], [172, 628]],
-  [[172, 628], [150, 648]], // up the stair to 中正廳, above the hall
+  [[150, 648], [172, 628], [150, 648]], // up the 中央門廳 stair to 中正廳, above the hall
   [[150, 648], [175, 640], [300, 640], [332, 600], [352, 500]],
   [[352, 500], [352, 500]], // straight down the stairs, no horizontal move
   [[352, 500], [332, 600], [300, 640], [175, 640], [145, 610], [145, 520]],
@@ -132,9 +145,12 @@ const pointAt = (pts: [number, number][], t: number) => {
   return P(...pts[pts.length - 1]);
 };
 
-// Leg k starts on the downbeat schedule below and takes 3 beats.
-const LEG_START = (k: number) => BAR + Math.round(k * 3 * (BAR / 4)) + (k >= 5 ? BAR / 4 : 0);
-const LEG_DUR = beat(2.5);
+// The stair between the two wings, beside 中央門廳 (a way-point, not a numbered stop).
+const STAIR = { x: 172, y: 628 };
+
+// Leg k starts every 3.6 beats after the first bar and takes 3 beats.
+const LEG_START = (k: number) => BAR + Math.round(k * beat(3.6));
+const LEG_DUR = beat(3);
 
 export const RRoute: React.FC = () => {
   const f = useCurrentFrame();
@@ -211,6 +227,18 @@ export const RRoute: React.FC = () => {
             />
           );
         })}
+        {/* stair marker */}
+        {(() => {
+          const [x, y] = P(STAIR.x, STAIR.y);
+          return (
+            <g opacity={ap(f, [beat(2), beat(2) + 8], [0, 1])}>
+              <rect x={x - 9} y={y - 9} width={18} height={18} fill="none" stroke="rgba(244,240,232,0.6)" strokeWidth={3} />
+              <text x={x + 22} y={y - 12} fill="rgba(244,240,232,0.6)" fontFamily={SANS} fontSize={24} style={{ paintOrder: "stroke", stroke: C.ink, strokeWidth: 6 }}>
+                樓梯
+              </text>
+            </g>
+          );
+        })()}
         {/* stops */}
         {STOPS.map((s, i) => {
           const [x, y] = P(s.x, s.y);
@@ -333,7 +361,7 @@ export const RMayorShow: React.FC = () => {
         <RiseText text="向臺中前輩藝術家致敬特展" delay={beat(3)} stagger={1} style={{ fontFamily: SERIF, fontWeight: 700, fontSize: 58, color: C.paper, marginTop: 10 }} />
         <div style={{ display: "flex", gap: 30, marginTop: 26, fontFamily: SANS, fontSize: 34, color: C.mint, opacity: ap(f, [beat(4), beat(4) + 8], [0, 1]) }}>
           <span>展期 115/10/15 – 12/24</span>
-          <span style={{ color: C.dim }}>導覽｜文化局視覺藝術科</span>
+          <span style={{ color: C.dim }}>導覽｜許秀蘭科長</span>
         </div>
       </div>
 
@@ -380,9 +408,10 @@ export const RMayorShow: React.FC = () => {
                     transform: `translateY(${ap(f, [d, d + 18], [60, 0])}px)`,
                   }}
                 >
-                  <div style={{ fontFamily: SANS, fontWeight: 700, fontSize: 36, color: C.mint }}>11:50 – 12:00</div>
-                  <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 60, color: C.paper, marginTop: 8 }}>自由活動時間</div>
-                  <div style={{ fontFamily: SANS, fontSize: 32, color: C.dim, marginTop: 8 }}>地點｜大門</div>
+                  <div style={{ fontFamily: SANS, fontWeight: 700, fontSize: 32, color: C.mint }}>11:50 – 12:00</div>
+                  <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 48, color: C.paper, marginTop: 6 }}>中央門廳大合照</div>
+                  <div style={{ fontFamily: SANS, fontSize: 30, color: C.dim, marginTop: 4 }}>自由活動</div>
+                  <div style={{ fontFamily: SANS, fontWeight: 700, fontSize: 28, color: C.gold, marginTop: 10 }}>★ 11:55 市長抵達，與貴賓大合照</div>
                 </div>
               );
             })()}

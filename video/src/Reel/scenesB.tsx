@@ -4,7 +4,90 @@ import { Count, Photo, RiseText, Rule, Tag } from "../Visit/primitives";
 import { ap, C, IN, INOUT, OUT, SANS, SERIF } from "../Visit/theme";
 import { BAR, beat, BlurFill, Kicker, Shade, usePulse } from "./kit";
 
-/* ───────────── 車程 + 國巨展 (6 bars) ───────────── */
+/* ───────────── 車程 + 綠美圖動線 (4 bars) ───────────── */
+
+const ARRIVE_STEPS = [
+  { a: "綠美圖大廳迎賓", b: "" },
+  { a: "建築空間導覽", b: "中美館 賴依欣館長" },
+  { a: "5F 展覽室 D&E", b: "搶先預覽《蠍子與青蛙》" },
+];
+
+export const RArrive: React.FC = () => {
+  const f = useCurrentFrame();
+  const car = ap(f, [4, BAR + 6], [0, 1], INOUT);
+  return (
+    <AbsoluteFill style={{ background: C.ink, overflow: "hidden" }}>
+      <AbsoluteFill style={{ background: "radial-gradient(circle at 70% 60%, rgba(143,211,195,0.14), transparent 55%)" }} />
+      {/* the drive */}
+      <div style={{ position: "absolute", left: 80, right: 80, top: 280 }}>
+        <Kicker>14:00 – 14:30 · 移動</Kicker>
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 26, fontFamily: SERIF, fontWeight: 700, fontSize: 56, color: C.paper }}>
+          <span>市役所</span>
+          <span style={{ color: car > 0.98 ? C.mint : C.paper }}>綠美圖</span>
+        </div>
+        <svg width={920} height={40} style={{ marginTop: 14 }}>
+          <line x1={10} y1={20} x2={910} y2={20} stroke={C.line} strokeWidth={4} strokeDasharray="14 12" />
+          <line x1={10} y1={20} x2={10 + 900 * car} y2={20} stroke={C.mint} strokeWidth={4} strokeDasharray="14 12" />
+          <circle cx={10} cy={20} r={10} fill={C.paper} />
+          <circle cx={10 + 900 * car} cy={20} r={16} fill={C.mint} />
+        </svg>
+        <div style={{ fontFamily: SANS, fontSize: 36, color: C.dim, marginTop: 10 }}>車程約 30 分鐘</div>
+      </div>
+
+      {/* arrival + tour flow */}
+      <div style={{ position: "absolute", left: 80, right: 80, top: 640 }}>
+        <Tag delay={BAR} size={38} color={C.red} text={C.paper}>
+          14:30 – 16:00 · 第三站
+        </Tag>
+        <RiseText text="臺中綠美圖" delay={BAR + beat(1)} stagger={2.5} style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 140, color: C.paper, marginTop: 20 }} />
+        <RiseText text="綠美圖暨國巨典藏展" delay={BAR + beat(2)} stagger={1} style={{ fontFamily: SANS, fontWeight: 500, fontSize: 46, color: C.paper, marginTop: 6 }} />
+        <div style={{ position: "relative", marginTop: 50 }}>
+          <Rule vertical delay={BAR + beat(3)} dur={20} color={C.mint} style={{ left: 27, top: 30, height: 360 }} />
+          {ARRIVE_STEPS.map((s, i) => {
+            const d = BAR + beat(3) + i * 4;
+            return (
+              <div
+                key={s.a}
+                style={{
+                  position: "relative",
+                  height: 180,
+                  paddingLeft: 96,
+                  opacity: ap(f, [d, d + 8], [0, 1]),
+                  transform: `translateX(${ap(f, [d, d + 18], [80, 0])}px)`,
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    top: 4,
+                    width: 56,
+                    height: 56,
+                    borderRadius: 28,
+                    background: i === 2 ? C.red : C.mint,
+                    color: i === 2 ? C.paper : C.ink,
+                    fontFamily: SANS,
+                    fontWeight: 900,
+                    fontSize: 32,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {i + 1}
+                </div>
+                <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 60, color: C.paper }}>{s.a}</div>
+                {s.b ? <div style={{ fontFamily: SANS, fontWeight: 500, fontSize: 36, color: i === 2 ? C.red : C.mint, marginTop: 6 }}>{s.b}</div> : null}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+/* ───────────── 國巨典藏展 (4 bars) ───────────── */
 
 const STATS = [
   { n: 66, u: "件", l: "世界級經典名作" },
@@ -16,78 +99,23 @@ const STATS = [
 
 export const RShow: React.FC = () => {
   const f = useCurrentFrame();
-  // Bar 1: the drive. Bars 2–6: the exhibition.
-  const car = ap(f, [4, BAR + 10], [0, 1], INOUT);
-  const driveOut = ap(f, [BAR + 14, BAR + 26], [0, -260], IN);
   const pulse = usePulse(0.03);
   return (
     <AbsoluteFill style={{ background: C.ink, overflow: "hidden" }}>
-      {/* the drive */}
-      <div
-        style={{
-          position: "absolute",
-          left: 80,
-          right: 80,
-          top: 290,
-          transform: `translateY(${driveOut}px)`,
-          opacity: ap(f, [BAR + 14, BAR + 26], [1, 0]),
-        }}
-      >
-        <Kicker>14:00 – 14:30 · 移動</Kicker>
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 36, fontFamily: SERIF, fontWeight: 700, fontSize: 64, color: C.paper }}>
-          <span>市役所</span>
-          <span style={{ color: car > 0.98 ? C.mint : C.paper }}>綠美圖</span>
-        </div>
-        <svg width={920} height={40} style={{ marginTop: 18 }}>
-          <line x1={10} y1={20} x2={910} y2={20} stroke={C.line} strokeWidth={4} strokeDasharray="14 12" />
-          <line x1={10} y1={20} x2={10 + 900 * car} y2={20} stroke={C.mint} strokeWidth={4} strokeDasharray="14 12" />
-          <circle cx={10} cy={20} r={10} fill={C.paper} />
-          <circle cx={10 + 900 * car} cy={20} r={16} fill={C.mint} />
-        </svg>
-        <div style={{ fontFamily: SANS, fontSize: 44, color: C.dim, marginTop: 14 }}>車程約 30 分鐘</div>
-      </div>
-
-      {/* the exhibition */}
-      <Photo
-        src="poster.jpg"
-        delay={BAR + 8}
-        dir="left"
-        zoom={[1.15, 1.0]}
-        revealDur={beat(2)}
-        style={{ left: 0, top: 260, width: 1080, height: 662 }}
-      />
-      <Rule delay={BAR + 20} dur={20} color={C.red} style={{ left: 0, top: 922, width: 1080, height: 8 }} />
+      <Photo src="poster.jpg" delay={0} dir="left" zoom={[1.15, 1.0]} revealDur={beat(2)} style={{ left: 0, top: 260, width: 1080, height: 662 }} />
+      <Rule delay={beat(1)} dur={20} color={C.red} style={{ left: 0, top: 922, width: 1080, height: 8 }} />
       <div style={{ position: "absolute", left: 80, right: 80, top: 980 }}>
-        <Tag delay={BAR + beat(2)} size={38} color={C.red} text={C.paper}>
-          14:30 – 16:00 · 第三站 綠美圖
+        <Tag delay={beat(1)} size={38} color={C.red} text={C.paper}>
+          5F 展覽室 D&E · 搶先預覽
         </Tag>
-        <RiseText
-          text="蠍子與青蛙"
-          delay={BAR + beat(3)}
-          stagger={2.5}
-          style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 140, color: C.paper, marginTop: 22 }}
-        />
-        <RiseText
-          text="國巨基金會典藏展"
-          delay={2 * BAR}
-          stagger={1.5}
-          style={{ fontFamily: SERIF, fontWeight: 500, fontSize: 60, color: C.paper, marginTop: 4 }}
-        />
-        <div
-          style={{
-            fontFamily: SANS,
-            fontWeight: 500,
-            fontSize: 40,
-            color: C.mint,
-            marginTop: 16,
-            opacity: ap(f, [2 * BAR + beat(1), 2 * BAR + beat(1) + 8], [0, 1]),
-          }}
-        >
+        <RiseText text="蠍子與青蛙" delay={beat(2)} stagger={2.5} style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 140, color: C.paper, marginTop: 22 }} />
+        <RiseText text="國巨基金會典藏展" delay={beat(3)} stagger={1.5} style={{ fontFamily: SERIF, fontWeight: 500, fontSize: 60, color: C.paper, marginTop: 4 }} />
+        <div style={{ fontFamily: SANS, fontWeight: 500, fontSize: 40, color: C.mint, marginTop: 16, opacity: ap(f, [beat(4), beat(4) + 8], [0, 1]) }}>
           11/20 正式開展 · 貴賓搶先觀展
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", rowGap: 26, marginTop: 40 }}>
           {STATS.map((s, i) => {
-            const d = 3 * BAR + beat(i);
+            const d = beat(5) + i * 3;
             return (
               <div
                 key={s.l}
@@ -100,16 +128,7 @@ export const RShow: React.FC = () => {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-                  <span
-                    style={{
-                      fontFamily: SANS,
-                      fontWeight: 900,
-                      fontSize: 92,
-                      lineHeight: 1,
-                      color: s.hot ? C.red : C.paper,
-                      fontVariantNumeric: "tabular-nums",
-                    }}
-                  >
+                  <span style={{ fontFamily: SANS, fontWeight: 900, fontSize: 92, lineHeight: 1, color: s.hot ? C.red : C.paper, fontVariantNumeric: "tabular-nums" }}>
                     <Count to={s.n} delay={d} dur={20} />
                   </span>
                   <span style={{ fontFamily: SERIF, fontWeight: 700, fontSize: 38, color: C.paper }}>{s.u}</span>
@@ -185,7 +204,7 @@ export const RWorks: React.FC = () => {
     <AbsoluteFill style={{ background: C.ink, overflow: "hidden" }}>
       <AbsoluteFill style={{ background: "radial-gradient(circle at 80% 20%, rgba(224,53,43,0.14), transparent 50%)" }} />
       <div style={{ position: "absolute", left: 80, right: 80, top: 280 }}>
-        <Kicker>14:30 · 國巨展</Kicker>
+        <Kicker>14:30 · 國巨典藏展</Kicker>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginTop: 18 }}>
           <RiseText text="重點導覽作品" delay={2} stagger={2} style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 100, color: C.paper }} />
           <div style={{ fontFamily: SANS, fontWeight: 700, fontSize: 44, color: C.mint, fontVariantNumeric: "tabular-nums" }}>
@@ -226,12 +245,7 @@ export const RCurator: React.FC = () => {
         <Tag delay={beat(1)} size={38}>
           策展人親自導覽
         </Tag>
-        <RiseText
-          text="菲利普．拉瑞特史密斯"
-          delay={beat(2)}
-          stagger={1.5}
-          style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 86, color: C.paper, marginTop: 26 }}
-        />
+        <RiseText text="菲利普．拉瑞特－史密斯" delay={beat(2)} stagger={1.5} style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 80, color: C.paper, marginTop: 26 }} />
         <RiseText text="Philip Larratt-Smith" delay={beat(3)} stagger={0.6} style={{ fontFamily: SANS, fontWeight: 300, fontSize: 48, color: C.dim, marginTop: 6 }} />
         <div style={{ marginTop: 34 }}>
           {facts.map((t, i) => {
@@ -258,8 +272,8 @@ export const RCurator: React.FC = () => {
           })}
         </div>
         <div style={{ marginTop: 44 }}>
-          <Tag delay={beat(8)} size={46} color={C.gold} text={C.ink}>
-            全程同步中文口譯
+          <Tag delay={beat(8)} size={44} color={C.gold} text={C.ink}>
+            英文導覽 · 現場備有中文同步口譯
           </Tag>
         </div>
       </div>
@@ -267,7 +281,7 @@ export const RCurator: React.FC = () => {
   );
 };
 
-/* ───────────── 茶敘 (4 bars) ───────────── */
+/* ───────────── 午茶交流 (4 bars) ───────────── */
 
 export const RTea: React.FC = () => {
   const f = useCurrentFrame();
@@ -280,7 +294,7 @@ export const RTea: React.FC = () => {
         style={{
           position: "absolute",
           right: 70,
-          top: 820,
+          top: 780,
           width: 300,
           height: 300,
           borderRadius: 150,
@@ -291,24 +305,33 @@ export const RTea: React.FC = () => {
       >
         <Img src={staticFile("visit/coffee.jpg")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       </div>
-      <div style={{ position: "absolute", left: 80, right: 80, top: 1130 }}>
+      <div style={{ position: "absolute", left: 80, right: 80, top: 1100 }}>
         <Tag delay={beat(1)} size={38}>
           16:00 – 16:30 · 第四站
         </Tag>
-        <RiseText
-          text="咖啡廳茶敘"
-          delay={beat(2)}
-          stagger={2.5}
-          style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 160, color: C.paper, marginTop: 24 }}
-        />
-        <RiseText
-          text="綠美圖一樓 · Pharos Coffee"
-          delay={beat(3)}
-          stagger={0.8}
-          style={{ fontFamily: SANS, fontWeight: 500, fontSize: 50, color: C.paper, marginTop: 10 }}
-        />
-        <div style={{ fontFamily: SANS, fontSize: 42, color: C.mint, marginTop: 18, letterSpacing: "0.3em", opacity: ap(f, [beat(5), beat(5) + 8], [0, 1]) }}>
-          全場包場
+        <RiseText text="午茶交流" delay={beat(2)} stagger={2.5} style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 160, color: C.paper, marginTop: 24 }} />
+        <RiseText text="Pharos Coffee · 綠美圖一樓" delay={beat(3)} stagger={0.8} style={{ fontFamily: SANS, fontWeight: 500, fontSize: 48, color: C.paper, marginTop: 10 }} />
+        <div style={{ display: "flex", gap: 18, marginTop: 24 }}>
+          {["專屬包場空間", "手沖咖啡", "手作甜點"].map((t, i) => {
+            const d = beat(4) + i * 3;
+            return (
+              <div
+                key={t}
+                style={{
+                  fontFamily: SANS,
+                  fontWeight: 500,
+                  fontSize: 36,
+                  color: C.paper,
+                  border: `2px solid ${C.mint}`,
+                  padding: "8px 22px",
+                  opacity: ap(f, [d, d + 8], [0, 1]),
+                  transform: `scale(${ap(f, [d, d + 14], [0.8, 1])})`,
+                }}
+              >
+                {t}
+              </div>
+            );
+          })}
         </div>
       </div>
     </AbsoluteFill>
@@ -317,42 +340,95 @@ export const RTea: React.FC = () => {
 
 /* ───────────── 伴手禮 (4 bars) ───────────── */
 
+/** Simple incense-stick mark, for the gift that has no photo. */
+const Incense: React.FC<{ d: number }> = ({ d }) => {
+  const f = useCurrentFrame();
+  const sway = Math.sin((f - d) / 9) * 6;
+  return (
+    <svg width={180} height={220} viewBox="0 0 180 220">
+      {[60, 90, 120].map((x, i) => (
+        <g key={x}>
+          <line x1={x} y1={110} x2={x} y2={210} stroke={C.gold} strokeWidth={5} strokeLinecap="round" />
+          <circle cx={x} cy={110} r={5} fill={C.red} />
+          <path
+            d={`M${x} 104 C ${x - 18 + sway} 80, ${x + 18 - sway} 60, ${x + sway / 2} 20`}
+            fill="none"
+            stroke="rgba(244,240,232,0.55)"
+            strokeWidth={3}
+            strokeLinecap="round"
+            pathLength={1}
+            strokeDasharray="1 1"
+            strokeDashoffset={1 - ap(f, [d + i * 3, d + i * 3 + 24], [0, 1])}
+          />
+        </g>
+      ))}
+    </svg>
+  );
+};
+
 export const RGifts: React.FC = () => {
   const f = useCurrentFrame();
   const drop = (d: number, rot: number) => ({
     opacity: ap(f, [d, d + 6], [0, 1]),
     transform: `translateY(${ap(f, [d, d + 18], [220, 0], OUT)}px) rotate(${ap(f, [d, d + 24], [rot * 4, rot])}deg)`,
   });
+  const fade = (d: number) => ({ opacity: ap(f, [d, d + 8], [0, 1]) });
   return (
     <AbsoluteFill style={{ background: C.paper, overflow: "hidden" }}>
-      <div style={{ position: "absolute", left: 80, top: 260, display: "flex", alignItems: "center", gap: 30 }}>
+      <div style={{ position: "absolute", left: 80, top: 250, display: "flex", alignItems: "center", gap: 30 }}>
         <RiseText text="伴手禮" delay={2} stagger={2} style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 110, color: C.ink }} />
-        <Tag delay={beat(1)} size={36} color={C.ink} text={C.paper}>
-          致贈貴賓
+        <Tag delay={beat(1)} size={34} color={C.ink} text={C.paper}>
+          午宴後 市長致贈
         </Tag>
       </div>
-      {/* 典藏明信片＋手札 */}
-      <div style={{ position: "absolute", left: 150, top: 440, width: 780, ...drop(beat(1), -1.5) }}>
-        <div style={{ background: "#fff", padding: 18, boxShadow: "0 30px 60px rgba(0,0,0,0.18)" }}>
+
+      {/* 文化局 */}
+      <div style={{ position: "absolute", left: 80, top: 430, fontFamily: SANS, fontWeight: 700, fontSize: 34, color: C.red, letterSpacing: "0.2em", ...fade(beat(1)) }}>
+        文化局致贈
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: 80,
+          top: 490,
+          width: 290,
+          height: 440,
+          background: C.ink,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "0 30px 60px rgba(0,0,0,0.2)",
+          ...drop(beat(1.5), -1.5),
+        }}
+      >
+        <Incense d={beat(2)} />
+        <div style={{ fontFamily: SANS, fontSize: 28, color: C.gold, letterSpacing: "0.3em", marginTop: 10 }}>臺中州廳</div>
+        <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 72, color: C.paper, marginTop: 4 }}>心香</div>
+      </div>
+      <div style={{ position: "absolute", left: 400, top: 490, width: 600, ...drop(beat(2), 1.5) }}>
+        <div style={{ background: "#fff", padding: 14, boxShadow: "0 30px 60px rgba(0,0,0,0.18)" }}>
           <Img src={staticFile("visit/postcards.jpg")} style={{ width: "100%", display: "block" }} />
         </div>
-        <div style={{ marginTop: 22, fontFamily: SERIF, fontWeight: 900, fontSize: 58, color: C.ink }}>
-          官方典藏明信片＋手札
-        </div>
       </div>
-      {/* 金馬聯名酒禮 */}
-      <div style={{ position: "absolute", left: 80, top: 1160, width: 920 }}>
-        <div style={{ position: "relative", height: 330 }}>
-          <div style={{ position: "absolute", left: 0, top: 0, width: 470, ...drop(beat(4), -3) }}>
-            <Img src={staticFile("visit/wine1.jpg")} style={{ width: "100%", display: "block", border: "12px solid #fff", boxShadow: "0 24px 50px rgba(0,0,0,0.2)" }} />
-          </div>
-          <div style={{ position: "absolute", left: 450, top: 20, width: 470, ...drop(beat(5), 3) }}>
-            <Img src={staticFile("visit/wine2.jpg")} style={{ width: "100%", display: "block", border: "12px solid #fff", boxShadow: "0 24px 50px rgba(0,0,0,0.2)" }} />
-          </div>
-        </div>
-        <div style={{ marginTop: 26, fontFamily: SERIF, fontWeight: 900, fontSize: 58, color: C.ink, opacity: ap(f, [beat(6), beat(6) + 8], [0, 1]) }}>
-          金馬聯名酒禮
-        </div>
+      <div style={{ position: "absolute", left: 80, top: 955, width: 920, display: "flex", gap: 30, ...fade(beat(3)) }}>
+        <div style={{ width: 290, fontFamily: SERIF, fontWeight: 900, fontSize: 38, color: C.ink }}>① 臺中州廳心香</div>
+        <div style={{ flex: 1, fontFamily: SERIF, fontWeight: 900, fontSize: 36, color: C.ink, lineHeight: 1.3 }}>② 《蠍子與青蛙》圖錄＋套裝明信片</div>
+      </div>
+
+      {/* 新聞局 */}
+      <div style={{ position: "absolute", left: 80, top: 1090, fontFamily: SANS, fontWeight: 700, fontSize: 34, color: C.red, letterSpacing: "0.2em", ...fade(beat(4)) }}>
+        新聞局致贈
+      </div>
+      <div style={{ position: "absolute", left: 80, top: 1150, width: 440, ...drop(beat(4.5), -2) }}>
+        <Img src={staticFile("visit/wine2.jpg")} style={{ width: "100%", display: "block", border: "12px solid #fff", boxShadow: "0 24px 50px rgba(0,0,0,0.2)" }} />
+      </div>
+      <div style={{ position: "absolute", left: 560, top: 1160, width: 440, ...drop(beat(5), 2) }}>
+        <Img src={staticFile("visit/wine1.jpg")} style={{ width: "100%", display: "block", border: "12px solid #fff", boxShadow: "0 24px 50px rgba(0,0,0,0.2)" }} />
+      </div>
+      <div style={{ position: "absolute", left: 80, top: 1475, width: 920, ...fade(beat(5.5)) }}>
+        <span style={{ fontFamily: SANS, fontWeight: 700, fontSize: 36, color: C.red, marginRight: 16 }}>金馬63聯名</span>
+        <span style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 46, color: C.ink }}>《史詩泡盛—道卡斯地酒》</span>
       </div>
     </AbsoluteFill>
   );
@@ -361,37 +437,42 @@ export const RGifts: React.FC = () => {
 /* ───────────── Outro (4 bars) ───────────── */
 
 const STOPS = [
-  { t: "11:00", n: "台中州廳" },
-  { t: "12:00", n: "市役所" },
-  { t: "14:30", n: "綠美圖" },
+  { t: "11:00", n: "臺中州廳" },
+  { t: "12:00", n: "臺中市役所" },
+  { t: "14:30", n: "臺中綠美圖" },
+  { t: "16:30", n: "高鐵臺中站", s: "專車送返" },
 ];
 
 export const ROutro: React.FC = () => {
   const f = useCurrentFrame();
-  const line = ap(f, [beat(1), beat(5)], [0, 1], INOUT);
+  const line = ap(f, [beat(1), beat(6)], [0, 1], INOUT);
   const end = 4 * BAR;
+  const gap = 200;
   return (
     <AbsoluteFill style={{ background: C.ink, overflow: "hidden", opacity: ap(f, [end - 14, end], [1, 0]) }}>
       <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 45%, rgba(143,211,195,0.16), transparent 55%)" }} />
-      <div style={{ position: "absolute", left: 0, right: 0, top: 300, textAlign: "center" }}>
+      <div style={{ position: "absolute", left: 0, right: 0, top: 290, textAlign: "center" }}>
         <div style={{ fontFamily: SANS, fontWeight: 500, fontSize: 48, color: C.mint, letterSpacing: "0.12em", opacity: ap(f, [0, 10], [0, 1]) }}>
           11月17日（二）
         </div>
         <div style={{ fontFamily: SANS, fontWeight: 700, fontSize: 64, color: C.paper, marginTop: 10, opacity: ap(f, [4, 14], [0, 1]) }}>
-          11:00 – 16:30
+          11:00 – 17:00
         </div>
       </div>
-      <div style={{ position: "absolute", left: 220, top: 560, height: 640 }}>
-        <div style={{ position: "absolute", left: 18, top: 20, width: 6, height: 600, background: C.line }} />
-        <div style={{ position: "absolute", left: 18, top: 20, width: 6, height: 600 * line, background: C.mint }} />
+      <div style={{ position: "absolute", left: 220, top: 540 }}>
+        <div style={{ position: "absolute", left: 18, top: 20, width: 6, height: gap * 3, background: C.line }} />
+        <div style={{ position: "absolute", left: 18, top: 20, width: 6, height: gap * 3 * line, background: C.mint }} />
         {STOPS.map((s, i) => {
-          const d = beat(1 + i * 2);
+          const d = beat(1 + i * 1.5);
           return (
-            <div key={s.n} style={{ position: "absolute", left: 0, top: i * 300, display: "flex", alignItems: "center", gap: 40 }}>
-              <div style={{ width: 42, height: 42, borderRadius: 21, background: C.mint, transform: `scale(${ap(f, [d, d + 12], [0, 1])})` }} />
+            <div key={s.n} style={{ position: "absolute", left: 0, top: i * gap, display: "flex", alignItems: "center", gap: 40 }}>
+              <div style={{ width: 42, height: 42, borderRadius: 21, background: i === 3 ? C.gold : C.mint, transform: `scale(${ap(f, [d, d + 12], [0, 1])})` }} />
               <div style={{ whiteSpace: "nowrap", opacity: ap(f, [d + 2, d + 12], [0, 1]), transform: `translateX(${ap(f, [d, d + 18], [40, 0])}px)` }}>
-                <div style={{ fontFamily: SANS, fontWeight: 700, fontSize: 40, color: C.mint }}>{s.t}</div>
-                <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 86, color: C.paper }}>{s.n}</div>
+                <div style={{ fontFamily: SANS, fontWeight: 700, fontSize: 36, color: i === 3 ? C.gold : C.mint }}>
+                  {s.t}
+                  {s.s ? <span style={{ color: C.dim, marginLeft: 16 }}>{s.s}</span> : null}
+                </div>
+                <div style={{ fontFamily: SERIF, fontWeight: 900, fontSize: 76, color: C.paper }}>{s.n}</div>
               </div>
             </div>
           );

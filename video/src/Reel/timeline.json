@@ -3,57 +3,20 @@
   "fps": 30,
   "framesPerBar": 50,
   "scenes": [
-    {
-      "id": "title",
-      "bars": 4
-    },
-    {
-      "id": "guests",
-      "bars": 3.5
-    },
-    {
-      "id": "schedule",
-      "bars": 2
-    },
-    {
-      "id": "hall",
-      "bars": 4
-    },
-    {
-      "id": "route",
-      "bars": 6
-    },
-    {
-      "id": "mayorShow",
-      "bars": 6
-    },
-    {
-      "id": "lunch",
-      "bars": 4
-    },
-    {
-      "id": "show",
-      "bars": 6
-    },
-    {
-      "id": "works",
-      "bars": 6
-    },
-    {
-      "id": "curator",
-      "bars": 4
-    },
-    {
-      "id": "tea",
-      "bars": 4
-    },
-    {
-      "id": "gifts",
-      "bars": 4
-    },
-    {
-      "id": "outro",
-      "bars": 4
-    }
+    { "id": "title", "bars": 4 },
+    { "id": "media", "bars": 4 },
+    { "id": "officials", "bars": 3.5 },
+    { "id": "schedule", "bars": 3 },
+    { "id": "hall", "bars": 4 },
+    { "id": "route", "bars": 6 },
+    { "id": "mayorShow", "bars": 6 },
+    { "id": "lunch", "bars": 4 },
+    { "id": "gifts", "bars": 4 },
+    { "id": "arrive", "bars": 4 },
+    { "id": "show", "bars": 4 },
+    { "id": "works", "bars": 6 },
+    { "id": "curator", "bars": 4 },
+    { "id": "tea", "bars": 4 },
+    { "id": "outro", "bars": 4 }
   ]
 }

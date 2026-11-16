@@ -4,18 +4,20 @@ import { Finish, Wipe } from "../Visit/primitives";
 import { ap, C, SANS } from "../Visit/theme";
 import { BAR } from "./kit";
 import timeline from "./timeline.json";
-import { RGuests, RLunch, RSchedule, RTitle } from "./scenesA";
+import { RLunch, RMedia, ROfficials, RSchedule, RTitle } from "./scenesA";
 import { RHall, RMayorShow, RRoute } from "./hall";
-import { RCurator, RGifts, ROutro, RShow, RTea, RWorks } from "./scenesB";
+import { RArrive, RCurator, RGifts, ROutro, RShow, RTea, RWorks } from "./scenesB";
 
 const COMPONENTS: Record<string, React.FC> = {
   title: RTitle,
-  guests: RGuests,
+  media: RMedia,
+  officials: ROfficials,
   schedule: RSchedule,
   hall: RHall,
   route: RRoute,
   mayorShow: RMayorShow,
   lunch: RLunch,
+  arrive: RArrive,
   show: RShow,
   works: RWorks,
   curator: RCurator,
@@ -37,24 +39,30 @@ const at = (id: string) => STARTS[timeline.scenes.findIndex((s) => s.id === id)]
 const WIPE_COLORS = [C.mint, C.red, C.gold, C.paper];
 const WIPE_LEAD = 12; // the wipe fully covers the frame 12 frames after it starts
 
-/* Itinerary progress, top of frame, from 州廳 through 茶敘. */
-const TIMES = ["11:00", "12:00", "14:00", "14:30", "16:00", "16:30"];
+/* Itinerary progress, top of frame, from 州廳 through 午茶. Hidden on the light 伴手禮 page. */
+const TIMES = ["11:00", "12:00", "14:00", "14:30", "16:00", "16:30", "17:00"];
 const HUD_FROM = at("hall");
-const HUD_TO = at("gifts");
+const HUD_TO = at("outro");
 
 const Hud: React.FC = () => {
   const local = useCurrentFrame();
   const g = local + HUD_FROM;
   const prog = interpolate(
     g,
-    [at("hall"), at("lunch"), at("show"), at("show") + BAR, at("show") + 2 * BAR, at("tea"), at("tea") + 4 * BAR],
-    [0, 1, 2, 3, 3.1, 4, 4.85],
+    [at("hall"), at("lunch"), at("arrive"), at("arrive") + BAR, at("show"), at("tea"), at("outro")],
+    [0, 1, 2, 3, 3.1, 4, 4.9],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
-  const o = ap(local, [10, 22], [1e-3, 1]) * ap(local, [HUD_TO - HUD_FROM - 14, HUD_TO - HUD_FROM - 4], [1, 0]);
+  const giftsFrom = at("gifts");
+  const giftsTo = at("arrive");
+  const onGifts = g >= giftsFrom - 2 && g < giftsTo;
+  const o =
+    (onGifts ? 0 : 1) *
+    ap(local, [10, 22], [1e-3, 1]) *
+    ap(local, [HUD_TO - HUD_FROM - 14, HUD_TO - HUD_FROM - 4], [1, 0]);
   const L = 90;
   const Wd = 900;
-  const seg = Wd / 5;
+  const seg = Wd / (TIMES.length - 1);
   return (
     <AbsoluteFill style={{ opacity: o, pointerEvents: "none" }}>
       <div style={{ position: "absolute", left: L, top: 178, width: Wd, height: 4, background: "rgba(244,240,232,0.25)" }} />

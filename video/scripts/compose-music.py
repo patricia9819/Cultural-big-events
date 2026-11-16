@@ -55,23 +55,26 @@ PHRASE = {
     "C": [("G", "C1"), ("D", "C2"), ("G", "C3"), ("A", "C4")],
     "T": [("Em", "D1"), ("A7", "D2")],  # 2-bar turnaround onto V
     "S": [("G", "C1"), ("A", "C4")],  # short 2-bar phrase ending on V
+    "S3": [("G", "C1"), ("D", "C2"), ("A", "C4")],  # 3-bar phrase ending on V
     "END": [("D", "A1"), ("G", "A2"), ("A7", "A3"), ("D", "F1")],
 }
 
 # Per scene: phrases and orchestration level (1 light … 3 full), extra colour.
 PLAN = {
     "title": (["A"], 1, {}),
-    "guests": (["B"], 2, {}),
-    "schedule": (["S"], 2, {}),
+    "media": (["C"], 2, {}),
+    "officials": (["B"], 2, {}),  # 3.5 bars: last bar is cut to 2 beats
+    "schedule": (["S3"], 2, {}),
     "hall": (["C"], 3, {}),
     "route": (["B", "T"], 2, {}),
     "mayorShow": (["A", "T"], 2, {"lead": "oboe"}),
     "lunch": (["A"], 2, {"lead": "clarinet"}),
-    "show": (["C", "T"], 3, {}),
+    "gifts": (["C"], 2, {"glock": True}),
+    "arrive": (["B"], 2, {}),
+    "show": (["C"], 3, {}),
     "works": (["A", "T"], 3, {"glock": True}),
     "curator": (["B"], 2, {}),
     "tea": (["C"], 1, {}),
-    "gifts": (["A"], 2, {"glock": True}),
     "outro": (["END"], 3, {}),
 }
 
