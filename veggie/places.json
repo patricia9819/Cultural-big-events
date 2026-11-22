@@ -1,0 +1,12 @@
+{
+ "updated": "2026-11-22T00:00:00+00:00",
+ "demo": true,
+ "errors": [],
+ "places": [
+  {"id": "demo1", "name": "（示範）綠意蔬食小館", "note": "全素，可去五辛，推薦麻油麵線", "address": "台北市大安區", "lat": 25.0330, "lng": 121.5434, "lists": ["我的素食清單"], "gmaps": "https://www.google.com/maps/search/?api=1&query=25.0330,121.5434"},
+  {"id": "demo2", "name": "（示範）巷口滷味", "note": "有素食，滷汁是素的，可去五辛", "address": "台北市中山區", "lat": 25.0525, "lng": 121.5203, "lists": ["我的素食清單"], "gmaps": "https://www.google.com/maps/search/?api=1&query=25.0525,121.5203"},
+  {"id": "demo3", "name": "（示範）山城義式餐廳", "note": "蛋奶素，有素食菜單，含五辛不能去", "address": "台中市西區", "lat": 24.1466, "lng": 120.6620, "lists": ["我的素食清單"], "gmaps": "https://www.google.com/maps/search/?api=1&query=24.1466,120.6620"},
+  {"id": "demo4", "name": "（示範）港邊早午餐", "note": "有素食選項，鍋邊素", "address": "高雄市鼓山區", "lat": 22.6200, "lng": 120.2700, "lists": ["我的素食清單"], "gmaps": "https://www.google.com/maps/search/?api=1&query=22.6200,120.2700"},
+  {"id": "demo5", "name": "（示範）古都素食自助餐", "note": "純素自助餐，可去五辛，中午才開", "address": "台南市中西區", "lat": 22.9920, "lng": 120.2010, "lists": ["我的素食清單"], "gmaps": "https://www.google.com/maps/search/?api=1&query=22.9920,120.2010"}
+ ]
+}

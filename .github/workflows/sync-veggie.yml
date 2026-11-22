@@ -1,0 +1,42 @@
+name: 同步 Google 地圖素食清單
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"   # 每 3 小時自動同步一次
+  workflow_dispatch:          # 可在 GitHub → Actions 手動按「Run workflow」立即同步
+  push:
+    paths:
+      - veggie/lists.json
+      - scripts/sync_google_lists.py
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-veggie
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 抓取清單
+        run: python scripts/sync_google_lists.py
+      - name: 有變動才提交
+        run: |
+          if git diff --quiet -- veggie/places.json; then
+            echo "沒有變動"; exit 0
+          fi
+          # 只有 updated 時間不同時不提交
+          if [ "$(git diff -U0 -- veggie/places.json | grep -E '^[+-] ' | grep -vc '"updated"')" = "0" ]; then
+            echo "只有時間戳變動，略過"; git checkout -- veggie/places.json; exit 0
+          fi
+          git config user.name "veggie-sync-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add veggie/places.json
+          git commit -m "同步素食清單 $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push

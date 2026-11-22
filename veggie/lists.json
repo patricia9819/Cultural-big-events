@@ -1,0 +1,6 @@
+{
+  "_說明": "把 Google 地圖清單的「分享連結」貼到 url。可以放很多個清單，name 是在素食地圖上顯示的清單名稱。",
+  "lists": [
+    { "name": "我的素食清單", "url": "請貼上 Google 地圖清單分享連結，例如 https://maps.app.goo.gl/xxxxxxxx" }
+  ]
+}

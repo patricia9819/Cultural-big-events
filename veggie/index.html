@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的素食地圖</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+:root {
+  --bg: #f6f7f2; --card: #ffffff; --text: #1f2a1f; --muted: #66705f; --line: #dde3d6;
+  --accent: #3f8f4a; --accent-soft: #e4f2e2; --warn: #b5651d; --warn-soft: #fbeee0;
+  --chip: #eef1ea; --shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141814; --card: #1d231d; --text: #e6ece3; --muted: #9aa695; --line: #2e372d;
+    --accent: #6cc177; --accent-soft: #233a25; --warn: #e0a060; --warn-soft: #3a2b1c;
+    --chip: #262e25; --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141814; --card: #1d231d; --text: #e6ece3; --muted: #9aa695; --line: #2e372d;
+  --accent: #6cc177; --accent-soft: #233a25; --warn: #e0a060; --warn-soft: #3a2b1c;
+  --chip: #262e25; --shadow: none;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif; display: flex; flex-direction: column; }
+header { padding: 14px 16px 10px; background: var(--card); border-bottom: 1px solid var(--line); }
+h1 { margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; }
+.sub { color: var(--muted); font-size: .8rem; margin-top: 2px; }
+.banner { margin: 10px 0 0; padding: 8px 10px; border-radius: 8px; background: var(--warn-soft); color: var(--warn); font-size: .82rem; line-height: 1.5; }
+.controls { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+input[type=search], select { font: inherit; font-size: .95rem; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-width: 0; }
+input[type=search] { flex: 1 1 220px; }
+select { flex: 0 1 auto; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); background: var(--chip); color: var(--text); border-radius: 999px; padding: 5px 11px; font-size: .83rem; cursor: pointer; user-select: none; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.chip .n { opacity: .7; margin-left: 3px; }
+.tabs { display: flex; gap: 4px; background: var(--chip); padding: 3px; border-radius: 10px; }
+.tabs button { font: inherit; font-size: .9rem; border: 0; background: transparent; color: var(--muted); padding: 7px 16px; border-radius: 8px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--card); color: var(--text); box-shadow: var(--shadow); font-weight: 600; }
+.btn { font: inherit; font-size: .85rem; border: 1px solid var(--line); background: var(--card); color: var(--text); padding: 7px 12px; border-radius: 10px; cursor: pointer; }
+.btn.on { border-color: var(--accent); color: var(--accent); }
+.count { color: var(--muted); font-size: .85rem; margin-left: auto; }
+main { flex: 1; min-height: 0; position: relative; }
+#list { height: 100%; overflow-y: auto; padding: 12px 16px 40px; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); align-content: start; }
+#map { position: absolute; inset: 0; }
+.hidden { display: none !important; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 6px; }
+.card h3 { margin: 0; font-size: 1rem; }
+.note { white-space: pre-wrap; background: var(--accent-soft); border-radius: 8px; padding: 7px 9px; font-size: .9rem; line-height: 1.5; }
+.note.empty { background: transparent; color: var(--muted); padding: 0; font-style: italic; }
+.meta { color: var(--muted); font-size: .8rem; }
+.tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.tag { font-size: .72rem; padding: 2px 7px; border-radius: 6px; background: var(--chip); color: var(--muted); }
+.tag.good { background: var(--accent-soft); color: var(--accent); }
+.tag.bad { background: var(--warn-soft); color: var(--warn); }
+.actions { display: flex; gap: 12px; font-size: .85rem; margin-top: 2px; }
+.actions a, .actions button { color: var(--accent); text-decoration: none; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+.empty-state { grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px 0; }
+.leaflet-popup-content { font-family: inherit; font-size: .9rem; line-height: 1.5; margin: 10px 12px; }
+.leaflet-popup-content b { font-size: 1rem; }
+.pop-note { white-space: pre-wrap; margin: 4px 0; }
+@media (max-width: 520px) { #list { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>🥬 我的素食地圖</h1>
+  <div class="sub" id="updated">載入中…</div>
+  <div class="banner hidden" id="banner"></div>
+  <div class="controls">
+    <div class="row">
+      <input type="search" id="q" placeholder="搜尋店名、備註、地址（例：五辛、麵、台中）">
+    </div>
+    <div class="row">
+      <select id="city" aria-label="地區"><option value="">全部地區</option></select>
+      <select id="listSel" aria-label="清單"><option value="">全部清單</option></select>
+      <button class="btn" id="near" title="依距離排序">📍 離我最近</button>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="row">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tabList" aria-selected="true">📋 清單</button>
+        <button role="tab" id="tabMap" aria-selected="false">🗺️ 地圖</button>
+      </div>
+      <span class="count" id="count"></span>
+    </div>
+  </div>
+</header>
+<main>
+  <div id="list"></div>
+  <div id="map" class="hidden"></div>
+</main>
+<script>
+// 由備註自動判斷標籤。想加新標籤，就在這裡加一行。
+const TAG_RULES = [
+  { key: '全素/純素', cls: 'good', re: /全素|純素|vegan/i },
+  { key: '蛋奶素',    cls: 'good', re: /蛋奶素|奶素|蛋素/ },
+  { key: '可去五辛',  cls: 'good', re: /可去五辛|去五辛|不加五辛|無五辛|可去蔥|可不加蔥|五辛可去/ },
+  { key: '含五辛',    cls: 'bad',  re: /含五辛|有五辛|五辛素|不能去|不可去|無法去/ },
+  { key: '有素食選項', cls: '',    re: /有素|素食選項|素食菜單|素的|鍋邊素|可做素/ },
+];
+const MARKER_COLORS = { '全素/純素': '#2e7d32', '可去五辛': '#43a047', '蛋奶素': '#7cb342', '含五辛': '#ef6c00', '有素食選項': '#1e88e5' };
+
+const S = { places: [], q: '', city: '', list: '', tags: new Set(), me: null, view: 'list' };
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+function tagsOf(p) {
+  const text = `${p.note} ${p.name}`;
+  const t = TAG_RULES.filter(r => r.re.test(text)).map(r => r.key);
+  return t;
+}
+const cityOf = p => (p.address.match(/([一-龥]{2}[市縣])/) || [])[1] || '其他';
+function distKm(a, b) {
+  const R = 6371, r = x => x * Math.PI / 180;
+  const dLat = r(b.lat - a.lat), dLng = r(b.lng - a.lng);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(r(a.lat)) * Math.cos(r(b.lat)) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+function filtered() {
+  const q = S.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  let out = S.places.filter(p => {
+    if (S.city && p._city !== S.city) return false;
+    if (S.list && !p.lists.includes(S.list)) return false;
+    for (const t of S.tags) if (!p._tags.includes(t)) return false;
+    const hay = `${p.name} ${p.note} ${p.address} ${p._tags.join(' ')}`.toLowerCase();
+    return q.every(w => hay.includes(w));
+  });
+  if (S.me) { out.forEach(p => p._d = distKm(S.me, p)); out.sort((a, b) => a._d - b._d); }
+  return out;
+}
+
+function renderChips() {
+  const counts = {};
+  S.places.forEach(p => p._tags.forEach(t => counts[t] = (counts[t] || 0) + 1));
+  $('chips').innerHTML = TAG_RULES.filter(r => counts[r.key]).map(r =>
+    `<span class="chip" role="button" tabindex="0" data-tag="${esc(r.key)}" aria-pressed="${S.tags.has(r.key)}">${esc(r.key)}<span class="n">${counts[r.key]}</span></span>`).join('');
+}
+
+function cardHTML(p) {
+  const tags = p._tags.map(t => `<span class="tag ${TAG_RULES.find(r => r.key === t).cls}">${esc(t)}</span>`).join('');
+  return `<article class="card">
+    <h3>${esc(p.name)}</h3>
+    ${p.note ? `<div class="note">${esc(p.note)}</div>` : `<div class="note empty">（沒有備註）</div>`}
+    ${tags ? `<div class="tags">${tags}</div>` : ''}
+    <div class="meta">${esc(p.address || p._city)}${S.me ? ` · ${p._d.toFixed(1)} 公里` : ''}${S.places.some(x => x.lists.length > 1 || x.lists[0] !== S.places[0].lists[0]) ? ` · ${esc(p.lists.join('、'))}` : ''}</div>
+    <div class="actions"><button data-focus="${esc(p.id)}">在地圖上看</button><a href="${esc(p.gmaps)}" target="_blank" rel="noopener">Google 地圖 ↗</a></div>
+  </article>`;
+}
+
+let map, layer;
+const markers = new Map();
+function ensureMap() {
+  if (map) return;
+  map = L.map('map', { zoomControl: true }).setView([23.7, 121], 7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(map);
+  layer = L.featureGroup().addTo(map);
+}
+function renderMap(list, fit = true) {
+  ensureMap();
+  layer.clearLayers(); markers.clear();
+  list.forEach(p => {
+    const color = MARKER_COLORS[p._tags.find(t => MARKER_COLORS[t])] || '#78909c';
+    const m = L.circleMarker([p.lat, p.lng], { radius: 9, color: '#fff', weight: 2, fillColor: color, fillOpacity: .95 })
+      .bindPopup(`<b>${esc(p.name)}</b><div class="pop-note">${esc(p.note || '（沒有備註）')}</div><div style="color:#777;font-size:.8rem">${esc(p.address)}</div><a href="${esc(p.gmaps)}" target="_blank" rel="noopener">在 Google 地圖開啟 ↗</a>`)
+      .bindTooltip(p.name);
+    m.addTo(layer); markers.set(p.id, m);
+  });
+  if (S.me) L.circleMarker([S.me.lat, S.me.lng], { radius: 7, color: '#fff', weight: 2, fillColor: '#d81b60', fillOpacity: 1 }).bindTooltip('我的位置').addTo(layer);
+  if (fit && list.length) map.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 15 });
+}
+
+function render() {
+  const list = filtered();
+  $('count').textContent = `共 ${list.length} 間`;
+  $('list').innerHTML = list.length ? list.map(cardHTML).join('') : '<div class="empty-state">找不到符合條件的店家</div>';
+  if (S.view === 'map') renderMap(list);
+}
+
+function setView(v) {
+  S.view = v;
+  $('tabList').setAttribute('aria-selected', v === 'list');
+  $('tabMap').setAttribute('aria-selected', v === 'map');
+  $('list').classList.toggle('hidden', v !== 'list');
+  $('map').classList.toggle('hidden', v !== 'map');
+  if (v === 'map') { ensureMap(); setTimeout(() => { map.invalidateSize(); renderMap(filtered()); }, 0); }
+  try { localStorage.setItem('veggie-view', v); } catch (e) {}
+}
+
+function focusPlace(id) {
+  setView('map');
+  setTimeout(() => { const m = markers.get(id); if (m) { map.setView(m.getLatLng(), 16); m.openPopup(); } }, 50);
+}
+
+$('q').addEventListener('input', e => { S.q = e.target.value; render(); });
+$('city').addEventListener('change', e => { S.city = e.target.value; render(); });
+$('listSel').addEventListener('change', e => { S.list = e.target.value; render(); });
+$('tabList').onclick = () => setView('list');
+$('tabMap').onclick = () => setView('map');
+$('chips').addEventListener('click', e => {
+  const c = e.target.closest('.chip'); if (!c) return;
+  const t = c.dataset.tag; S.tags.has(t) ? S.tags.delete(t) : S.tags.add(t);
+  renderChips(); render();
+});
+$('chips').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.target.click(); } });
+$('list').addEventListener('click', e => { const b = e.target.closest('[data-focus]'); if (b) focusPlace(b.dataset.focus); });
+$('near').onclick = () => {
+  if (S.me) { S.me = null; $('near').classList.remove('on'); render(); return; }
+  if (!navigator.geolocation) return alert('這個瀏覽器不支援定位');
+  $('near').textContent = '📍 定位中…';
+  navigator.geolocation.getCurrentPosition(pos => {
+    S.me = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+    $('near').textContent = '📍 離我最近'; $('near').classList.add('on'); render();
+  }, () => { $('near').textContent = '📍 離我最近'; alert('無法取得位置，請允許定位權限'); }, { enableHighAccuracy: true, timeout: 10000 });
+};
+
+fetch('places.json?t=' + Date.now()).then(r => r.json()).then(data => {
+  S.places = data.places.map(p => ({ ...p, lists: p.lists || [p.list || ''], _tags: tagsOf(p), _city: cityOf(p) }));
+  const fmt = new Date(data.updated).toLocaleString('zh-TW', { hour12: false });
+  $('updated').textContent = `上次與 Google 地圖同步：${fmt}（每 3 小時自動同步）`;
+  if (data.demo) { $('banner').textContent = '目前顯示的是示範資料。在 veggie/lists.json 貼上你的 Google 地圖清單分享連結後，就會自動換成你的清單。'; $('banner').classList.remove('hidden'); }
+  else if (data.errors && data.errors.length) { $('banner').textContent = '有部分清單同步失敗：' + data.errors.join('；'); $('banner').classList.remove('hidden'); }
+  const cities = [...new Set(S.places.map(p => p._city))].sort((a, b) => a.localeCompare(b, 'zh-TW'));
+  $('city').innerHTML += cities.map(c => `<option>${esc(c)}</option>`).join('');
+  const lists = [...new Set(S.places.flatMap(p => p.lists))].filter(Boolean);
+  if (lists.length > 1) $('listSel').innerHTML += lists.map(c => `<option>${esc(c)}</option>`).join(''); else $('listSel').classList.add('hidden');
+  renderChips(); render();
+  let v = 'list'; try { v = localStorage.getItem('veggie-view') || 'list'; } catch (e) {}
+  setView(v);
+}).catch(err => { $('updated').textContent = '讀取資料失敗：' + err.message; });
+</script>
+</body>
+</html>
