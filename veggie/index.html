@@ -75,7 +75,7 @@ main { flex: 1; min-height: 0; position: relative; }
   <div class="banner hidden" id="banner"></div>
   <div class="controls">
     <div class="row">
-      <input type="search" id="q" placeholder="搜尋店名、備註、地址（例：五辛、麵、台中）">
+      <input type="search" id="q" placeholder="搜尋店名、備註、地址（例：五辛、拉麵、淺草）">
     </div>
     <div class="row">
       <select id="city" aria-label="地區"><option value="">全部地區</option></select>
@@ -99,13 +99,15 @@ main { flex: 1; min-height: 0; position: relative; }
 <script>
 // 由備註自動判斷標籤。想加新標籤，就在這裡加一行。
 const TAG_RULES = [
-  { key: '全素/純素', cls: 'good', re: /全素|純素|vegan/i },
+  { key: '全素/純素', cls: 'good', re: /全素|純素|vegan|ヴィーガン/i },
   { key: '蛋奶素',    cls: 'good', re: /蛋奶素|奶素|蛋素/ },
-  { key: '可去五辛',  cls: 'good', re: /可去五辛|去五辛|不加五辛|無五辛|可去蔥|可不加蔥|五辛可去/ },
+  { key: '無五辛',    cls: 'good', re: /無五辛|沒有五辛|不含五辛/ },
+  { key: '可去五辛',  cls: 'good', re: /可去五辛|可以去五辛|去五辛|不加五辛|可去蔥|可不加蔥|五辛可去/ },
   { key: '含五辛',    cls: 'bad',  re: /含五辛|有五辛|五辛素|不能去|不可去|無法去/ },
-  { key: '有素食選項', cls: '',    re: /有素|素食選項|素食菜單|素的|鍋邊素|可做素/ },
+  { key: '有備註',    cls: '',     re: /\S/, noteOnly: true },
+  { key: '有素食選項', cls: '',    re: /有素|素食選項|素食菜單|素的|鍋邊素|可做素|葷素|素食友善/ },
 ];
-const MARKER_COLORS = { '全素/純素': '#2e7d32', '可去五辛': '#43a047', '蛋奶素': '#7cb342', '含五辛': '#ef6c00', '有素食選項': '#1e88e5' };
+const MARKER_COLORS = { '全素/純素': '#2e7d32', '無五辛': '#2e7d32', '可去五辛': '#43a047', '蛋奶素': '#7cb342', '含五辛': '#ef6c00', '有素食選項': '#1e88e5' };
 
 const S = { places: [], q: '', city: '', list: '', tags: new Set(), me: null, view: 'list' };
 const $ = id => document.getElementById(id);
@@ -113,7 +115,7 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 
 function tagsOf(p) {
   const text = `${p.note} ${p.name}`;
-  const t = TAG_RULES.filter(r => r.re.test(text)).map(r => r.key);
+  const t = TAG_RULES.filter(r => r.re.test(r.noteOnly ? p.note : text)).map(r => r.key);
   return t;
 }
 const cityOf = p => (p.address.match(/([一-龥]{2}[市縣])/) || [])[1] || '其他';
@@ -145,12 +147,12 @@ function renderChips() {
 }
 
 function cardHTML(p) {
-  const tags = p._tags.map(t => `<span class="tag ${TAG_RULES.find(r => r.key === t).cls}">${esc(t)}</span>`).join('');
+  const tags = p._tags.filter(t => t !== '有備註').map(t => `<span class="tag ${TAG_RULES.find(r => r.key === t).cls}">${esc(t)}</span>`).join('');
   return `<article class="card">
     <h3>${esc(p.name)}</h3>
     ${p.note ? `<div class="note">${esc(p.note)}</div>` : `<div class="note empty">（沒有備註）</div>`}
     ${tags ? `<div class="tags">${tags}</div>` : ''}
-    <div class="meta">${esc(p.address || p._city)}${S.me ? ` · ${p._d.toFixed(1)} 公里` : ''}${S.places.some(x => x.lists.length > 1 || x.lists[0] !== S.places[0].lists[0]) ? ` · ${esc(p.lists.join('、'))}` : ''}</div>
+    <div class="meta">${[esc(p.address), S.me ? `${p._d.toFixed(1)} 公里` : '', esc(p.lists.join('、'))].filter(Boolean).join(' · ')}</div>
     <div class="actions"><button data-focus="${esc(p.id)}">在地圖上看</button><a href="${esc(p.gmaps)}" target="_blank" rel="noopener">Google 地圖 ↗</a></div>
   </article>`;
 }
@@ -159,7 +161,7 @@ let map, layer;
 const markers = new Map();
 function ensureMap() {
   if (map) return;
-  map = L.map('map', { zoomControl: true }).setView([23.7, 121], 7);
+  map = L.map('map', { zoomControl: true }).setView([35.68, 139.76], 10);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(map);
   layer = L.featureGroup().addTo(map);
 }
@@ -228,7 +230,7 @@ fetch('places.json?t=' + Date.now()).then(r => r.json()).then(data => {
   if (data.demo) { $('banner').textContent = '目前顯示的是示範資料。在 veggie/lists.json 貼上你的 Google 地圖清單分享連結後，就會自動換成你的清單。'; $('banner').classList.remove('hidden'); }
   else if (data.errors && data.errors.length) { $('banner').textContent = '有部分清單同步失敗：' + data.errors.join('；'); $('banner').classList.remove('hidden'); }
   const cities = [...new Set(S.places.map(p => p._city))].sort((a, b) => a.localeCompare(b, 'zh-TW'));
-  $('city').innerHTML += cities.map(c => `<option>${esc(c)}</option>`).join('');
+  if (cities.filter(c => c !== '其他').length > 1) $('city').innerHTML += cities.map(c => `<option>${esc(c)}</option>`).join(''); else $('city').classList.add('hidden');
   const lists = [...new Set(S.places.flatMap(p => p.lists))].filter(Boolean);
   if (lists.length > 1) $('listSel').innerHTML += lists.map(c => `<option>${esc(c)}</option>`).join(''); else $('listSel').classList.add('hidden');
   renderChips(); render();

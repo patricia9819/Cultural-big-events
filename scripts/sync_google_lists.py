@@ -125,7 +125,7 @@ def extract_places(data, list_name: str) -> tuple[str, list[dict]]:
         if isinstance(ids, list):
             cid = next((x for x in ids if isinstance(x, str) and x), None)
         lat, lng = coords
-        q = urllib.parse.quote(f"{name} {address}".strip())
+        q = urllib.parse.quote(name.strip(), safe="")
         places.append(
             {
                 "id": cid or f"{name}@{lat:.5f},{lng:.5f}",
@@ -135,7 +135,7 @@ def extract_places(data, list_name: str) -> tuple[str, list[dict]]:
                 "lat": lat,
                 "lng": lng,
                 "list": title or list_name,
-                "gmaps": f"https://www.google.com/maps/search/?api=1&query={q}",
+                "gmaps": f"https://www.google.com/maps/search/{q}/@{lat},{lng},18z",
             }
         )
     return title or list_name, places
