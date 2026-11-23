@@ -75,13 +75,44 @@ def find_list_id(text: str) -> str | None:
     return None
 
 
-def resolve_list_id(share_url: str) -> str:
-    """分享連結 (maps.app.goo.gl/...) → 清單 ID。"""
+PLACE_URL_RE = re.compile(r"/maps/place/([^/]+)/.*?!1s(0x[0-9a-f]+:0x[0-9a-f]+).*?!3d(-?[\d.]+)!4d(-?[\d.]+)")
+
+
+def resolve_link(share_url: str) -> tuple:
+    """分享連結 → ("list", 清單ID) 或 ("place", 單一店家資訊)。"""
     direct = find_list_id(share_url)
     if direct:
-        return direct
+        return ("list", direct)
     final_url, body = http_get(share_url)
+    m = PLACE_URL_RE.search(urllib.parse.unquote(final_url))
+    if m and "/placelists/" not in final_url:
+        name = m.group(1).replace("+", " ")
+        return ("place", {"fid": m.group(2), "name": name, "lat": float(m.group(3)), "lng": float(m.group(4))})
     list_id = find_list_id(final_url) or find_list_id(body)
+    if not list_id:
+        raise RuntimeError(f"無法從連結取得清單 ID：{share_url}（請確認清單已設為「分享」）")
+    return ("list", list_id)
+
+
+def single_place(info: dict, list_name: str) -> dict:
+    """單一店家連結 → 一筆地點資料（id 與清單裡同一間店相同，會自動合併）。"""
+    a, b = (int(x, 16) for x in info["fid"].split(":"))
+    signed = a - (1 << 64) if a >= (1 << 63) else a
+    name = info["name"]
+    try:
+        _, body = http_get(PLACE_DETAILS.format(fid=info["fid"]))
+        d = _get(parse_payload(body), 6)
+        if isinstance(_get(d, 11), str):
+            name = _get(d, 11)
+        address = _get(d, 39) if isinstance(_get(d, 39), str) else ""
+    except Exception:  # noqa: BLE001
+        address = ""
+    q = urllib.parse.quote(name.strip(), safe="")
+    return {
+        "id": str(signed), "name": name.strip(), "note": "", "address": address,
+        "lat": info["lat"], "lng": info["lng"], "fid": info["fid"], "list": list_name,
+        "gmaps": f"https://www.google.com/maps/search/{q}/@{info['lat']},{info['lng']},18z",
+    }
     if not list_id:
         raise RuntimeError(f"無法從連結取得清單 ID：{share_url}（請確認清單已設為「分享」）")
     return list_id
@@ -294,7 +325,13 @@ def main() -> int:
     errors = []
     for entry in lists:
         try:
-            list_id = resolve_list_id(entry["url"])
+            kind, ref = resolve_link(entry["url"])
+            if kind == "place":
+                p = single_place(ref, entry.get("name") or "其他收藏")
+                print(f"✓ 單一店家：{p['name']}")
+                all_places.append(p)
+                continue
+            list_id = ref
             _, body = http_get(GETLIST.format(list_id=list_id))
             if args.dump:
                 Path(args.dump).mkdir(parents=True, exist_ok=True)
