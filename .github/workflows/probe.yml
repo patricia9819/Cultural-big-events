@@ -1,0 +1,16 @@
+name: probe (temporary)
+on:
+  push:
+    branches: [claude/dazzling-edison-4c4zfq]
+    paths: [debug/probe.py]
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python debug/probe.py
+      - run: |
+          git config user.name probe-bot; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f debug/out && git commit -qm "probe output" && git push
