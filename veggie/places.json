@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T08:44:15+00:00",
+ "updated": "2026-11-23T09:09:20+00:00",
  "demo": false,
  "errors": [],
  "places": [
@@ -120,6 +120,122 @@
    "details_at": 1795403357
   },
   {
+   "id": "6924361126391986771",
+   "name": "Chirashiya",
+   "note": "",
+   "address": "400-2 Yamanouchi, Kamakura, Kanagawa 247-0062日本",
+   "lat": 35.335789399999996,
+   "lng": 139.5463297,
+   "fid": "0x601845c1f31e3a53:0x9f505f3bc4aeac01",
+   "gmaps": "https://www.google.com/maps/search/Chirashiya/@35.335789399999996,139.5463297,18z",
+   "lists": [
+    "鎌倉素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–15:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–15:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–17:00"
+    }
+   ],
+   "phone": "+81 467-25-0020",
+   "website": "http://www.chirashiya-kamakura.com/",
+   "category": "壽司店",
+   "photos": [
+    "photos/6924361126391986771-1.jpg",
+    "photos/6924361126391986771-2.jpg"
+   ],
+   "details_at": 1795424952
+  },
+  {
+   "id": "6924360971717814513",
+   "name": "Cotonoha",
+   "note": "全素可去五辛",
+   "address": "2 Chome-10-34 Hase, Kamakura, Kanagawa 248-0016日本",
+   "lat": 35.3126855,
+   "lng": 139.5372874,
+   "fid": "0x6018459defd1a8f1:0x8d31e8b3cc845058",
+   "gmaps": "https://www.google.com/maps/search/Cotonoha/@35.3126855,139.5372874,18z",
+   "lists": [
+    "鎌倉素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "休息"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–20:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–20:00"
+    }
+   ],
+   "phone": "+81 467-25-5508",
+   "website": "http://instagram.com/cotonoha.kitakamakura",
+   "category": "咖啡店",
+   "photos": [
+    "photos/6924360971717814513-1.jpg",
+    "photos/6924360971717814513-2.jpg"
+   ],
+   "details_at": 1795424952
+  },
+  {
    "id": "6924442720180829137",
    "name": "Injoy 悦納",
    "note": "無五辛",
@@ -176,6 +292,64 @@
     "photos/6924442720180829137-2.jpg"
    ],
    "details_at": 1795403357
+  },
+  {
+   "id": "6924360378673327791",
+   "name": "Isso Chaan",
+   "note": "",
+   "address": "日本〒247-0062 Kanagawa, Kamakura, Yamanouchi, １７５番地１",
+   "lat": 35.3341026,
+   "lng": 139.5495028,
+   "fid": "0x60184513db9ceeaf:0x581bd64af88d83d6",
+   "gmaps": "https://www.google.com/maps/search/Isso%20Chaan/@35.3341026,139.5495028,18z",
+   "lists": [
+    "鎌倉素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–15:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "休息"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–15:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–15:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–15:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–15:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–15:00"
+    }
+   ],
+   "phone": "+81 467-38-4099",
+   "website": "https://www.facebook.com/vt.isso",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924360378673327791-1.jpg",
+    "photos/6924360378673327791-2.jpg"
+   ],
+   "details_at": 1795424952
   },
   {
    "id": "6924437953757622349",
@@ -350,6 +524,64 @@
     "photos/6924438248461993453-2.jpg"
    ],
    "details_at": 1795403357
+  },
+  {
+   "id": "6924360984581989219",
+   "name": "Luna Burger",
+   "note": "葷素可去五辛",
+   "address": "2 Chome-17-23 Hase, Kamakura, Kanagawa 248-0016日本",
+   "lat": 35.310840999999996,
+   "lng": 139.5359997,
+   "fid": "0x601845a0ee956363:0xc33417ae7f62e2f1",
+   "gmaps": "https://www.google.com/maps/search/Luna%20Burger/@35.310840999999996,139.5359997,18z",
+   "lists": [
+    "鎌倉素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "休息"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "休息"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "12:00–18:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–18:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–18:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–18:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–18:00"
+    }
+   ],
+   "phone": "+81 467-22-0624",
+   "website": "https://www.instagram.com/lunaburger_j/",
+   "category": "漢堡包餐廳",
+   "photos": [
+    "photos/6924360984581989219-1.jpg",
+    "photos/6924360984581989219-2.jpg"
+   ],
+   "details_at": 1795424952
   },
   {
    "id": "6924387556782335233",
@@ -1548,14 +1780,15 @@
   {
    "id": "6924360914442949875",
    "name": "御成橫丁(壽司和拉麵、應時蔬食)",
-   "note": "",
+   "note": "葷素可去五辛",
    "address": "5-41 Onarimachi, Kamakura, Kanagawa 248-0012日本",
    "lat": 35.3171551,
    "lng": 139.5493816,
    "fid": "0x6018459099f894f3:0xb6e6823b58d91026",
    "gmaps": "https://www.google.com/maps/search/%E5%BE%A1%E6%88%90%E6%A9%AB%E4%B8%81%28%E5%A3%BD%E5%8F%B8%E5%92%8C%E6%8B%89%E9%BA%B5%E3%80%81%E6%87%89%E6%99%82%E8%94%AC%E9%A3%9F%29/@35.3171551,139.5493816,18z",
    "lists": [
-    "其他收藏"
+    "其他收藏",
+    "鎌倉素食"
    ],
    "hours": [
     {
@@ -1833,6 +2066,64 @@
     "photos/6924438887505279025-2.jpg"
    ],
    "details_at": 1795403357
+  },
+  {
+   "id": "6924361266439277965",
+   "name": "鎌倉韓国料理 モニョ",
+   "note": "葷素可去五辛",
+   "address": "2 Chome-17-24 Hase, Kamakura, Kanagawa 248-0016日本",
+   "lat": 35.3108964,
+   "lng": 139.53594479999998,
+   "fid": "0x601845e28e964d8d:0x50679fe1317ef1df",
+   "gmaps": "https://www.google.com/maps/search/%E9%8E%8C%E5%80%89%E9%9F%93%E5%9B%BD%E6%96%99%E7%90%86%20%E3%83%A2%E3%83%8B%E3%83%A7/@35.3108964,139.53594479999998,18z",
+   "lists": [
+    "鎌倉素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–18:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–18:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–18:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–18:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–18:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–18:00"
+    }
+   ],
+   "phone": "+81 467-67-3156",
+   "website": "https://www.instagram.com/monyeo_kamakura?igsh=MTg1dGZuZjBjcnRwNA==&utm_source=qr",
+   "category": "有機餐廳",
+   "photos": [
+    "photos/6924361266439277965-1.jpg",
+    "photos/6924361266439277965-2.jpg"
+   ],
+   "details_at": 1795424952
   },
   {
    "id": "6924435443440938643",
