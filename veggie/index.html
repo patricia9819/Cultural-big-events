@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>我的素食地圖</title>
+<meta name="theme-color" content="#3f8f4a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="素食地圖">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
+<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
@@ -40,7 +47,7 @@ h1 { margin: 0; font-size: 1.25rem; flex: 1; }
 .banner { margin: 10px 0 0; padding: 8px 10px; border-radius: 8px; background: var(--warn-soft); color: var(--warn); font-size: .82rem; line-height: 1.5; }
 .controls { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-input, select, textarea { font: inherit; font-size: .95rem; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-width: 0; }
+input, select, textarea { font: inherit; font-size: 16px; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-width: 0; }
 input[type=search] { flex: 1 1 220px; }
 .chips { display: flex; gap: 6px; flex-wrap: wrap; }
 .chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--chip); border-radius: 999px; padding: 6px 12px; font-size: .85rem; cursor: pointer; }
@@ -66,7 +73,9 @@ main { flex: 1; min-height: 0; position: relative; }
 .card { cursor: pointer; outline: none; border-radius: 14px; }
 .lift { height: 100%; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--sh); display: flex; flex-direction: column;
   transition: transform .2s ease, box-shadow .2s ease; }
-.card:hover .lift, .card:focus-visible .lift { transform: translateY(-5px); box-shadow: var(--sh-hover); }
+.card:focus-visible .lift { transform: translateY(-5px); box-shadow: var(--sh-hover); }
+@media (hover: hover) { .card:hover .lift { transform: translateY(-5px); box-shadow: var(--sh-hover); } }
+@media (hover: none) { .card:active .lift { transform: translateY(-3px) scale(.99); box-shadow: var(--sh-hover); } }
 .card:focus-visible .lift { border-color: var(--accent); }
 .photos { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--line); height: 150px; overflow: hidden; }
 .photos img, .photos .ph { width: 100%; height: 150px; min-width: 0; object-fit: cover; display: block; background: var(--chip); }
@@ -82,6 +91,8 @@ main { flex: 1; min-height: 0; position: relative; }
 .open { font-weight: 600; }
 .open.yes { color: var(--accent); } .open.no { color: var(--warn); }
 .visited { font-size: .8rem; color: var(--text); }
+.quick { display: flex; gap: 8px; margin-top: 2px; }
+.quick button { border: 1px solid var(--line); background: var(--chip); border-radius: 999px; padding: 6px 12px; font-size: .82rem; cursor: pointer; }
 
 /* 愛心 */
 .heart { position: relative; border: 0; background: none; padding: 4px; cursor: pointer; line-height: 0; flex: none; -webkit-tap-highlight-color: transparent; }
@@ -103,7 +114,8 @@ main { flex: 1; min-height: 0; position: relative; }
   transition: transform .2s ease, box-shadow .2s ease; cursor: pointer; }
 .dot.liked::after { content: "♥"; position: absolute; top: -9px; right: -8px; font-size: 11px; color: var(--heart); text-shadow: 0 0 2px #fff; }
 .dot { position: relative; }
-.dotwrap:hover .dot, .dot.flash { transform: translateY(-5px) scale(1.15); box-shadow: 0 8px 16px rgba(0,0,0,.4); }
+@media (hover: hover) { .dotwrap:hover .dot { transform: translateY(-5px) scale(1.15); box-shadow: 0 8px 16px rgba(0,0,0,.4); } }
+.dot.flash { transform: translateY(-5px) scale(1.15); box-shadow: 0 8px 16px rgba(0,0,0,.4); }
 .legend { background: var(--card); color: var(--text); padding: 8px 10px; border-radius: 10px; box-shadow: var(--sh); font-size: .78rem; line-height: 1.8; }
 .legend i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); display: inline-block; margin-right: 6px; }
 
@@ -142,7 +154,15 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
 .toast.show { opacity: .92; }
 .empty-state { grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px 0; }
 @media (max-width: 520px) {
-  #list { grid-template-columns: 1fr; }
+  header { padding: 10px 12px 8px; }
+  h1 { font-size: 1.1rem; }
+  .sub { font-size: .72rem; }
+  .controls { gap: 6px; margin-top: 8px; }
+  .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -12px; padding: 0 12px; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { flex: none; padding: 5px 10px; font-size: .8rem; }
+  .tabs button { padding: 6px 14px; }
+  #list { grid-template-columns: 1fr; padding: 12px; }
   dialog { width: 100vw; max-width: 100vw; max-height: 92vh; margin: auto 0 0; border-radius: 16px 16px 0 0; }
   .sheet { max-height: 92vh; }
 }
@@ -357,8 +377,9 @@ function cardHTML(p) {
     <div class="body">
       <div class="title"><h3>${esc(p.name)}</h3>${heartBtn(p)}</div>
       ${badge(p)}
-      ${p.note ? `<div class="note">${esc(p.note)}</div>` : `<div class="note empty">（沒有備註，點開卡片可以新增）</div>`}
+      ${p.note ? `<div class="note">${esc(p.note)}</div>` : `<div class="note empty">（還沒有備註）</div>`}
       ${last ? `<div class="visited">🍽️ 去過 ${p.visits.length} 次・最近 ${fmtDate(last.date)}${last.memo ? `「${esc(last.memo)}」` : ''}</div>` : ''}
+      <div class="quick"><button data-edit="${esc(p.id)}">✏️ 編輯備註</button><button data-visit="${esc(p.id)}">🍽️ 記錄去過</button></div>
       <div class="meta">${st ? `<span class="open ${st.open ? 'yes' : 'no'}">${st.open ? '營業中' : '休息中'}</span>・今天 ${esc(st.today.text)}<br>` : ''}${[esc(p.address), S.me ? `${p._d.toFixed(1)} 公里` : ''].filter(Boolean).join(' · ')}</div>
     </div>
   </div></article>`;
@@ -585,6 +606,8 @@ $('chips').addEventListener('click', e => {
 });
 $('list').addEventListener('click', e => {
   const h = e.target.closest('.heart'); if (h) { e.stopPropagation(); return toggleLike(h.dataset.like, h); }
+  const ed = e.target.closest('[data-edit]'); if (ed) { openDetail(ed.dataset.edit); editing = true; drawDetail(); return; }
+  const vi = e.target.closest('[data-visit]'); if (vi) { openDetail(vi.dataset.visit); setTimeout(() => { const m = $('vMemo'); m.scrollIntoView({ block: 'center' }); }, 50); return; }
   const c = e.target.closest('[data-open]'); if (c) openDetail(c.dataset.open);
 });
 $('list').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset.open) openDetail(e.target.dataset.open); });
