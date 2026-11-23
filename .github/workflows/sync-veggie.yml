@@ -19,24 +19,20 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: 抓取清單
+      - name: 抓取清單、營業時間與照片
         run: python scripts/sync_google_lists.py
       - name: 有變動才提交
         run: |
-          if git diff --quiet -- veggie/places.json; then
-            echo "沒有變動"; exit 0
-          fi
-          # 只有 updated 時間不同時不提交
-          if [ "$(git diff -U0 -- veggie/places.json | grep -E '^[+-] ' | grep -vc '"updated"')" = "0" ]; then
-            echo "只有時間戳變動，略過"; git checkout -- veggie/places.json; exit 0
-          fi
+          git add -A veggie/
+          if git diff --cached --quiet; then echo "沒有變動"; exit 0; fi
           git config user.name "veggie-sync-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add veggie/places.json
           git commit -m "同步素食清單 $(date -u +%Y-%m-%dT%H:%MZ)"
-          git push
+          for i in 1 2 3; do git pull --rebase -q origin "$GITHUB_REF_NAME" && git push && exit 0; sleep 5; done
+          exit 1

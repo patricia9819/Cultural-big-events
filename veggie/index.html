@@ -10,75 +10,161 @@
 :root {
   --bg: #f6f7f2; --card: #ffffff; --text: #1f2a1f; --muted: #66705f; --line: #dde3d6;
   --accent: #3f8f4a; --accent-soft: #e4f2e2; --warn: #b5651d; --warn-soft: #fbeee0;
-  --chip: #eef1ea; --shadow: 0 1px 3px rgba(0,0,0,.08);
+  --chip: #eef1ea; --heart: #e8435a;
+  --c-pure: #2e7d32; --c-pure5: #8bc34a; --c-mix5: #f08c00; --c-none: #9aa3a0;
+  --sh: 0 1px 3px rgba(0,0,0,.08); --sh-hover: 0 10px 24px rgba(0,0,0,.16);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #141814; --card: #1d231d; --text: #e6ece3; --muted: #9aa695; --line: #2e372d;
     --accent: #6cc177; --accent-soft: #233a25; --warn: #e0a060; --warn-soft: #3a2b1c;
-    --chip: #262e25; --shadow: none;
+    --chip: #262e25; --sh: 0 1px 3px rgba(0,0,0,.4); --sh-hover: 0 12px 28px rgba(0,0,0,.6);
   }
 }
 :root[data-theme="dark"] {
   --bg: #141814; --card: #1d231d; --text: #e6ece3; --muted: #9aa695; --line: #2e372d;
   --accent: #6cc177; --accent-soft: #233a25; --warn: #e0a060; --warn-soft: #3a2b1c;
-  --chip: #262e25; --shadow: none;
+  --chip: #262e25; --sh: 0 1px 3px rgba(0,0,0,.4); --sh-hover: 0 12px 28px rgba(0,0,0,.6);
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
 body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif; display: flex; flex-direction: column; }
+button { font: inherit; color: inherit; }
 header { padding: 14px 16px 10px; background: var(--card); border-bottom: 1px solid var(--line); }
-h1 { margin: 0; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; }
-.sub { color: var(--muted); font-size: .8rem; margin-top: 2px; }
+.top { display: flex; align-items: center; gap: 8px; }
+h1 { margin: 0; font-size: 1.25rem; flex: 1; }
+.sub { color: var(--muted); font-size: .78rem; margin-top: 3px; line-height: 1.5; }
+.sync-btn { border: 1px solid var(--line); background: var(--chip); border-radius: 999px; padding: 5px 10px; font-size: .78rem; cursor: pointer; white-space: nowrap; }
+.sync-btn.ok { color: var(--accent); }
+.sync-btn.err { color: var(--warn); }
 .banner { margin: 10px 0 0; padding: 8px 10px; border-radius: 8px; background: var(--warn-soft); color: var(--warn); font-size: .82rem; line-height: 1.5; }
 .controls { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-input[type=search], select { font: inherit; font-size: .95rem; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-width: 0; }
+input, select, textarea { font: inherit; font-size: .95rem; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-width: 0; }
 input[type=search] { flex: 1 1 220px; }
-select { flex: 0 1 auto; }
 .chips { display: flex; gap: 6px; flex-wrap: wrap; }
-.chip { border: 1px solid var(--line); background: var(--chip); color: var(--text); border-radius: 999px; padding: 5px 11px; font-size: .83rem; cursor: pointer; user-select: none; }
-.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
-.chip .n { opacity: .7; margin-left: 3px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--chip); border-radius: 999px; padding: 6px 12px; font-size: .85rem; cursor: pointer; }
+.chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); display: inline-block; }
+.chip .n { color: var(--muted); }
+.chip[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: #fff; }
+.chip[aria-pressed="true"] i { background: #fff; }
+.chip[aria-pressed="true"] .n { color: rgba(255,255,255,.85); }
 .tabs { display: flex; gap: 4px; background: var(--chip); padding: 3px; border-radius: 10px; }
-.tabs button { font: inherit; font-size: .9rem; border: 0; background: transparent; color: var(--muted); padding: 7px 16px; border-radius: 8px; cursor: pointer; }
-.tabs button[aria-selected="true"] { background: var(--card); color: var(--text); box-shadow: var(--shadow); font-weight: 600; }
-.btn { font: inherit; font-size: .85rem; border: 1px solid var(--line); background: var(--card); color: var(--text); padding: 7px 12px; border-radius: 10px; cursor: pointer; }
+.tabs button { border: 0; background: transparent; color: var(--muted); padding: 7px 16px; border-radius: 8px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--card); color: var(--text); box-shadow: var(--sh); font-weight: 600; }
+.btn { border: 1px solid var(--line); background: var(--card); padding: 7px 12px; border-radius: 10px; cursor: pointer; font-size: .88rem; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn.on { border-color: var(--accent); color: var(--accent); }
+.btn.danger { color: var(--warn); }
 .count { color: var(--muted); font-size: .85rem; margin-left: auto; }
 main { flex: 1; min-height: 0; position: relative; }
-#list { height: 100%; overflow-y: auto; padding: 12px 16px 40px; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); align-content: start; }
+#list { height: 100%; overflow-y: auto; padding: 14px 16px 40px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); align-content: start; }
 #map { position: absolute; inset: 0; }
 .hidden { display: none !important; }
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 6px; }
-.card h3 { margin: 0; font-size: 1rem; }
+
+/* 卡片 */
+.card { cursor: pointer; outline: none; border-radius: 14px; }
+.lift { height: 100%; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--sh); display: flex; flex-direction: column;
+  transition: transform .2s ease, box-shadow .2s ease; }
+.card:hover .lift, .card:focus-visible .lift { transform: translateY(-5px); box-shadow: var(--sh-hover); }
+.card:focus-visible .lift { border-color: var(--accent); }
+.photos { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--line); aspect-ratio: 2 / 0.75; }
+.photos img, .photos .ph { width: 100%; height: 100%; object-fit: cover; display: block; background: var(--chip); }
+.photos .ph { display: flex; align-items: center; justify-content: center; font-size: 1.6rem; opacity: .55; }
+.body { padding: 10px 14px 12px; display: flex; flex-direction: column; gap: 6px; }
+.title { display: flex; align-items: flex-start; gap: 8px; }
+.title h3 { margin: 0; font-size: 1rem; flex: 1; line-height: 1.35; }
+.badge { display: inline-flex; align-items: center; gap: 5px; font-size: .74rem; padding: 2px 8px; border-radius: 999px; color: #fff; background: var(--c); align-self: flex-start; }
+.badge.none { background: var(--chip); color: var(--muted); }
 .note { white-space: pre-wrap; background: var(--accent-soft); border-radius: 8px; padding: 7px 9px; font-size: .9rem; line-height: 1.5; }
-.note.empty { background: transparent; color: var(--muted); padding: 0; font-style: italic; }
-.meta { color: var(--muted); font-size: .8rem; }
-.tags { display: flex; gap: 4px; flex-wrap: wrap; }
-.tag { font-size: .72rem; padding: 2px 7px; border-radius: 6px; background: var(--chip); color: var(--muted); }
-.tag.good { background: var(--accent-soft); color: var(--accent); }
-.tag.bad { background: var(--warn-soft); color: var(--warn); }
-.actions { display: flex; gap: 12px; font-size: .85rem; margin-top: 2px; }
-.actions a, .actions button { color: var(--accent); text-decoration: none; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+.note.empty { background: transparent; color: var(--muted); padding: 0; font-style: italic; font-size: .85rem; }
+.meta { color: var(--muted); font-size: .8rem; line-height: 1.5; }
+.open { font-weight: 600; }
+.open.yes { color: var(--accent); } .open.no { color: var(--warn); }
+.visited { font-size: .8rem; color: var(--text); }
+
+/* 愛心 */
+.heart { position: relative; border: 0; background: none; padding: 4px; cursor: pointer; line-height: 0; flex: none; -webkit-tap-highlight-color: transparent; }
+.heart svg { width: 24px; height: 24px; display: block; fill: none; stroke: var(--muted); stroke-width: 2; transition: fill .15s, stroke .15s; }
+.heart[aria-pressed="true"] svg { fill: var(--heart); stroke: var(--heart); }
+.heart.pop svg { animation: heartPop .5s cubic-bezier(.17,.89,.32,1.49); }
+@keyframes heartPop { 0% { transform: scale(1); } 25% { transform: scale(1.55); } 55% { transform: scale(.85); } 75% { transform: scale(1.12); } 100% { transform: scale(1); } }
+.particle { position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; pointer-events: none; animation: burst .75s cubic-bezier(.2,.7,.3,1) forwards; }
+.particle svg { width: 100%; height: 100%; fill: var(--pc); stroke: none; animation: none !important; }
+@keyframes burst {
+  0% { transform: translate(-50%, -50%) scale(.3); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1) rotate(var(--rot)); opacity: 0; }
+}
+
+/* 地圖圓點 */
+.dotwrap { background: none; border: 0; }
+.dot { display: block; width: 20px; height: 20px; border-radius: 50%; background: var(--c); border: 3px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.35);
+  transition: transform .2s ease, box-shadow .2s ease; cursor: pointer; }
+.dot.liked::after { content: "♥"; position: absolute; top: -9px; right: -8px; font-size: 11px; color: var(--heart); text-shadow: 0 0 2px #fff; }
+.dot { position: relative; }
+.dotwrap:hover .dot, .dot.flash { transform: translateY(-5px) scale(1.15); box-shadow: 0 8px 16px rgba(0,0,0,.4); }
+.legend { background: var(--card); color: var(--text); padding: 8px 10px; border-radius: 10px; box-shadow: var(--sh); font-size: .78rem; line-height: 1.8; }
+.legend i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); display: inline-block; margin-right: 6px; }
+
+/* 詳情視窗 */
+dialog { border: 0; padding: 0; border-radius: 16px; background: var(--card); color: var(--text); width: min(560px, calc(100vw - 24px)); max-height: calc(100vh - 32px); box-shadow: 0 20px 50px rgba(0,0,0,.35); }
+dialog::backdrop { background: rgba(0,0,0,.45); }
+.sheet { display: flex; flex-direction: column; max-height: calc(100vh - 32px); }
+.sheet .scroll { overflow-y: auto; }
+.sheet .photos { aspect-ratio: 2 / 0.85; }
+.close { position: absolute; top: 10px; right: 10px; z-index: 2; width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgba(0,0,0,.55); color: #fff; font-size: 1.1rem; cursor: pointer; }
+.sec { padding: 12px 16px; border-top: 1px solid var(--line); }
+.sec h4 { margin: 0 0 8px; font-size: .9rem; display: flex; align-items: center; gap: 8px; }
+.sec h4 .btn { margin-left: auto; padding: 4px 10px; font-size: .8rem; }
+.hours { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.hours td { padding: 4px 6px; }
+.hours td:first-child { color: var(--muted); width: 5em; }
+.hours tr.today td { background: var(--accent-soft); font-weight: 600; color: var(--text); }
+.hours tr.today td:first-child { border-radius: 6px 0 0 6px; } .hours tr.today td:last-child { border-radius: 0 6px 6px 0; }
+.visits { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.visits li { display: flex; gap: 8px; align-items: baseline; font-size: .88rem; background: var(--chip); border-radius: 8px; padding: 6px 10px; }
+.visits li b { white-space: nowrap; }
+.visits li span { flex: 1; color: var(--muted); }
+.visits li button { border: 0; background: none; color: var(--muted); cursor: pointer; }
+.addvisit { display: flex; gap: 6px; flex-wrap: wrap; }
+.addvisit input[type=date] { flex: 0 0 auto; }
+.addvisit input[type=text] { flex: 1 1 140px; }
+.links { display: flex; gap: 8px; flex-wrap: wrap; }
+.links a, .links button { text-decoration: none; color: var(--accent); border: 1px solid var(--line); border-radius: 10px; padding: 7px 12px; font-size: .88rem; background: var(--card); cursor: pointer; }
+.edit { display: flex; flex-direction: column; gap: 8px; }
+.edit label { font-size: .8rem; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+.edit textarea { min-height: 80px; resize: vertical; }
+.hint { font-size: .78rem; color: var(--muted); line-height: 1.5; }
+.steps { margin: 0; padding-left: 1.3em; font-size: .88rem; line-height: 1.7; }
+.steps a { color: var(--accent); }
+.toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: #222; color: #fff; padding: 8px 14px; border-radius: 999px; font-size: .85rem; z-index: 9999; opacity: 0; transition: opacity .2s; pointer-events: none; }
+.toast.show { opacity: .92; }
 .empty-state { grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px 0; }
-.leaflet-popup-content { font-family: inherit; font-size: .9rem; line-height: 1.5; margin: 10px 12px; }
-.leaflet-popup-content b { font-size: 1rem; }
-.pop-note { white-space: pre-wrap; margin: 4px 0; }
-@media (max-width: 520px) { #list { grid-template-columns: 1fr; } }
+@media (max-width: 520px) {
+  #list { grid-template-columns: 1fr; }
+  dialog { width: 100vw; max-width: 100vw; max-height: 92vh; margin: auto 0 0; border-radius: 16px 16px 0 0; }
+  .sheet { max-height: 92vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lift, .dot { transition: none; }
+  .heart.pop svg, .particle { animation-duration: .01s; }
+}
 </style>
 </head>
 <body>
 <header>
-  <h1>🥬 我的素食地圖</h1>
+  <div class="top">
+    <h1>🥬 我的素食地圖</h1>
+    <button class="sync-btn" id="syncBtn" title="跨裝置同步設定">📱 只存在這台裝置</button>
+  </div>
   <div class="sub" id="updated">載入中…</div>
   <div class="banner hidden" id="banner"></div>
   <div class="controls">
     <div class="row">
-      <input type="search" id="q" placeholder="搜尋店名、備註、地址（例：五辛、拉麵、淺草）">
+      <input type="search" id="q" placeholder="搜尋店名、備註、地址、去過的紀錄（例：拉麵、淺草）">
     </div>
     <div class="row">
-      <select id="city" aria-label="地區"><option value="">全部地區</option></select>
       <select id="listSel" aria-label="清單"><option value="">全部清單</option></select>
       <button class="btn" id="near" title="依距離排序">📍 離我最近</button>
     </div>
@@ -96,96 +182,221 @@ main { flex: 1; min-height: 0; position: relative; }
   <div id="list"></div>
   <div id="map" class="hidden"></div>
 </main>
-<script>
-// 由備註自動判斷標籤。想加新標籤，就在這裡加一行。
-const TAG_RULES = [
-  { key: '全素/純素', cls: 'good', re: /全素|純素|vegan|ヴィーガン/i },
-  { key: '蛋奶素',    cls: 'good', re: /蛋奶素|奶素|蛋素/ },
-  { key: '無五辛',    cls: 'good', re: /無五辛|沒有五辛|不含五辛/ },
-  { key: '可去五辛',  cls: 'good', re: /可去五辛|可以去五辛|去五辛|不加五辛|可去蔥|可不加蔥|五辛可去/ },
-  { key: '含五辛',    cls: 'bad',  re: /含五辛|有五辛|五辛素|不能去|不可去|無法去/ },
-  { key: '有備註',    cls: '',     re: /\S/, noteOnly: true },
-  { key: '有素食選項', cls: '',    re: /有素|素食選項|素食菜單|素的|鍋邊素|可做素|葷素|素食友善/ },
-];
-const MARKER_COLORS = { '全素/純素': '#2e7d32', '無五辛': '#2e7d32', '可去五辛': '#43a047', '蛋奶素': '#7cb342', '含五辛': '#ef6c00', '有素食選項': '#1e88e5' };
 
-const S = { places: [], q: '', city: '', list: '', tags: new Set(), me: null, view: 'list' };
+<dialog id="detail"></dialog>
+<dialog id="settings"></dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ========= 設定 ========= */
+const REPO = { owner: 'patricia9819', repo: 'Cultural-big-events', branch: 'main', path: 'veggie/mydata.json' };
+const CATS = {
+  pure:  { label: '全素無五辛',   color: 'var(--c-pure)',  hex: '#2e7d32' },
+  pure5: { label: '全素可去五辛', color: 'var(--c-pure5)', hex: '#8bc34a' },
+  mix5:  { label: '葷素可去五辛', color: 'var(--c-mix5)',  hex: '#f08c00' },
+};
+// 沒有手動指定分類時，依備註自動判斷
+function autoCat(text) {
+  if (/葷|有素|素食友善|素食選項|素食菜單|鍋邊|可做素/.test(text)) return 'mix5';
+  if (/無五辛|不含五辛|沒有五辛|不加五辛/.test(text)) return 'pure';
+  if (/可去五辛|可以去五辛|去五辛|五辛可去/.test(text)) return 'pure5';
+  return null;
+}
+const HEART_PATH = 'M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.6 4.5c2.1 0 3.6 1.2 4.4 2.6.8-1.4 2.3-2.6 4.4-2.6 3.6 0 5.7 3.8 4.2 7.2C19.5 16.4 12 21 12 21z';
+const LS_DATA = 'veggie-mydata', LS_TOKEN = 'veggie-gh-token', LS_VIEW = 'veggie-view';
+
+/* ========= 小工具 ========= */
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-
-function tagsOf(p) {
-  const text = `${p.note} ${p.name}`;
-  const t = TAG_RULES.filter(r => r.re.test(r.noteOnly ? p.note : text)).map(r => r.key);
-  return t;
-}
-const cityOf = p => (p.address.match(/([一-龥]{2}[市縣])/) || [])[1] || '其他';
+const safeUrl = u => (/^(https?:\/\/|photos\/)/i.test(u || '') ? u : '');
+const ls = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} },
+};
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2200); }
 function distKm(a, b) {
   const R = 6371, r = x => x * Math.PI / 180;
-  const dLat = r(b.lat - a.lat), dLng = r(b.lng - a.lng);
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(r(a.lat)) * Math.cos(r(b.lat)) * Math.sin(dLng / 2) ** 2;
+  const h = Math.sin(r(b.lat - a.lat) / 2) ** 2 + Math.cos(r(a.lat)) * Math.cos(r(b.lat)) * Math.sin(r(b.lng - a.lng) / 2) ** 2;
   return 2 * R * Math.asin(Math.sqrt(h));
+}
+const fmtDate = d => { const [y, m, dd] = d.split('-'); return `${y}/${+m}/${+dd}`; };
+const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+const b64enc = str => { const bytes = new TextEncoder().encode(str); let bin = ''; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000)); return btoa(bin); };
+const b64dec = b64 => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\s/g, '')), c => c.charCodeAt(0)));
+
+/* ========= 我的資料（備註編輯、去過紀錄、愛心） ========= */
+// 每間店一筆：{ note?, category?, visits: [{date, memo}], liked, photos?, t: 最後修改時間 }
+let my = { places: {} };
+let mySha = null, pushTimer = null, syncState = 'local';
+
+function mergeMy(a, b) {
+  const out = { places: { ...a.places } };
+  for (const [id, e] of Object.entries(b.places || {})) if (!out.places[id] || (e.t || 0) > (out.places[id].t || 0)) out.places[id] = e;
+  return out;
+}
+const token = () => ls.get(LS_TOKEN);
+const apiUrl = () => `https://api.github.com/repos/${REPO.owner}/${REPO.repo}/contents/${REPO.path}`;
+const ghHeaders = () => ({ Authorization: `Bearer ${token()}`, Accept: 'application/vnd.github+json' });
+
+async function fetchRemote() {
+  if (token()) {
+    const r = await fetch(`${apiUrl()}?ref=${REPO.branch}&t=${Date.now()}`, { headers: ghHeaders(), cache: 'no-store' });
+    if (r.status === 404) { mySha = null; return { places: {} }; }
+    if (!r.ok) throw new Error(r.status === 401 ? '同步密碼無效或過期' : `GitHub 回應 ${r.status}`);
+    const j = await r.json(); mySha = j.sha;
+    return JSON.parse(b64dec(j.content));
+  }
+  const r = await fetch('mydata.json?t=' + Date.now());
+  return r.ok ? r.json() : { places: {} };
+}
+async function loadMy() {
+  let local = { places: {} };
+  try { local = JSON.parse(ls.get(LS_DATA)) || local; } catch (e) {}
+  let remote = { places: {} };
+  try { remote = await fetchRemote(); setSync(token() ? 'ok' : 'local'); }
+  catch (e) { setSync('err', e.message); }
+  my = mergeMy(remote, local);
+  ls.set(LS_DATA, JSON.stringify(my));
+  // 本機有比雲端新的變更 → 補上傳
+  if (token() && syncState === 'ok' && Object.entries(local.places).some(([id, e]) => (e.t || 0) > (remote.places?.[id]?.t || 0))) schedulePush();
+}
+function saveMy(id, patch) {
+  const e = my.places[id] || { visits: [] };
+  my.places[id] = { ...e, ...patch, t: Date.now() };
+  ls.set(LS_DATA, JSON.stringify(my));
+  if (token()) schedulePush();
+}
+function schedulePush() { clearTimeout(pushTimer); setSync('busy'); pushTimer = setTimeout(pushRemote, 900); }
+async function pushRemote(retry = true) {
+  try {
+    const remote = await fetchRemote();
+    my = mergeMy(my, remote); my = mergeMy(remote, my);
+    const body = { message: '素食地圖：更新我的備註與紀錄', content: b64enc(JSON.stringify({ ...my, updated: new Date().toISOString() }, null, 1) + '\n'), branch: REPO.branch };
+    if (mySha) body.sha = mySha;
+    const r = await fetch(apiUrl(), { method: 'PUT', headers: { ...ghHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if ((r.status === 409 || r.status === 422) && retry) return pushRemote(false);
+    if (!r.ok) throw new Error(r.status === 403 || r.status === 404 ? '同步密碼沒有寫入權限' : `GitHub 回應 ${r.status}`);
+    mySha = (await r.json()).content.sha;
+    ls.set(LS_DATA, JSON.stringify(my));
+    setSync('ok');
+  } catch (e) { setSync('err', e.message); }
+}
+function setSync(state, msg) {
+  syncState = state;
+  const b = $('syncBtn');
+  b.className = 'sync-btn' + (state === 'ok' ? ' ok' : state === 'err' ? ' err' : '');
+  b.textContent = { local: '📱 只存在這台裝置', ok: '☁️ 已同步', busy: '⏳ 同步中…', err: '⚠️ 同步失敗' }[state];
+  b.title = msg || '跨裝置同步設定';
+}
+
+/* ========= 店家資料 ========= */
+const S = { places: [], q: '', list: '', cats: new Set(), me: null, view: 'list' };
+function eff(p) {
+  const m = my.places[p.id] || {};
+  const note = m.note ?? p.note ?? '';
+  const visits = [...(m.visits || [])].sort((a, b) => b.date.localeCompare(a.date));
+  const photos = (m.photos && m.photos.filter(Boolean).length ? m.photos : p.photos || []).map(safeUrl).filter(Boolean);
+  return { ...p, note, noteEdited: m.note != null && m.note !== p.note, cat: m.category || autoCat(`${note} ${p.name}`), catManual: !!m.category, visits, liked: !!m.liked, photos };
+}
+
+/* 營業時間：依店家所在地的時區判斷今天與是否營業中 */
+function placeTZ(p) {
+  if (/日本/.test(p.address) || (p.lng > 128 && p.lng < 146 && p.lat > 24 && p.lat < 46)) return 'Asia/Tokyo';
+  if (p.lng > 119 && p.lng < 122.5 && p.lat > 21 && p.lat < 26.5) return 'Asia/Taipei';
+  return undefined;
+}
+function nowIn(tz) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(new Date()).map(x => [x.type, x.value]));
+  return { day: { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 7 }[parts.weekday], min: +parts.hour * 60 + +parts.minute };
+}
+function openStatus(p) {
+  if (!p.hours || !p.hours.length) return null;
+  const n = nowIn(placeTZ(p));
+  const today = p.hours.find(h => h.day === n.day);
+  if (!today) return null;
+  if (/休息|公休/.test(today.text)) return { open: false, today };
+  if (/24\s*小時/.test(today.text)) return { open: true, today };
+  const re = /(\d{1,2}):(\d{2})\s*[–\-~]\s*(\d{1,2}):(\d{2})/g; let m, open = false;
+  while ((m = re.exec(today.text))) {
+    const s = +m[1] * 60 + +m[2]; let e = +m[3] * 60 + +m[4]; if (e <= s) e += 1440;
+    if (n.min >= s && n.min < e) open = true;
+  }
+  return { open, today };
 }
 
 function filtered() {
   const q = S.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
-  let out = S.places.filter(p => {
-    if (S.city && p._city !== S.city) return false;
+  let out = S.places.map(eff).filter(p => {
     if (S.list && !p.lists.includes(S.list)) return false;
-    for (const t of S.tags) if (!p._tags.includes(t)) return false;
-    const hay = `${p.name} ${p.note} ${p.address} ${p._tags.join(' ')}`.toLowerCase();
+    if (S.cats.size && !S.cats.has(p.cat)) return false;
+    const hay = `${p.name} ${p.note} ${p.address} ${p.category || ''} ${p.cat ? CATS[p.cat].label : ''} ${p.visits.map(v => v.date + ' ' + v.memo).join(' ')}`.toLowerCase();
     return q.every(w => hay.includes(w));
   });
   if (S.me) { out.forEach(p => p._d = distKm(S.me, p)); out.sort((a, b) => a._d - b._d); }
   return out;
 }
 
+/* ========= 畫面 ========= */
+const heartSVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${HEART_PATH}"/></svg>`;
+const heartBtn = p => `<button class="heart" data-like="${esc(p.id)}" aria-pressed="${p.liked}" aria-label="${p.liked ? '取消最愛' : '加入最愛'}">${heartSVG}</button>`;
+const badge = p => p.cat ? `<span class="badge" style="--c:${CATS[p.cat].color}">${esc(CATS[p.cat].label)}</span>` : `<span class="badge none">未分類</span>`;
+const photosHTML = p => `<div class="photos">${[0, 1].map(i => p.photos[i]
+  ? `<img src="${esc(p.photos[i])}" alt="${esc(p.name)} 照片 ${i + 1}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:'🥗'}))">`
+  : `<div class="ph">${i ? '🍜' : '🥗'}</div>`).join('')}</div>`;
+
 function renderChips() {
-  const counts = {};
-  S.places.forEach(p => p._tags.forEach(t => counts[t] = (counts[t] || 0) + 1));
-  $('chips').innerHTML = TAG_RULES.filter(r => counts[r.key]).map(r =>
-    `<span class="chip" role="button" tabindex="0" data-tag="${esc(r.key)}" aria-pressed="${S.tags.has(r.key)}">${esc(r.key)}<span class="n">${counts[r.key]}</span></span>`).join('');
+  const all = S.places.map(eff);
+  $('chips').innerHTML = Object.entries(CATS).map(([k, c]) =>
+    `<button class="chip" data-cat="${k}" style="--c:${c.color}" aria-pressed="${S.cats.has(k)}"><i></i>${esc(c.label)}<span class="n">${all.filter(p => p.cat === k).length}</span></button>`).join('');
 }
-
 function cardHTML(p) {
-  const tags = p._tags.filter(t => t !== '有備註').map(t => `<span class="tag ${TAG_RULES.find(r => r.key === t).cls}">${esc(t)}</span>`).join('');
-  return `<article class="card">
-    <h3>${esc(p.name)}</h3>
-    ${p.note ? `<div class="note">${esc(p.note)}</div>` : `<div class="note empty">（沒有備註）</div>`}
-    ${tags ? `<div class="tags">${tags}</div>` : ''}
-    <div class="meta">${[esc(p.address), S.me ? `${p._d.toFixed(1)} 公里` : '', esc(p.lists.join('、'))].filter(Boolean).join(' · ')}</div>
-    <div class="actions"><button data-focus="${esc(p.id)}">在地圖上看</button><a href="${esc(p.gmaps)}" target="_blank" rel="noopener">Google 地圖 ↗</a></div>
-  </article>`;
+  const st = openStatus(p);
+  const last = p.visits[0];
+  return `<article class="card" tabindex="0" data-open="${esc(p.id)}"><div class="lift">
+    ${photosHTML(p)}
+    <div class="body">
+      <div class="title"><h3>${esc(p.name)}</h3>${heartBtn(p)}</div>
+      ${badge(p)}
+      ${p.note ? `<div class="note">${esc(p.note)}</div>` : `<div class="note empty">（沒有備註，點開卡片可以新增）</div>`}
+      ${last ? `<div class="visited">🍽️ 去過 ${p.visits.length} 次・最近 ${fmtDate(last.date)}${last.memo ? `「${esc(last.memo)}」` : ''}</div>` : ''}
+      <div class="meta">${st ? `<span class="open ${st.open ? 'yes' : 'no'}">${st.open ? '營業中' : '休息中'}</span>・今天 ${esc(st.today.text)}<br>` : ''}${[esc(p.address), S.me ? `${p._d.toFixed(1)} 公里` : ''].filter(Boolean).join(' · ')}</div>
+    </div>
+  </div></article>`;
 }
-
-let map, layer;
-const markers = new Map();
-function ensureMap() {
-  if (map) return;
-  map = L.map('map', { zoomControl: true }).setView([35.68, 139.76], 10);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(map);
-  layer = L.featureGroup().addTo(map);
-}
-function renderMap(list, fit = true) {
-  ensureMap();
-  layer.clearLayers(); markers.clear();
-  list.forEach(p => {
-    const color = MARKER_COLORS[p._tags.find(t => MARKER_COLORS[t])] || '#78909c';
-    const m = L.circleMarker([p.lat, p.lng], { radius: 9, color: '#fff', weight: 2, fillColor: color, fillOpacity: .95 })
-      .bindPopup(`<b>${esc(p.name)}</b><div class="pop-note">${esc(p.note || '（沒有備註）')}</div><div style="color:#777;font-size:.8rem">${esc(p.address)}</div><a href="${esc(p.gmaps)}" target="_blank" rel="noopener">在 Google 地圖開啟 ↗</a>`)
-      .bindTooltip(p.name);
-    m.addTo(layer); markers.set(p.id, m);
-  });
-  if (S.me) L.circleMarker([S.me.lat, S.me.lng], { radius: 7, color: '#fff', weight: 2, fillColor: '#d81b60', fillOpacity: 1 }).bindTooltip('我的位置').addTo(layer);
-  if (fit && list.length) map.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 15 });
-}
-
 function render() {
   const list = filtered();
   $('count').textContent = `共 ${list.length} 間`;
   $('list').innerHTML = list.length ? list.map(cardHTML).join('') : '<div class="empty-state">找不到符合條件的店家</div>';
   if (S.view === 'map') renderMap(list);
+  renderChips();
 }
 
+/* ========= 地圖 ========= */
+let map, layer, fitted = false;
+const markers = new Map();
+function ensureMap() {
+  if (map) return;
+  map = L.map('map').setView([35.68, 139.76], 10);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(map);
+  layer = L.featureGroup().addTo(map);
+  const legend = L.control({ position: 'bottomleft' });
+  legend.onAdd = () => { const d = L.DomUtil.create('div', 'legend'); d.innerHTML = Object.values(CATS).map(c => `<div><i style="--c:${c.color}"></i>${c.label}</div>`).join('') + `<div><i style="--c:var(--c-none)"></i>未分類</div>`; return d; };
+  legend.addTo(map);
+}
+function renderMap(list) {
+  ensureMap();
+  layer.clearLayers(); markers.clear();
+  list.forEach(p => {
+    const color = p.cat ? CATS[p.cat].color : 'var(--c-none)';
+    const icon = L.divIcon({ className: 'dotwrap', html: `<span class="dot${p.liked ? ' liked' : ''}" style="--c:${color}"></span>`, iconSize: [26, 26], iconAnchor: [13, 13] });
+    const m = L.marker([p.lat, p.lng], { icon, riseOnHover: true, keyboard: true, title: p.name })
+      .bindTooltip(`${esc(p.name)}${p.note ? `<br><small>${esc(p.note.slice(0, 30))}</small>` : ''}`, { direction: 'top', offset: [0, -14] })
+      .on('click', () => openDetail(p.id));
+    m.addTo(layer); markers.set(p.id, m);
+  });
+  if (S.me) L.circleMarker([S.me.lat, S.me.lng], { radius: 7, color: '#fff', weight: 2, fillColor: '#d81b60', fillOpacity: 1 }).bindTooltip('我的位置').addTo(layer);
+  if (!fitted && list.length) { map.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 15 }); fitted = true; }
+}
 function setView(v) {
   S.view = v;
   $('tabList').setAttribute('aria-selected', v === 'list');
@@ -193,26 +404,190 @@ function setView(v) {
   $('list').classList.toggle('hidden', v !== 'list');
   $('map').classList.toggle('hidden', v !== 'map');
   if (v === 'map') { ensureMap(); setTimeout(() => { map.invalidateSize(); renderMap(filtered()); }, 0); }
-  try { localStorage.setItem('veggie-view', v); } catch (e) {}
+  ls.set(LS_VIEW, v);
 }
-
-function focusPlace(id) {
+function showOnMap(id) {
+  $('detail').close();
   setView('map');
-  setTimeout(() => { const m = markers.get(id); if (m) { map.setView(m.getLatLng(), 16); m.openPopup(); } }, 50);
+  setTimeout(() => {
+    const m = markers.get(id); if (!m) return;
+    map.setView(m.getLatLng(), 16);
+    const dot = m.getElement()?.querySelector('.dot');
+    if (dot) { dot.classList.add('flash'); setTimeout(() => dot.classList.remove('flash'), 1800); }
+  }, 80);
 }
 
+/* ========= 愛心動畫 ========= */
+function burst(btn) {
+  btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const colors = ['#e8435a', '#ff7a90', '#ffb3c0', '#ff4d6d', '#f9a8d4'];
+  const n = 12;
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2 + Math.random() * .3, r = 26 + Math.random() * 14;
+    const s = document.createElement('span');
+    s.className = 'particle';
+    s.style.cssText = `--dx:${Math.cos(a) * r}px;--dy:${Math.sin(a) * r}px;--rot:${(Math.random() * 60 - 30) | 0}deg;--pc:${colors[i % colors.length]};width:${7 + Math.random() * 5}px;height:${7 + Math.random() * 5}px`;
+    s.innerHTML = `<svg viewBox="0 0 24 24"><path d="${HEART_PATH}"/></svg>`;
+    btn.appendChild(s);
+    setTimeout(() => s.remove(), 800);
+  }
+}
+function toggleLike(id, btn) {
+  const liked = !(my.places[id]?.liked);
+  saveMy(id, { liked });
+  document.querySelectorAll(`.heart[data-like="${CSS.escape(id)}"]`).forEach(b => { b.setAttribute('aria-pressed', liked); b.setAttribute('aria-label', liked ? '取消最愛' : '加入最愛'); });
+  if (liked) burst(btn);
+  if (S.view === 'map') renderMap(filtered());
+}
+
+/* ========= 詳情視窗 ========= */
+let detailId = null, editing = false;
+function openDetail(id) { detailId = id; editing = false; drawDetail(); const d = $('detail'); if (!d.open) d.showModal(); }
+function drawDetail() {
+  const raw = S.places.find(x => x.id === detailId); if (!raw) return;
+  const p = eff(raw), st = openStatus(p);
+  const today = st ? st.today.day : null;
+  const hoursHTML = p.hours && p.hours.length
+    ? `<table class="hours">${p.hours.map(h => `<tr class="${h.day === today ? 'today' : ''}"><td>${esc(h.name)}</td><td>${esc(h.text)}</td></tr>`).join('')}</table>
+       <div class="hint" style="margin-top:6px">${st ? `<span class="open ${st.open ? 'yes' : 'no'}">現在${st.open ? '營業中' : '休息中'}</span>・` : ''}營業時間來自 Google 地圖，每週更新；遇到假日可能不同</div>`
+    : `<div class="hint">Google 地圖上沒有這間店的營業時間</div>`;
+  const noteSec = editing ? `
+    <div class="edit">
+      <label>備註<textarea id="edNote">${esc(p.note)}</textarea></label>
+      ${raw.note && raw.note !== p.note ? `<div class="hint">Google 地圖上的原始備註：${esc(raw.note)}</div>` : ''}
+      <label>分類<select id="edCat">
+        <option value="">自動判斷（依備註）${!p.catManual && p.cat ? '：' + CATS[p.cat].label : ''}</option>
+        ${Object.entries(CATS).map(([k, c]) => `<option value="${k}" ${p.catManual && p.cat === k ? 'selected' : ''}>${c.label}</option>`).join('')}
+      </select></label>
+      <label>照片 1 網址（留空 = 用 Google 地圖的照片）<input id="edPh1" type="url" value="${esc((my.places[p.id]?.photos || [])[0] || '')}" placeholder="https://..."></label>
+      <label>照片 2 網址<input id="edPh2" type="url" value="${esc((my.places[p.id]?.photos || [])[1] || '')}" placeholder="https://..."></label>
+      <div class="hint">這裡的修改只存在素食地圖，不會改到 Google 地圖上的備註。</div>
+      <div class="row"><button class="btn primary" id="edSave">儲存</button><button class="btn" id="edCancel">取消</button>${p.noteEdited ? `<button class="btn danger" id="edReset">還原成 Google 備註</button>` : ''}</div>
+    </div>`
+    : `${p.note ? `<div class="note">${esc(p.note)}</div>` : `<div class="note empty">（沒有備註）</div>`}
+       ${p.noteEdited ? `<div class="hint" style="margin-top:6px">✏️ 已在素食地圖上修改過</div>` : ''}`;
+  $('detail').innerHTML = `<div class="sheet">
+    <button class="close" id="dClose" aria-label="關閉">✕</button>
+    <div class="scroll">
+      ${photosHTML(p)}
+      <div class="sec" style="border-top:0">
+        <div class="title"><h3 style="font-size:1.15rem">${esc(p.name)}</h3>${heartBtn(p)}</div>
+        <div class="row" style="margin-top:6px">${badge(p)}${p.category ? `<span class="meta">${esc(p.category)}</span>` : ''}</div>
+      </div>
+      <div class="sec"><h4>📝 備註${editing ? '' : '<button class="btn" id="edOpen">✏️ 編輯</button>'}</h4>${noteSec}</div>
+      <div class="sec"><h4>🕒 營業時間</h4>${hoursHTML}</div>
+      <div class="sec"><h4>🍽️ 去吃過的紀錄</h4>
+        ${p.visits.length ? `<ul class="visits">${p.visits.map((v, i) => `<li><b>${fmtDate(v.date)}</b><span>${esc(v.memo) || '—'}</span><button data-delvisit="${i}" aria-label="刪除這筆紀錄">✕</button></li>`).join('')}</ul>` : `<div class="hint" style="margin-bottom:8px">還沒有紀錄。吃過之後記下日期和吃了什麼，之後比較好回想。</div>`}
+        <div class="addvisit"><input type="date" id="vDate" value="${todayStr()}" max="${todayStr()}"><input type="text" id="vMemo" placeholder="吃了什麼、跟誰去（可不填）"><button class="btn primary" id="vAdd">＋ 新增</button></div>
+      </div>
+      <div class="sec"><h4>📍 資訊</h4>
+        <div class="meta" style="font-size:.88rem">${esc(p.address || '（沒有地址）')}${p.phone ? `<br>☎️ <a href="tel:${esc(p.phone.replace(/\s/g, ''))}" style="color:var(--accent)">${esc(p.phone)}</a>` : ''}</div>
+        <div class="links" style="margin-top:10px">
+          <a href="${esc(p.gmaps)}" target="_blank" rel="noopener">Google 地圖 ↗</a>
+          <button id="dMap">在素食地圖上看</button>
+          ${p.website && /^https?:/.test(p.website) ? `<a href="${esc(p.website)}" target="_blank" rel="noopener">官網 ↗</a>` : ''}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+$('detail').addEventListener('click', e => {
+  const d = $('detail');
+  if (e.target === d) return d.close();
+  const t = e.target.closest('button'); if (!t) return;
+  const id = detailId, m = my.places[id] || { visits: [] };
+  if (t.id === 'dClose') d.close();
+  else if (t.id === 'dMap') showOnMap(id);
+  else if (t.id === 'edOpen') { editing = true; drawDetail(); $('edNote').focus(); }
+  else if (t.id === 'edCancel') { editing = false; drawDetail(); }
+  else if (t.id === 'edReset') { if (my.places[id]) delete my.places[id].note; saveMy(id, {}); editing = false; drawDetail(); render(); toast('已還原成 Google 地圖的備註'); }
+  else if (t.id === 'edSave') {
+    const raw = S.places.find(x => x.id === id);
+    const note = $('edNote').value.trim();
+    const photos = [$('edPh1').value.trim(), $('edPh2').value.trim()].map(u => /^https?:\/\//.test(u) ? u : '');
+    const patch = { category: $('edCat').value || undefined, photos: photos.some(Boolean) ? photos : undefined };
+    if (note !== (raw.note || '')) patch.note = note; else patch.note = undefined;
+    saveMy(id, patch);
+    for (const k of ['category', 'photos', 'note']) if (my.places[id][k] === undefined) delete my.places[id][k];
+    ls.set(LS_DATA, JSON.stringify(my));
+    editing = false; drawDetail(); render(); toast(token() ? '已儲存並同步' : '已儲存在這台裝置');
+  }
+  else if (t.id === 'vAdd') {
+    const date = $('vDate').value; if (!date) return toast('請選日期');
+    saveMy(id, { visits: [...(m.visits || []), { date, memo: $('vMemo').value.trim() }] });
+    drawDetail(); render(); toast('已記錄 ' + fmtDate(date));
+  }
+  else if (t.dataset.delvisit != null) {
+    const sorted = [...(m.visits || [])].sort((a, b) => b.date.localeCompare(a.date));
+    const target = sorted[+t.dataset.delvisit];
+    if (!confirm(`刪除 ${fmtDate(target.date)} 的紀錄？`)) return;
+    saveMy(id, { visits: (m.visits || []).filter(v => v !== target) });
+    drawDetail(); render();
+  }
+  else if (t.dataset.like) toggleLike(t.dataset.like, t);
+});
+$('detail').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'vMemo') $('vAdd').click(); });
+
+/* ========= 跨裝置同步設定 ========= */
+function openSettings() {
+  const has = !!token();
+  $('settings').innerHTML = `<div class="sheet"><button class="close" id="sClose" aria-label="關閉">✕</button><div class="scroll">
+    <div class="sec" style="border-top:0"><h4 style="font-size:1.05rem">☁️ 跨裝置同步</h4>
+      <div class="hint" style="font-size:.88rem">
+        ${has ? '這台裝置已經設定好同步。你的備註、去過紀錄和愛心會存到 GitHub，手機和電腦都看得到。'
+              : '目前你的編輯、去過紀錄和愛心只存在<b>這台裝置的瀏覽器</b>。想讓手機和電腦看到一樣的內容，請照下面步驟設定一次（每台裝置各貼一次）。'}
+      </div>
+    </div>
+    ${has ? '' : `<div class="sec"><ol class="steps">
+      <li>點這裡打開 GitHub：<a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">建立同步密碼 ↗</a>（需要先登入 GitHub）</li>
+      <li><b>Token name</b> 填「素食地圖」；<b>Expiration</b> 選最長的期限（或 No expiration）</li>
+      <li><b>Repository access</b> 選「Only select repositories」，再選 <b>${REPO.repo}</b></li>
+      <li>在 <b>Permissions</b> 裡找到 <b>Contents</b>，改成 <b>Read and write</b></li>
+      <li>拉到最下面按 <b>Generate token</b>，複製出現的那串 <code>github_pat_</code> 開頭的文字</li>
+      <li>貼到下面，按「儲存」</li>
+    </ol></div>`}
+    <div class="sec">
+      ${has ? `<div class="row"><button class="btn danger" id="sRemove">取消這台裝置的同步</button></div>`
+            : `<div class="row"><input type="password" id="sToken" placeholder="貼上 github_pat_…" style="flex:1" autocomplete="off"><button class="btn primary" id="sSave">儲存</button></div>
+               <div class="hint" style="margin-top:8px">這串文字只會存在這台裝置，請不要分享給別人。</div>`}
+    </div>
+  </div></div>`;
+  $('settings').showModal();
+}
+$('settings').addEventListener('click', async e => {
+  const d = $('settings');
+  if (e.target === d || e.target.id === 'sClose') return d.close();
+  if (e.target.id === 'sRemove') { ls.set(LS_TOKEN, null); setSync('local'); d.close(); toast('這台裝置已取消同步'); }
+  if (e.target.id === 'sSave') {
+    const v = $('sToken').value.trim(); if (!v) return;
+    ls.set(LS_TOKEN, v);
+    e.target.textContent = '檢查中…';
+    try {
+      const r = await fetch(`https://api.github.com/repos/${REPO.owner}/${REPO.repo}`, { headers: ghHeaders() });
+      if (!r.ok) throw new Error();
+      await loadMy(); schedulePush(); render();
+      d.close(); toast('同步設定完成 ☁️');
+    } catch (err) { ls.set(LS_TOKEN, null); setSync('local'); e.target.textContent = '儲存'; alert('這串同步密碼無法使用，請確認有選對 repository，並把 Contents 設成 Read and write。'); }
+  }
+});
+$('syncBtn').onclick = openSettings;
+
+/* ========= 事件 ========= */
 $('q').addEventListener('input', e => { S.q = e.target.value; render(); });
-$('city').addEventListener('change', e => { S.city = e.target.value; render(); });
-$('listSel').addEventListener('change', e => { S.list = e.target.value; render(); });
+$('listSel').addEventListener('change', e => { S.list = e.target.value; fitted = false; render(); });
 $('tabList').onclick = () => setView('list');
 $('tabMap').onclick = () => setView('map');
 $('chips').addEventListener('click', e => {
   const c = e.target.closest('.chip'); if (!c) return;
-  const t = c.dataset.tag; S.tags.has(t) ? S.tags.delete(t) : S.tags.add(t);
-  renderChips(); render();
+  S.cats.has(c.dataset.cat) ? S.cats.delete(c.dataset.cat) : S.cats.add(c.dataset.cat);
+  fitted = false; render();
 });
-$('chips').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.target.click(); } });
-$('list').addEventListener('click', e => { const b = e.target.closest('[data-focus]'); if (b) focusPlace(b.dataset.focus); });
+$('list').addEventListener('click', e => {
+  const h = e.target.closest('.heart'); if (h) { e.stopPropagation(); return toggleLike(h.dataset.like, h); }
+  const c = e.target.closest('[data-open]'); if (c) openDetail(c.dataset.open);
+});
+$('list').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset.open) openDetail(e.target.dataset.open); });
 $('near').onclick = () => {
   if (S.me) { S.me = null; $('near').classList.remove('on'); render(); return; }
   if (!navigator.geolocation) return alert('這個瀏覽器不支援定位');
@@ -222,21 +597,22 @@ $('near').onclick = () => {
     $('near').textContent = '📍 離我最近'; $('near').classList.add('on'); render();
   }, () => { $('near').textContent = '📍 離我最近'; alert('無法取得位置，請允許定位權限'); }, { enableHighAccuracy: true, timeout: 10000 });
 };
+document.addEventListener('visibilitychange', async () => { if (!document.hidden && token()) { await loadMy(); render(); } });
 
-fetch('places.json?t=' + Date.now()).then(r => r.json()).then(data => {
-  S.places = data.places.map(p => ({ ...p, lists: p.lists || [p.list || ''], _tags: tagsOf(p), _city: cityOf(p) }));
+/* ========= 啟動 ========= */
+(async () => {
+  setSync(token() ? 'busy' : 'local');
+  const [data] = await Promise.all([fetch('places.json?t=' + Date.now()).then(r => r.json()), loadMy()]);
+  S.places = data.places.map(p => ({ ...p, lists: p.lists || [p.list || ''] }));
   const fmt = new Date(data.updated).toLocaleString('zh-TW', { hour12: false });
-  $('updated').textContent = `上次與 Google 地圖同步：${fmt}（每 3 小時自動同步）`;
-  if (data.demo) { $('banner').textContent = '目前顯示的是示範資料。在 veggie/lists.json 貼上你的 Google 地圖清單分享連結後，就會自動換成你的清單。'; $('banner').classList.remove('hidden'); }
+  $('updated').textContent = `Google 地圖資料最後更新：${fmt}（每 3 小時自動檢查）`;
+  if (data.demo) { $('banner').textContent = '目前顯示的是示範資料。'; $('banner').classList.remove('hidden'); }
   else if (data.errors && data.errors.length) { $('banner').textContent = '有部分清單同步失敗：' + data.errors.join('；'); $('banner').classList.remove('hidden'); }
-  const cities = [...new Set(S.places.map(p => p._city))].sort((a, b) => a.localeCompare(b, 'zh-TW'));
-  if (cities.filter(c => c !== '其他').length > 1) $('city').innerHTML += cities.map(c => `<option>${esc(c)}</option>`).join(''); else $('city').classList.add('hidden');
   const lists = [...new Set(S.places.flatMap(p => p.lists))].filter(Boolean);
   if (lists.length > 1) $('listSel').innerHTML += lists.map(c => `<option>${esc(c)}</option>`).join(''); else $('listSel').classList.add('hidden');
-  renderChips(); render();
-  let v = 'list'; try { v = localStorage.getItem('veggie-view') || 'list'; } catch (e) {}
-  setView(v);
-}).catch(err => { $('updated').textContent = '讀取資料失敗：' + err.message; });
+  render();
+  setView(ls.get(LS_VIEW) || 'list');
+})().catch(err => { $('updated').textContent = '讀取資料失敗：' + err.message; });
 </script>
 </body>
 </html>
