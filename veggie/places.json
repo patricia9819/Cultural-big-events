@@ -1,9 +1,7 @@
 {
- "updated": "2026-11-23T03:10:15+00:00",
+ "updated": "2026-11-23T08:43:37+00:00",
  "demo": false,
- "errors": [
-  "https://maps.app.goo.gl/RiJRgoFaCr5G4oAi6: 無法從連結取得清單 ID：https://maps.app.goo.gl/RiJRgoFaCr5G4oAi6（請確認清單已設為「分享」）"
- ],
+ "errors": [],
  "places": [
   {
    "id": "6924387106382718213",
@@ -1488,6 +1486,64 @@
     "photos/6924387413261824153-2.jpg"
    ],
    "details_at": 1795403357
+  },
+  {
+   "id": "6924524538904279191",
+   "name": "川越 幸壽司",
+   "note": "",
+   "address": "1 Chome-13-7 Motomachi, Kawagoe, Saitama 350-0062日本",
+   "lat": 35.9244385,
+   "lng": 139.4838572,
+   "fid": "0x6018da6163dd7897:0x5ffabffffa47c7f4",
+   "gmaps": "https://www.google.com/maps/search/%E5%B7%9D%E8%B6%8A%20%E5%B9%B8%E5%A3%BD%E5%8F%B8/@35.9244385,139.4838572,18z",
+   "lists": [
+    "其他收藏"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–15:30、17:00–21:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–15:00、17:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–15:00、17:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–15:00、17:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–15:00、17:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–15:30、17:00–21:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–15:30、17:00–21:00"
+    }
+   ],
+   "phone": "+81 49-224-0333",
+   "website": "https://www.kawagoe-kousushi.com/",
+   "category": "壽司店",
+   "photos": [
+    "photos/6924524538904279191-1.jpg",
+    "photos/6924524538904279191-2.jpg"
+   ],
+   "details_at": 1795423415
   },
   {
    "id": "6924441886333214115",
