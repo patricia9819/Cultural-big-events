@@ -1,12 +1,391 @@
 {
- "updated": "2026-11-22T00:00:00+00:00",
- "demo": true,
+ "updated": "2026-11-23T02:24:57+00:00",
+ "demo": false,
  "errors": [],
  "places": [
-  {"id": "demo1", "name": "（示範）綠意蔬食小館", "note": "全素，可去五辛，推薦麻油麵線", "address": "台北市大安區", "lat": 25.0330, "lng": 121.5434, "lists": ["我的素食清單"], "gmaps": "https://www.google.com/maps/search/?api=1&query=25.0330,121.5434"},
-  {"id": "demo2", "name": "（示範）巷口滷味", "note": "有素食，滷汁是素的，可去五辛", "address": "台北市中山區", "lat": 25.0525, "lng": 121.5203, "lists": ["我的素食清單"], "gmaps": "https://www.google.com/maps/search/?api=1&query=25.0525,121.5203"},
-  {"id": "demo3", "name": "（示範）山城義式餐廳", "note": "蛋奶素，有素食菜單，含五辛不能去", "address": "台中市西區", "lat": 24.1466, "lng": 120.6620, "lists": ["我的素食清單"], "gmaps": "https://www.google.com/maps/search/?api=1&query=24.1466,120.6620"},
-  {"id": "demo4", "name": "（示範）港邊早午餐", "note": "有素食選項，鍋邊素", "address": "高雄市鼓山區", "lat": 22.6200, "lng": 120.2700, "lists": ["我的素食清單"], "gmaps": "https://www.google.com/maps/search/?api=1&query=22.6200,120.2700"},
-  {"id": "demo5", "name": "（示範）古都素食自助餐", "note": "純素自助餐，可去五辛，中午才開", "address": "台南市中西區", "lat": 22.9920, "lng": 120.2010, "lists": ["我的素食清單"], "gmaps": "https://www.google.com/maps/search/?api=1&query=22.9920,120.2010"}
+  {
+   "id": "6924387106382718213",
+   "name": "AFURI 橫濱地標廣場",
+   "note": "",
+   "address": "日本〒220-0012 Kanagawa, Yokohama, Nishi Ward, Minatomirai, 2 Chome−2−1 Yokohama Landmark Tower, 1F",
+   "lat": 35.4556091,
+   "lng": 139.6320419,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=AFURI%20%E6%A9%AB%E6%BF%B1%E5%9C%B0%E6%A8%99%E5%BB%A3%E5%A0%B4%20%E6%97%A5%E6%9C%AC%E3%80%92220-0012%20Kanagawa%2C%20Yokohama%2C%20Nishi%20Ward%2C%20Minatomirai%2C%202%20Chome%E2%88%922%E2%88%921%20Yokohama%20Landmark%20Tower%2C%201F",
+   "lists": [
+    "橫濱素食"
+   ]
+  },
+  {
+   "id": "6924439306314927305",
+   "name": "AIN SOPH 素食餐廳。新宿店",
+   "note": "",
+   "address": "",
+   "lat": 35.6907077,
+   "lng": 139.7066642,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=AIN%20SOPH%20%E7%B4%A0%E9%A3%9F%E9%A4%90%E5%BB%B3%E3%80%82%E6%96%B0%E5%AE%BF%E5%BA%97",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924442720180829137",
+   "name": "Injoy 悦納",
+   "note": "無五辛",
+   "address": "",
+   "lat": 35.712727099999995,
+   "lng": 139.798675,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=Injoy%20%E6%82%A6%E7%B4%8D",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924437953757622349",
+   "name": "KOMEDA is □ 東銀座店",
+   "note": "4/14早午餐",
+   "address": "",
+   "lat": 35.668154,
+   "lng": 139.76948099999998,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=KOMEDA%20is%20%E2%96%A1%20%E6%9D%B1%E9%8A%80%E5%BA%A7%E5%BA%97",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924441717679039909",
+   "name": "Komaki Shokudo Kamakura Fushikian",
+   "note": "",
+   "address": "",
+   "lat": 35.699686899999996,
+   "lng": 139.7731346,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=Komaki%20Shokudo%20Kamakura%20Fushikian",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924438248461993453",
+   "name": "Kyūshū Jangara Ginza",
+   "note": "",
+   "address": "",
+   "lat": 35.6694086,
+   "lng": 139.7648685,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=Ky%C5%ABsh%C5%AB%20Jangara%20Ginza",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924387556782335233",
+   "name": "M's Table",
+   "note": "預約管道https://www.pompadour.co.jp/contact.php",
+   "address": "日本〒231-0861 Kanagawa, Yokohama, Naka Ward, Motomachi, 4 Chome−171 ポンパドウル元町本店ビル 2階",
+   "lat": 35.4395722,
+   "lng": 139.64677229999998,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=M%27s%20Table%20%E6%97%A5%E6%9C%AC%E3%80%92231-0861%20Kanagawa%2C%20Yokohama%2C%20Naka%20Ward%2C%20Motomachi%2C%204%20Chome%E2%88%92171%20%E3%83%9D%E3%83%B3%E3%83%91%E3%83%89%E3%82%A6%E3%83%AB%E5%85%83%E7%94%BA%E6%9C%AC%E5%BA%97%E3%83%93%E3%83%AB%202%E9%9A%8E",
+   "lists": [
+    "橫濱素食"
+   ]
+  },
+  {
+   "id": "6924441400125204949",
+   "name": "Marugoto Vegan Dining Asakusa",
+   "note": "無五辛",
+   "address": "",
+   "lat": 35.7117359,
+   "lng": 139.7988863,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=Marugoto%20Vegan%20Dining%20Asakusa",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924438558395220165",
+   "name": "Nezunoya",
+   "note": "",
+   "address": "1 Chome-1-14 Nezu, Bunkyo City, Tokyo 113-0031日本",
+   "lat": 35.7175468,
+   "lng": 139.7651712,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=Nezunoya%201%20Chome-1-14%20Nezu%2C%20Bunkyo%20City%2C%20Tokyo%20113-0031%E6%97%A5%E6%9C%AC",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924387085906352577",
+   "name": "RUCY+R 橫濱JOINUS店",
+   "note": "",
+   "address": "日本〒220-0005 Kanagawa, Yokohama, Nishi Ward, Minamisaiwai, 1 Chome−5−1 ５−１JOINUS B1F",
+   "lat": 35.465319099999995,
+   "lng": 139.6211099,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=RUCY%2BR%20%E6%A9%AB%E6%BF%B1JOINUS%E5%BA%97%20%E6%97%A5%E6%9C%AC%E3%80%92220-0005%20Kanagawa%2C%20Yokohama%2C%20Nishi%20Ward%2C%20Minamisaiwai%2C%201%20Chome%E2%88%925%E2%88%921%20%EF%BC%95%E2%88%92%EF%BC%91JOINUS%20B1F",
+   "lists": [
+    "橫濱素食"
+   ]
+  },
+  {
+   "id": "6924439252491504847",
+   "name": "SHAKE SHACK Shinjuku Southern Terrace",
+   "note": "",
+   "address": "",
+   "lat": 35.6865897,
+   "lng": 139.7008717,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=SHAKE%20SHACK%20Shinjuku%20Southern%20Terrace",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924438498428090873",
+   "name": "Sairaien",
+   "note": "葷素",
+   "address": "",
+   "lat": 35.709202499999996,
+   "lng": 139.7722843,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=Sairaien",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924441228035922085",
+   "name": "T's TanTan Ecute Ueno",
+   "note": "",
+   "address": "",
+   "lat": 35.713249999999995,
+   "lng": 139.77678799999998,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=T%27s%20TanTan%20Ecute%20Ueno",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924439936429164405",
+   "name": "TSUMUGU CAFE 〜台湾茶とベジフードのおみせ〜",
+   "note": "",
+   "address": "",
+   "lat": 35.7303654,
+   "lng": 139.699532,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=TSUMUGU%20CAFE%20%E3%80%9C%E5%8F%B0%E6%B9%BE%E8%8C%B6%E3%81%A8%E3%83%99%E3%82%B8%E3%83%95%E3%83%BC%E3%83%89%E3%81%AE%E3%81%8A%E3%81%BF%E3%81%9B%E3%80%9C",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924441385926127925",
+   "name": "Toryanse",
+   "note": "有素食拉麵，可去五辛",
+   "address": "1 Chome-20-9 Asakusa, Taito City, Tokyo 111-0032日本",
+   "lat": 35.7118557,
+   "lng": 139.79570329999999,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=Toryanse%201%20Chome-20-9%20Asakusa%2C%20Taito%20City%2C%20Tokyo%20111-0032%E6%97%A5%E6%9C%AC",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924438341358924469",
+   "name": "T’s Tantan",
+   "note": "",
+   "address": "",
+   "lat": 35.682220099999995,
+   "lng": 139.7674829,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=T%E2%80%99s%20Tantan",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924439484042244519",
+   "name": "T’s Tantan Ikebukuro",
+   "note": "4/16晚餐",
+   "address": "日本〒171-0022 Tokyo, Toshima City, Minamiikebukuro, 1 Chome−28−2 B1 JR池袋駅構内",
+   "lat": 35.729994399999995,
+   "lng": 139.7107448,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=T%E2%80%99s%20Tantan%20Ikebukuro%20%E6%97%A5%E6%9C%AC%E3%80%92171-0022%20Tokyo%2C%20Toshima%20City%2C%20Minamiikebukuro%2C%201%20Chome%E2%88%9228%E2%88%922%20B1%20JR%E6%B1%A0%E8%A2%8B%E9%A7%85%E6%A7%8B%E5%86%85",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924442377533398239",
+   "name": "VEGAN GYOZA YU",
+   "note": "",
+   "address": "",
+   "lat": 35.7243377,
+   "lng": 139.7796986,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=VEGAN%20GYOZA%20YU",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924386943137922377",
+   "name": "Vee Sweets CAFE",
+   "note": "無五辛",
+   "address": "日本〒231-0002 Kanagawa, Yokohama, Naka Ward, Kaigandori, 5 Chome−25−3 アパホテル＆リゾート １Ｆ",
+   "lat": 35.451763,
+   "lng": 139.63852989999998,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=Vee%20Sweets%20CAFE%20%E6%97%A5%E6%9C%AC%E3%80%92231-0002%20Kanagawa%2C%20Yokohama%2C%20Naka%20Ward%2C%20Kaigandori%2C%205%20Chome%E2%88%9225%E2%88%923%20%E3%82%A2%E3%83%91%E3%83%9B%E3%83%86%E3%83%AB%EF%BC%86%E3%83%AA%E3%82%BE%E3%83%BC%E3%83%88%20%EF%BC%91%EF%BC%A6",
+   "lists": [
+    "橫濱素食"
+   ]
+  },
+  {
+   "id": "6924440183218594921",
+   "name": "Vegan Bistro Jangara",
+   "note": "",
+   "address": "",
+   "lat": 35.669713,
+   "lng": 139.70346279999998,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=Vegan%20Bistro%20Jangara",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924440392984541145",
+   "name": "Vegan Noodle T's Tantan Ecute Akihabara",
+   "note": "",
+   "address": "日本〒101-0021 Tokyo, Chiyoda City, Sotokanda, 1 Chome−17−6 JR秋葉原駅構内（電気街 改札外",
+   "lat": 35.6982959,
+   "lng": 139.7726586,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=Vegan%20Noodle%20T%27s%20Tantan%20Ecute%20Akihabara%20%E6%97%A5%E6%9C%AC%E3%80%92101-0021%20Tokyo%2C%20Chiyoda%20City%2C%20Sotokanda%2C%201%20Chome%E2%88%9217%E2%88%926%20JR%E7%A7%8B%E8%91%89%E5%8E%9F%E9%A7%85%E6%A7%8B%E5%86%85%EF%BC%88%E9%9B%BB%E6%B0%97%E8%A1%97%20%E6%94%B9%E6%9C%AD%E5%A4%96",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924437790902121901",
+   "name": "Vegan Sushi Tokyo",
+   "note": "",
+   "address": "",
+   "lat": 35.6594766,
+   "lng": 139.6931827,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=Vegan%20Sushi%20Tokyo",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924441246354854183",
+   "name": "Vege herb saga",
+   "note": "",
+   "address": "",
+   "lat": 35.705983499999995,
+   "lng": 139.7753292,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=Vege%20herb%20saga",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924441268062220729",
+   "name": "〒111-0053 Tokyo, Taito City, Asakusabashi, 5-chōme−20−8 ＣＳタワー",
+   "note": "",
+   "address": "5-chōme-20-8 Asakusabashi, Taito City, Tokyo 111-0053日本",
+   "lat": 35.7013861,
+   "lng": 139.7814232,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=%E3%80%92111-0053%20Tokyo%2C%20Taito%20City%2C%20Asakusabashi%2C%205-ch%C5%8Dme%E2%88%9220%E2%88%928%20%EF%BC%A3%EF%BC%B3%E3%82%BF%E3%83%AF%E3%83%BC%205-ch%C5%8Dme-20-8%20Asakusabashi%2C%20Taito%20City%2C%20Tokyo%20111-0053%E6%97%A5%E6%9C%AC",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924438224800374339",
+   "name": "アインソフ ギンザ 銀座本店",
+   "note": "",
+   "address": "",
+   "lat": 35.670184,
+   "lng": 139.767976,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=%E3%82%A2%E3%82%A4%E3%83%B3%E3%82%BD%E3%83%95%20%E3%82%AE%E3%83%B3%E3%82%B6%20%E9%8A%80%E5%BA%A7%E6%9C%AC%E5%BA%97",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924439254978305637",
+   "name": "一風堂 新宿店",
+   "note": "",
+   "address": "",
+   "lat": 35.691365399999995,
+   "lng": 139.70107959999999,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=%E4%B8%80%E9%A2%A8%E5%A0%82%20%E6%96%B0%E5%AE%BF%E5%BA%97",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924387413261824153",
+   "name": "台灣菜館",
+   "note": "素食友善",
+   "address": "190 Yamashitacho, Naka Ward, Yokohama, Kanagawa 231-0023日本",
+   "lat": 35.4424141,
+   "lng": 139.6465625,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=%E5%8F%B0%E7%81%A3%E8%8F%9C%E9%A4%A8%20190%20Yamashitacho%2C%20Naka%20Ward%2C%20Yokohama%2C%20Kanagawa%20231-0023%E6%97%A5%E6%9C%AC",
+   "lists": [
+    "橫濱素食"
+   ]
+  },
+  {
+   "id": "6924441886333214115",
+   "name": "松竹圓カフェ",
+   "note": "",
+   "address": "2 Chome-7-6 Nishiasakusa, Taito City, Tokyo 111-0035日本",
+   "lat": 35.7130426,
+   "lng": 139.7891875,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=%E6%9D%BE%E7%AB%B9%E5%9C%93%E3%82%AB%E3%83%95%E3%82%A7%202%20Chome-7-6%20Nishiasakusa%2C%20Taito%20City%2C%20Tokyo%20111-0035%E6%97%A5%E6%9C%AC",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924440444976717071",
+   "name": "沾麵 zuppa",
+   "note": "",
+   "address": "2 Chome-17-8 Misakicho, Chiyoda City, Tokyo 101-0061日本",
+   "lat": 35.7014046,
+   "lng": 139.75323609999998,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=%E6%B2%BE%E9%BA%B5%20zuppa%202%20Chome-17-8%20Misakicho%2C%20Chiyoda%20City%2C%20Tokyo%20101-0061%E6%97%A5%E6%9C%AC",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924440485097646101",
+   "name": "真さか MASAKA 居酒屋",
+   "note": "",
+   "address": "",
+   "lat": 35.6621009,
+   "lng": 139.6984833,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=%E7%9C%9F%E3%81%95%E3%81%8B%20MASAKA%20%E5%B1%85%E9%85%92%E5%B1%8B",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924438887505279025",
+   "name": "空之色拉麵 本店",
+   "note": "",
+   "address": "",
+   "lat": 35.683065,
+   "lng": 139.7394613,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=%E7%A9%BA%E4%B9%8B%E8%89%B2%E6%8B%89%E9%BA%B5%20%E6%9C%AC%E5%BA%97",
+   "lists": [
+    "東京素食"
+   ]
+  },
+  {
+   "id": "6924435443440938643",
+   "name": "麵屋七彩",
+   "note": "",
+   "address": "",
+   "lat": 35.677177199999996,
+   "lng": 139.7763297,
+   "gmaps": "https://www.google.com/maps/search/?api=1&query=%E9%BA%B5%E5%B1%8B%E4%B8%83%E5%BD%A9",
+   "lists": [
+    "東京素食"
+   ]
+  }
  ]
 }
