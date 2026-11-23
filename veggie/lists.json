@@ -2,6 +2,7 @@
   "_說明": "把 Google 地圖清單的「分享連結」貼到 url。name 留空就會用 Google 地圖上的清單名稱。",
   "lists": [
     { "name": "", "url": "https://maps.app.goo.gl/1vVYtkhPrCK7vr896" },
-    { "name": "", "url": "https://maps.app.goo.gl/rfwBd3FmioaF2PqDA" }
+    { "name": "", "url": "https://maps.app.goo.gl/rfwBd3FmioaF2PqDA" },
+    { "name": "", "url": "https://maps.app.goo.gl/RiJRgoFaCr5G4oAi6" }
   ]
 }
