@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T02:24:57+00:00",
+ "updated": "2026-11-23T03:10:15+00:00",
  "demo": false,
  "errors": [],
  "places": [
@@ -10,70 +10,346 @@
    "address": "日本〒220-0012 Kanagawa, Yokohama, Nishi Ward, Minatomirai, 2 Chome−2−1 Yokohama Landmark Tower, 1F",
    "lat": 35.4556091,
    "lng": 139.6320419,
+   "fid": "0x60185d62e33ca505:0xb2fd6ac7b8ff5be5",
    "gmaps": "https://www.google.com/maps/search/AFURI%20%E6%A9%AB%E6%BF%B1%E5%9C%B0%E6%A8%99%E5%BB%A3%E5%A0%B4/@35.4556091,139.6320419,18z",
    "lists": [
     "橫濱素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–23:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–23:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–23:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–23:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–23:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–23:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–23:00"
+    }
+   ],
+   "phone": "+81 45-307-0787",
+   "website": "https://afuri.com/",
+   "category": "拉麵店",
+   "photos": [
+    "photos/6924387106382718213-1.jpg",
+    "photos/6924387106382718213-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924439306314927305",
    "name": "AIN SOPH 素食餐廳。新宿店",
    "note": "",
-   "address": "",
+   "address": "日本〒160-0022 Tokyo, Shinjuku City, Shinjuku, 3 Chome−8−9 新宿Ｑビル B1,1F,2F",
    "lat": 35.6907077,
    "lng": 139.7066642,
+   "fid": "0x60188cdca1a74cc9:0xbfb9290fe024dc7d",
    "gmaps": "https://www.google.com/maps/search/AIN%20SOPH%20%E7%B4%A0%E9%A3%9F%E9%A4%90%E5%BB%B3%E3%80%82%E6%96%B0%E5%AE%BF%E5%BA%97/@35.6907077,139.7066642,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–15:30、18:00–21:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–16:00、17:00–21:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–16:00、18:00–21:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–16:00、17:00–21:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–16:00、17:00–21:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–16:00、17:00–21:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–16:00、17:00–21:30"
+    }
+   ],
+   "phone": "+81 50-3503-8688",
+   "website": "https://www.ain-soph.jp/journey-shinjuku",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924439306314927305-1.jpg",
+    "photos/6924439306314927305-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924442720180829137",
    "name": "Injoy 悦納",
    "note": "無五辛",
-   "address": "",
+   "address": "日本〒111-0033 Tokyo, Taito City, Hanakawado, 1 Chome−9−1 Elevator on the right of Mini Stop → 3F 浅草駅前北口ビル３階",
    "lat": 35.712727099999995,
    "lng": 139.798675,
+   "fid": "0x60188ff77beafbd1:0xcdf3eb886cf86495",
    "gmaps": "https://www.google.com/maps/search/Injoy%20%E6%82%A6%E7%B4%8D/@35.712727099999995,139.798675,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–14:00、17:00–19:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–14:00、17:00–19:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–14:00、17:00–19:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–14:00、17:00–19:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–14:00、17:00–19:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–14:00、18:00–20:00"
+    }
+   ],
+   "phone": "+81 3-5830-2333",
+   "website": "https://tokyoinjoy.com/Home/",
+   "category": "素食餐廳",
+   "photos": [
+    "photos/6924442720180829137-1.jpg",
+    "photos/6924442720180829137-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924437953757622349",
    "name": "KOMEDA is □ 東銀座店",
    "note": "4/14早午餐",
-   "address": "",
+   "address": "日本〒104-0045 Tokyo, Chuo City, Tsukiji, 1 Chome−13−1 Ginza Shochiku Square, 1階",
    "lat": 35.668154,
    "lng": 139.76948099999998,
+   "fid": "0x60188ba1b6f4b04d:0xc47a46a05b625ffc",
    "gmaps": "https://www.google.com/maps/search/KOMEDA%20is%20%E2%96%A1%20%E6%9D%B1%E9%8A%80%E5%BA%A7%E5%BA%97/@35.668154,139.76948099999998,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "07:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "07:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "07:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "07:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "07:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "07:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "07:00–22:00"
+    }
+   ],
+   "phone": "+81 3-6260-6369",
+   "website": "https://www.komeda-is.com/",
+   "category": "咖啡店",
+   "photos": [
+    "photos/6924437953757622349-1.jpg",
+    "photos/6924437953757622349-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924441717679039909",
    "name": "Komaki Shokudo Kamakura Fushikian",
    "note": "",
-   "address": "",
+   "address": "CHABARA 内, 8-2 Kanda Neribeicho, Chiyoda City, Tokyo 101-0022日本",
    "lat": 35.699686899999996,
    "lng": 139.7731346,
+   "fid": "0x60188f0e1227a5a5:0x21199de59651d533",
    "gmaps": "https://www.google.com/maps/search/Komaki%20Shokudo%20Kamakura%20Fushikian/@35.699686899999996,139.7731346,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–16:00、17:00–19:30"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–16:00、17:00–19:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–16:00、17:00–19:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–16:00、17:00–19:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–16:00、17:00–19:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–19:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–19:30"
+    }
+   ],
+   "phone": "+81 3-5577-5358",
+   "website": "https://www.kamakura-komaki.com/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924441717679039909-1.jpg",
+    "photos/6924441717679039909-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924438248461993453",
    "name": "Kyūshū Jangara Ginza",
    "note": "",
-   "address": "",
+   "address": "6 Chome-12-17 Ginza, Chuo City, Tokyo 104-0061日本",
    "lat": 35.6694086,
    "lng": 139.7648685,
+   "fid": "0x60188be654b485ed:0x2da99b2112856b84",
    "gmaps": "https://www.google.com/maps/search/Ky%C5%ABsh%C5%AB%20Jangara%20Ginza/@35.6694086,139.7648685,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–22:30"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–22:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–22:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–22:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–22:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–22:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–22:30"
+    }
+   ],
+   "phone": "+81 3-3572-3025",
+   "website": "https://kyushujangara.co.jp/shops/ginza/",
+   "category": "拉麵店",
+   "photos": [
+    "photos/6924438248461993453-1.jpg",
+    "photos/6924438248461993453-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924387556782335233",
@@ -82,22 +358,113 @@
    "address": "日本〒231-0861 Kanagawa, Yokohama, Naka Ward, Motomachi, 4 Chome−171 ポンパドウル元町本店ビル 2階",
    "lat": 35.4395722,
    "lng": 139.64677229999998,
+   "fid": "0x60185dcbc1256501:0xedbd75ac81da4e02",
    "gmaps": "https://www.google.com/maps/search/M%27s%20Table/@35.4395722,139.64677229999998,18z",
    "lists": [
     "橫濱素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "休息"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–20:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–20:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–20:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–20:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–20:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–20:00"
+    }
+   ],
+   "phone": "+81 45-228-8853",
+   "website": "https://www.pompadour.co.jp/mstable/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924387556782335233-1.jpg",
+    "photos/6924387556782335233-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924441400125204949",
    "name": "Marugoto Vegan Dining Asakusa",
    "note": "無五辛",
-   "address": "",
+   "address": "1 Chome-3-13 Hanakawado, Taito City, Tokyo 111-0033日本",
    "lat": 35.7117359,
    "lng": 139.7988863,
+   "fid": "0x60188ec42278a9d5:0xe7868e825323b9ed",
    "gmaps": "https://www.google.com/maps/search/Marugoto%20Vegan%20Dining%20Asakusa/@35.7117359,139.7988863,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "休息"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–15:00、18:00–20:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "09:00–15:00、18:00–20:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–15:00、18:00–20:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–15:00、18:00–20:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "09:00–15:00、18:00–20:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–15:00"
+    }
+   ],
+   "website": "http://dining.marugotovegan.com/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924441400125204949-1.jpg",
+    "photos/6924441400125204949-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924438558395220165",
@@ -106,10 +473,56 @@
    "address": "1 Chome-1-14 Nezu, Bunkyo City, Tokyo 113-0031日本",
    "lat": 35.7175468,
    "lng": 139.7651712,
+   "fid": "0x60188c2e7e2a40c5:0x46bc67d25a02dd1",
    "gmaps": "https://www.google.com/maps/search/Nezunoya/@35.7175468,139.7651712,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–15:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–15:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "休息"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "休息"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–15:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "休息"
+    }
+   ],
+   "phone": "+81 3-3823-0030",
+   "website": "http://nezunoya.com/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924438558395220165-1.jpg",
+    "photos/6924438558395220165-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924387085906352577",
@@ -118,58 +531,250 @@
    "address": "日本〒220-0005 Kanagawa, Yokohama, Nishi Ward, Minamisaiwai, 1 Chome−5−1 ５−１JOINUS B1F",
    "lat": 35.465319099999995,
    "lng": 139.6211099,
+   "fid": "0x60185d5e1ec019c1:0x44569237a926add3",
    "gmaps": "https://www.google.com/maps/search/RUCY%2BR%20%E6%A9%AB%E6%BF%B1JOINUS%E5%BA%97/@35.465319099999995,139.6211099,18z",
    "lists": [
     "橫濱素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–23:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–23:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–23:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–23:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–23:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–23:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–23:00"
+    }
+   ],
+   "phone": "+81 45-620-0144",
+   "website": "https://www.instagram.com/rucy_yokohama?igsh=MWoxbmZsZTkxNzQ5Zg==",
+   "category": "日式咖哩餐廳",
+   "photos": [
+    "photos/6924387085906352577-1.jpg",
+    "photos/6924387085906352577-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924439252491504847",
    "name": "SHAKE SHACK Shinjuku Southern Terrace",
    "note": "",
-   "address": "",
+   "address": "日本〒151-8583 Tokyo, Shibuya, Yoyogi, 2 Chome−2−1 新宿サザンテラス内 小田急サザンタワー２階",
    "lat": 35.6865897,
    "lng": 139.7008717,
+   "fid": "0x60188cd019870ccf:0xe2cd851965e2608d",
    "gmaps": "https://www.google.com/maps/search/SHAKE%20SHACK%20Shinjuku%20Southern%20Terrace/@35.6865897,139.7008717,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–22:00"
+    }
+   ],
+   "phone": "+81 3-6276-1403",
+   "website": "https://shakeshack.jp/locations/shinjuku-sazan/?utm_source=mybusiness&utm_medium=website",
+   "category": "漢堡包餐廳",
+   "photos": [
+    "photos/6924439252491504847-1.jpg",
+    "photos/6924439252491504847-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924438498428090873",
    "name": "Sairaien",
    "note": "葷素",
-   "address": "",
+   "address": "日本〒110-0005 Tokyo, Taito City, Ueno, 2 Chome−9−6 大和ビル 1F・2F",
    "lat": 35.709202499999996,
    "lng": 139.7722843,
+   "fid": "0x60188c2087d879f9:0xaa972eff62029c2d",
    "gmaps": "https://www.google.com/maps/search/Sairaien/@35.709202499999996,139.7722843,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–15:00、17:00–04:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–15:00、17:00–04:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–15:00、17:00–04:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–15:00、17:00–04:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–15:00、17:00–04:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–15:00、17:00–04:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "17:00–00:00"
+    }
+   ],
+   "phone": "+81 3-5846-7977",
+   "website": "https://www.honkakuchuuka-sairaien.jp/",
+   "category": "中菜館",
+   "photos": [
+    "photos/6924438498428090873-1.jpg",
+    "photos/6924438498428090873-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924441228035922085",
    "name": "T's TanTan Ecute Ueno",
    "note": "",
-   "address": "",
+   "address": "日本〒110-0005 Tokyo, Taito City, Ueno, 7 Chome−1−1 JR 上野駅改札内 ecute上野（3階）内",
    "lat": 35.713249999999995,
    "lng": 139.77678799999998,
+   "fid": "0x60188e9c112698a5:0x5f571b1c4018cfee",
    "gmaps": "https://www.google.com/maps/search/T%27s%20TanTan%20Ecute%20Ueno/@35.713249999999995,139.77678799999998,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "10:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "10:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "10:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "10:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "10:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "10:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "10:00–21:00"
+    }
+   ],
+   "phone": "+81 3-5830-7313",
+   "website": "http://ts-restaurant.jp/tantan/",
+   "category": "拉麵店",
+   "photos": [
+    "photos/6924441228035922085-1.jpg",
+    "photos/6924441228035922085-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924439936429164405",
    "name": "TSUMUGU CAFE 〜台湾茶とベジフードのおみせ〜",
    "note": "",
-   "address": "",
+   "address": "日本〒171-0021 Tokyo, Toshima City, Nishiikebukuro, 3 Chome−36−20 1階",
    "lat": 35.7303654,
    "lng": 139.699532,
+   "fid": "0x60188d6f57638775:0xc82bb3d71eaac77b",
    "gmaps": "https://www.google.com/maps/search/TSUMUGU%20CAFE%20%E3%80%9C%E5%8F%B0%E6%B9%BE%E8%8C%B6%E3%81%A8%E3%83%99%E3%82%B8%E3%83%95%E3%83%BC%E3%83%89%E3%81%AE%E3%81%8A%E3%81%BF%E3%81%9B%E3%80%9C/@35.7303654,139.699532,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "phone": "+81 3-5927-8889",
+   "category": "咖啡店",
+   "photos": [
+    "photos/6924439936429164405-1.jpg",
+    "photos/6924439936429164405-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924441385926127925",
@@ -178,22 +783,113 @@
    "address": "1 Chome-20-9 Asakusa, Taito City, Tokyo 111-0032日本",
    "lat": 35.7118557,
    "lng": 139.79570329999999,
+   "fid": "0x60188ec0d423f135:0x41d808e6246700e0",
    "gmaps": "https://www.google.com/maps/search/Toryanse/@35.7118557,139.79570329999999,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–22:00"
+    }
+   ],
+   "phone": "+81 3-3841-8039",
+   "category": "拉麵店",
+   "photos": [
+    "photos/6924441385926127925-1.jpg",
+    "photos/6924441385926127925-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924438341358924469",
    "name": "T’s Tantan",
    "note": "",
-   "address": "",
+   "address": "日本〒100-0005 Tokyo, Chiyoda City, Marunouchi, 1 Chome−9−1 Gransta Tokyo B1F スクエアゼロエリア改札外",
    "lat": 35.682220099999995,
    "lng": 139.7674829,
+   "fid": "0x60188bfbf5cb32b5:0x7ec63789e70fa29b",
    "gmaps": "https://www.google.com/maps/search/T%E2%80%99s%20Tantan/@35.682220099999995,139.7674829,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "10:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "10:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "10:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "10:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "10:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "10:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "10:00–22:00"
+    }
+   ],
+   "phone": "+81 3-3218-8040",
+   "website": "https://shop.jr-cross.co.jp/eki/spot/detail?code=f16002",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924438341358924469-1.jpg",
+    "photos/6924438341358924469-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924439484042244519",
@@ -202,22 +898,113 @@
    "address": "日本〒171-0022 Tokyo, Toshima City, Minamiikebukuro, 1 Chome−28−2 B1 JR池袋駅構内",
    "lat": 35.729994399999995,
    "lng": 139.7107448,
+   "fid": "0x60188d060306f1a7:0xccc3832e003366e6",
    "gmaps": "https://www.google.com/maps/search/T%E2%80%99s%20Tantan%20Ikebukuro/@35.729994399999995,139.7107448,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–22:00"
+    }
+   ],
+   "phone": "+81 3-5958-0375",
+   "website": "https://shop.jr-cross.co.jp/eki/spot/detail?code=f15527",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924439484042244519-1.jpg",
+    "photos/6924439484042244519-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924442377533398239",
    "name": "VEGAN GYOZA YU",
    "note": "",
-   "address": "",
+   "address": "3 Chome-11-17 Negishi, Taito City, Tokyo 110-0003日本",
    "lat": 35.7243377,
    "lng": 139.7796986,
+   "fid": "0x60188fa7b48a1cdf:0x315609bf3ed95782",
    "gmaps": "https://www.google.com/maps/search/VEGAN%20GYOZA%20YU/@35.7243377,139.7796986,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "休息"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "休息"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "12:00–21:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "12:00–21:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "12:00–21:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "12:00–21:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "12:00–21:00"
+    }
+   ],
+   "website": "https://www.vegangyoza.com/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924442377533398239-1.jpg",
+    "photos/6924442377533398239-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924386943137922377",
@@ -226,22 +1013,114 @@
    "address": "日本〒231-0002 Kanagawa, Yokohama, Naka Ward, Kaigandori, 5 Chome−25−3 アパホテル＆リゾート １Ｆ",
    "lat": 35.451763,
    "lng": 139.63852989999998,
+   "fid": "0x60185d3ce116bd49:0x48bcdf3520cf102a",
    "gmaps": "https://www.google.com/maps/search/Vee%20Sweets%20CAFE/@35.451763,139.63852989999998,18z",
    "lists": [
     "橫濱素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "08:00–17:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "08:00–17:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "08:00–17:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "08:00–17:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "08:00–17:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "07:00–17:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "07:00–17:00"
+    }
+   ],
+   "phone": "+81 50-8888-0779",
+   "website": "https://www.vee-sweets.com/cafe?utm_source=google&utm_medium=wix_google_business_profile&utm_campaign=2070577382517782564",
+   "category": "咖啡店",
+   "photos": [
+    "photos/6924386943137922377-1.jpg",
+    "photos/6924386943137922377-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924440183218594921",
    "name": "Vegan Bistro Jangara",
    "note": "",
-   "address": "",
+   "address": "シャンゼール原宿２, 号館 ２Ｆ, 1 Chome-13-21 Jingumae, Shibuya, Tokyo 150-0001日本",
    "lat": 35.669713,
    "lng": 139.70346279999998,
+   "fid": "0x60188da8cd2f6469:0x6b29f20589df1184",
    "gmaps": "https://www.google.com/maps/search/Vegan%20Bistro%20Jangara/@35.669713,139.70346279999998,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–21:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–21:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–21:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–21:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–21:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–21:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–21:00"
+    }
+   ],
+   "phone": "+81 3-3404-5572",
+   "website": "https://kyushujangara.co.jp/shops/veganbistro/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924440183218594921-1.jpg",
+    "photos/6924440183218594921-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924440392984541145",
@@ -250,34 +1129,171 @@
    "address": "日本〒101-0021 Tokyo, Chiyoda City, Sotokanda, 1 Chome−17−6 JR秋葉原駅構内（電気街 改札外",
    "lat": 35.6982959,
    "lng": 139.7726586,
+   "fid": "0x60188dd9a435b7d9:0xa33bc690b17f201c",
    "gmaps": "https://www.google.com/maps/search/Vegan%20Noodle%20T%27s%20Tantan%20Ecute%20Akihabara/@35.6982959,139.7726586,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "08:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "08:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "08:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "08:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "08:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "08:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "08:00–21:00"
+    }
+   ],
+   "phone": "+81 80-3939-5787",
+   "website": "https://shop.jr-cross.co.jp/eki/spot/detail?code=f16001",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924440392984541145-1.jpg",
+    "photos/6924440392984541145-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924437790902121901",
    "name": "Vegan Sushi Tokyo",
    "note": "",
-   "address": "",
+   "address": "日本〒150-0046 Tokyo, Shibuya, Shoto, 1 Chome−25−6 パークサイド松涛 103",
    "lat": 35.6594766,
    "lng": 139.6931827,
+   "fid": "0x60188b7bcc02f5ad:0x35659a085c1c9fcd",
    "gmaps": "https://www.google.com/maps/search/Vegan%20Sushi%20Tokyo/@35.6594766,139.6931827,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–14:30、17:00–20:15"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–14:30、17:00–21:15"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–14:30、17:00–21:15"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–14:30、17:00–21:15"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–14:30、17:00–21:15"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–14:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "休息"
+    }
+   ],
+   "website": "https://vcook.co.jp/vegansushitokyo/en",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924437790902121901-1.jpg",
+    "photos/6924437790902121901-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924441246354854183",
    "name": "Vege herb saga",
    "note": "",
-   "address": "",
+   "address": "日本〒110-0005 Tokyo, Taito City, Ueno, 5 Chome−22−1 B1",
    "lat": 35.705983499999995,
    "lng": 139.7753292,
+   "fid": "0x60188ea0550b5127:0xd98fda213c38af12",
    "gmaps": "https://www.google.com/maps/search/Vege%20herb%20saga/@35.705983499999995,139.7753292,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:15–15:00、17:15–22:30"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:15–15:00、17:15–22:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:15–15:00、17:15–22:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:15–15:00、17:15–22:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:15–15:00、17:15–22:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:15–15:00、17:15–22:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:15–15:00、17:15–22:30"
+    }
+   ],
+   "phone": "+81 3-5818-4154",
+   "website": "http://www.vegeherbsaga.com/",
+   "category": "印度餐廳",
+   "photos": [
+    "photos/6924441246354854183-1.jpg",
+    "photos/6924441246354854183-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924441268062220729",
@@ -286,34 +1302,133 @@
    "address": "5-chōme-20-8 Asakusabashi, Taito City, Tokyo 111-0053日本",
    "lat": 35.7013861,
    "lng": 139.7814232,
+   "fid": "0x60188ea562e771b9:0x455b2a4a89872611",
    "gmaps": "https://www.google.com/maps/search/%E3%80%92111-0053%20Tokyo%2C%20Taito%20City%2C%20Asakusabashi%2C%205-ch%C5%8Dme%E2%88%9220%E2%88%928%20%EF%BC%A3%EF%BC%B3%E3%82%BF%E3%83%AF%E3%83%BC/@35.7013861,139.7814232,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "category": "複合大樓",
+   "photos": [
+    "photos/6924441268062220729-1.jpg",
+    "photos/6924441268062220729-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924438224800374339",
    "name": "アインソフ ギンザ 銀座本店",
    "note": "",
-   "address": "",
+   "address": "4 Chome-12-1 Ginza, Chuo City, Tokyo 104-0061日本",
    "lat": 35.670184,
    "lng": 139.767976,
+   "fid": "0x60188be0d25cde43:0x314de99c30c94171",
    "gmaps": "https://www.google.com/maps/search/%E3%82%A2%E3%82%A4%E3%83%B3%E3%82%BD%E3%83%95%20%E3%82%AE%E3%83%B3%E3%82%B6%20%E9%8A%80%E5%BA%A7%E6%9C%AC%E5%BA%97/@35.670184,139.767976,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–16:00、17:00–21:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–16:00、17:00–21:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–16:00、17:00–21:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–16:00、17:00–21:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–16:00、17:00–21:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "08:00–16:00、17:00–21:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "08:00–16:00、17:00–21:00"
+    }
+   ],
+   "phone": "+81 50-3134-4241",
+   "website": "https://www.tablecheck.com/en/shops/ain-soph-ginza/reserve",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924438224800374339-1.jpg",
+    "photos/6924438224800374339-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924439254978305637",
    "name": "一風堂 新宿店",
    "note": "",
-   "address": "",
+   "address": "日本〒160-0022 Tokyo, Shinjuku City, Shinjuku, 3 Chome−38−1 ルミネエスト新宿 8F",
    "lat": 35.691365399999995,
    "lng": 139.70107959999999,
+   "fid": "0x60188cd0adc09e65:0x1cf7fdd70123a4d2",
    "gmaps": "https://www.google.com/maps/search/%E4%B8%80%E9%A2%A8%E5%A0%82%20%E6%96%B0%E5%AE%BF%E5%BA%97/@35.691365399999995,139.70107959999999,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–22:00"
+    }
+   ],
+   "phone": "+81 3-6380-4473",
+   "website": "https://stores.ippudo.com/1127?utm_source=Yext&utm_medium=Yext&utm_campaign=Listings",
+   "category": "拉麵店",
+   "photos": [
+    "photos/6924439254978305637-1.jpg",
+    "photos/6924439254978305637-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924387413261824153",
@@ -322,10 +1437,55 @@
    "address": "190 Yamashitacho, Naka Ward, Yokohama, Kanagawa 231-0023日本",
    "lat": 35.4424141,
    "lng": 139.6465625,
+   "fid": "0x60185daa56a83099:0xd9b84b703a70924f",
    "gmaps": "https://www.google.com/maps/search/%E5%8F%B0%E7%81%A3%E8%8F%9C%E9%A4%A8/@35.4424141,139.6465625,18z",
    "lists": [
     "橫濱素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "休息"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–22:00"
+    }
+   ],
+   "phone": "+81 45-212-5132",
+   "category": "台灣餐廳",
+   "photos": [
+    "photos/6924387413261824153-1.jpg",
+    "photos/6924387413261824153-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924441886333214115",
@@ -334,10 +1494,55 @@
    "address": "2 Chome-7-6 Nishiasakusa, Taito City, Tokyo 111-0035日本",
    "lat": 35.7130426,
    "lng": 139.7891875,
+   "fid": "0x60188f3556ba1da3:0xc83c4f9250dcede",
    "gmaps": "https://www.google.com/maps/search/%E6%9D%BE%E7%AB%B9%E5%9C%93%E3%82%AB%E3%83%95%E3%82%A7/@35.7130426,139.7891875,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "09:30–16:30"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "09:30–16:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "09:30–16:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "09:30–16:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "09:30–16:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "09:30–17:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "09:30–17:00"
+    }
+   ],
+   "website": "https://shochiku-en.jp/cafe/",
+   "category": "素食餐廳",
+   "photos": [
+    "photos/6924441886333214115-1.jpg",
+    "photos/6924441886333214115-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924440444976717071",
@@ -346,46 +1551,230 @@
    "address": "2 Chome-17-8 Misakicho, Chiyoda City, Tokyo 101-0061日本",
    "lat": 35.7014046,
    "lng": 139.75323609999998,
+   "fid": "0x60188de5bf2f5d0f:0xfbac2ce5a40d3476",
    "gmaps": "https://www.google.com/maps/search/%E6%B2%BE%E9%BA%B5%20zuppa/@35.7014046,139.75323609999998,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–21:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–21:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–21:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–21:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–21:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–21:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–20:30"
+    }
+   ],
+   "phone": "+81 3-4400-5709",
+   "website": "https://www.instagram.com/zuppa.suidoubashi/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924440444976717071-1.jpg",
+    "photos/6924440444976717071-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924440485097646101",
    "name": "真さか MASAKA 居酒屋",
    "note": "",
-   "address": "",
+   "address": "日本〒150-0042 Tokyo, Shibuya, Udagawacho, 15−1 渋谷PARCO B1",
    "lat": 35.6621009,
    "lng": 139.6984833,
+   "fid": "0x60188def16942815:0xb34fb00e05c647fd",
    "gmaps": "https://www.google.com/maps/search/%E7%9C%9F%E3%81%95%E3%81%8B%20MASAKA%20%E5%B1%85%E9%85%92%E5%B1%8B/@35.6621009,139.6984833,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "12:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "12:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "12:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "12:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "12:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "12:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "12:00–22:00"
+    }
+   ],
+   "phone": "+81 3-5422-3020",
+   "website": "https://www.instagram.com/vegan_izakaya_masaka/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6924440485097646101-1.jpg",
+    "photos/6924440485097646101-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924438887505279025",
    "name": "空之色拉麵 本店",
    "note": "",
-   "address": "",
+   "address": "日本〒102-0093 Tokyo, Chiyoda City, Hirakawachō, 1 Chome−3−10 ブルービル本館 1B",
    "lat": 35.683065,
    "lng": 139.7394613,
+   "fid": "0x60188c7b1ea73831:0x163ae0acf5888dec",
    "gmaps": "https://www.google.com/maps/search/%E7%A9%BA%E4%B9%8B%E8%89%B2%E6%8B%89%E9%BA%B5%20%E6%9C%AC%E5%BA%97/@35.683065,139.7394613,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–14:45、17:00–21:15"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–14:45、17:00–21:15"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–14:45、17:00–21:15"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–14:45、17:00–21:15"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–14:45、17:00–21:15"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "休息"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "休息"
+    }
+   ],
+   "phone": "+81 3-3263-5460",
+   "website": "http://soranoiro-vege.com/",
+   "category": "拉麵店",
+   "photos": [
+    "photos/6924438887505279025-1.jpg",
+    "photos/6924438887505279025-2.jpg"
+   ],
+   "details_at": 1795403357
   },
   {
    "id": "6924435443440938643",
    "name": "麵屋七彩",
    "note": "",
-   "address": "",
+   "address": "2 Chome-13-2 Hatchobori, Chuo City, Tokyo 104-0032日本",
    "lat": 35.677177199999996,
    "lng": 139.7763297,
+   "fid": "0x601889593c6bee93:0xeabf8cc6c7f33c2d",
    "gmaps": "https://www.google.com/maps/search/%E9%BA%B5%E5%B1%8B%E4%B8%83%E5%BD%A9/@35.677177199999996,139.7763297,18z",
    "lists": [
     "東京素食"
-   ]
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–15:00、18:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–15:00、18:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–15:00、18:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–15:00、18:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–15:00、18:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–15:00、17:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–15:00、17:00–22:00"
+    }
+   ],
+   "phone": "+81 3-5566-9355",
+   "website": "https://shichisai.com/",
+   "category": "拉麵店",
+   "photos": [
+    "photos/6924435443440938643-1.jpg",
+    "photos/6924435443440938643-2.jpg"
+   ],
+   "details_at": 1795403357
   }
  ]
 }
