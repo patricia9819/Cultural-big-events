@@ -448,7 +448,8 @@ const photosHTML = p => `<div class="photos">${[0, 1].map(i => p.photos[i]
   : `<div class="ph">${i ? '🍜' : '🥗'}</div>`).join('')}</div>`;
 
 function renderChips() {
-  const all = S.places.map(eff);
+  // 數量只算目前選的城市清單（選「全部清單」時算全部）
+  const all = S.places.map(eff).filter(p => !S.list || p.lists.includes(S.list));
   $('chips').innerHTML = Object.entries(CATS).map(([k, c]) =>
     `<button class="chip" data-cat="${k}" style="--c:${c.color}" aria-pressed="${S.cats.has(k)}"><i></i>${esc(c.label)}<span class="n">${all.filter(p => p.cat === k).length}</span></button>`).join('');
 }
