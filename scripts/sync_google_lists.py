@@ -154,7 +154,7 @@ def main() -> int:
         return 0
 
     lists = json.loads(LISTS_FILE.read_text("utf-8"))["lists"]
-    lists = [l for l in lists if l.get("url") and "請貼上" not in l["url"]]
+    lists = [l for l in lists if l.get("url", "").startswith("http")]
     if not lists:
         print("veggie/lists.json 尚未設定任何清單連結，略過同步。")
         return 0
@@ -169,6 +169,8 @@ def main() -> int:
                 Path(args.dump).mkdir(parents=True, exist_ok=True)
                 Path(args.dump, f"{list_id}.json").write_text(body, "utf-8")
             title, places = extract_places(parse_payload(body), entry.get("name", ""))
+            if not places:
+                print(f"  （解析不到地點，原始回應前 1500 字）{body[:1500]}", file=sys.stderr)
             if entry.get("name"):
                 for p in places:
                     p["list"] = entry["name"]
