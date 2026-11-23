@@ -86,6 +86,7 @@ main { flex: 1; min-height: 0; position: relative; }
 .badge { display: inline-flex; align-items: center; gap: 5px; font-size: .74rem; padding: 2px 8px; border-radius: 999px; color: #fff; background: var(--c); align-self: flex-start; }
 .badge.none { background: var(--chip); color: var(--muted); }
 .note { white-space: pre-wrap; background: var(--accent-soft); border-radius: 8px; padding: 7px 9px; font-size: .9rem; line-height: 1.5; }
+.notelink { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; word-break: break-all; }
 .note.empty { background: transparent; color: var(--muted); padding: 0; font-style: italic; font-size: .85rem; }
 .meta { color: var(--muted); font-size: .8rem; line-height: 1.5; }
 .open { font-weight: 600; }
@@ -232,6 +233,18 @@ const LS_DATA = 'veggie-mydata', LS_TOKEN = 'veggie-gh-token', LS_VIEW = 'veggie
 /* ========= 小工具 ========= */
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// 備註裡的網址變成可點的連結（新視窗開啟）
+const URL_RE = /(https?:\/\/[^\s<>"'，。、；！？（）「」【】\u3000]+|www\.[^\s<>"'，。、；！？（）「」【】\u3000]+)/gi;
+function linkify(text) {
+  return String(text ?? '').split(URL_RE).map((part, i) => {
+    if (i % 2 === 0) return esc(part);
+    const m = part.match(/^(.*?)([.,!?:;)\]]*)$/);
+    const url = m[1], tail = m[2];
+    const href = /^https?:/i.test(url) ? url : 'https://' + url;
+    const label = url.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+    return `<a class="notelink" href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(label.length > 40 ? label.slice(0, 38) + '…' : label)} ↗</a>${esc(tail)}`;
+  }).join('');
+}
 const safeUrl = u => (/^(https?:\/\/|photos\/)/i.test(u || '') ? u : '');
 const ls = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -407,7 +420,7 @@ function cardHTML(p) {
     <div class="body">
       <div class="title"><h3>${esc(p.name)}</h3>${heartBtn(p)}</div>
       ${badge(p)}
-      ${p.note ? `<div class="note">${esc(p.note)}</div>` : ''}
+      ${p.note ? `<div class="note">${linkify(p.note)}</div>` : ''}
       ${last ? `<div class="visited">🍽️ 去過 ${p.visits.length} 次・最近 ${fmtDate(last.date)}${last.memo ? `「${esc(last.memo)}」` : ''}</div>` : ''}
       <div class="quick"><button data-edit="${esc(p.id)}">✏️ 編輯備註</button><button data-visit="${esc(p.id)}">🍽️ 記錄去過</button></div>
       <div class="meta">${st ? `<span class="open ${st.open ? 'yes' : 'no'}">${st.open ? '營業中' : '休息中'}</span>・今天 ${esc(st.today.text)}<br>` : ''}${[p.area ? `📍 ${esc(p.area)}` : '', S.sort === 'near' && S.me ? `${p._d.toFixed(1)} 公里` : ''].filter(Boolean).join(' · ')}</div>
@@ -516,7 +529,7 @@ function drawDetail() {
       <div class="hint">這裡的修改只存在素食地圖，不會改到 Google 地圖上的備註。</div>
       <div class="row"><button class="btn primary" id="edSave">儲存</button><button class="btn" id="edCancel">取消</button>${p.noteEdited ? `<button class="btn danger" id="edReset">還原成 Google 備註</button>` : ''}</div>
     </div>`
-    : `${p.note ? `<div class="note">${esc(p.note)}</div>` : ''}
+    : `${p.note ? `<div class="note">${linkify(p.note)}</div>` : ''}
        ${p.noteEdited ? `<div class="hint" style="margin-top:6px">✏️ 已在素食地圖上修改過</div>` : ''}`;
   $('detail').innerHTML = `<div class="sheet">
     <button class="close" id="dClose" aria-label="關閉">✕</button>
@@ -640,6 +653,7 @@ $('list').addEventListener('click', e => {
   const h = e.target.closest('.heart'); if (h) { e.stopPropagation(); return toggleLike(h.dataset.like, h); }
   const ed = e.target.closest('[data-edit]'); if (ed) { openDetail(ed.dataset.edit); editing = true; drawDetail(); return; }
   const vi = e.target.closest('[data-visit]'); if (vi) { openDetail(vi.dataset.visit); setTimeout(() => { const m = $('vMemo'); m.scrollIntoView({ block: 'center' }); }, 50); return; }
+  if (e.target.closest('a')) return; // 點備註裡的連結：直接開新視窗，不打開店家卡片
   const c = e.target.closest('[data-open]'); if (c) openDetail(c.dataset.open);
 });
 $('list').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset.open) openDetail(e.target.dataset.open); });
