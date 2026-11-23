@@ -186,7 +186,11 @@ dialog::backdrop { background: rgba(0,0,0,.45); }
     </div>
     <div class="row">
       <select id="listSel" aria-label="清單"><option value="">全部清單</option></select>
-      <button class="btn" id="near" title="依距離排序">📍 離我最近</button>
+      <select id="sortSel" aria-label="排序">
+        <option value="name">排序：店名</option>
+        <option value="liked">❤️ 按讚的優先</option>
+        <option value="near">📍 離我最近</option>
+      </select>
     </div>
     <div class="chips" id="chips"></div>
     <div class="row">
@@ -310,7 +314,7 @@ function setSync(state, msg) {
 }
 
 /* ========= 店家資料 ========= */
-const S = { places: [], q: '', list: '', cats: new Set(), me: null, view: 'list' };
+const S = { places: [], q: '', list: '', cats: new Set(), me: null, view: 'list', sort: 'name' };
 function eff(p) {
   const m = my.places[p.id] || {};
   const note = m.note ?? p.note ?? '';
@@ -344,15 +348,41 @@ function openStatus(p) {
   return { open, today };
 }
 
+/* 地址 → 城市・區域（例：東京・台東區、橫濱・中區、台北市・大安區） */
+const TOKYO_WARDS = { Chiyoda: '千代田區', Chuo: '中央區', Minato: '港區', Shinjuku: '新宿區', Bunkyo: '文京區', Taito: '台東區', Sumida: '墨田區', Koto: '江東區',
+  Shinagawa: '品川區', Meguro: '目黑區', Ota: '大田區', Setagaya: '世田谷區', Shibuya: '澀谷區', Nakano: '中野區', Suginami: '杉並區', Toshima: '豐島區', Kita: '北區',
+  Arakawa: '荒川區', Itabashi: '板橋區', Nerima: '練馬區', Adachi: '足立區', Katsushika: '葛飾區', Edogawa: '江戶川區' };
+const YOKOHAMA_WARDS = { Naka: '中區', Nishi: '西區', Kanagawa: '神奈川區', Minami: '南區', Kohoku: '港北區', Tsurumi: '鶴見區', Hodogaya: '保土谷區', Isogo: '磯子區',
+  Kanazawa: '金澤區', Totsuka: '戶塚區', Konan: '港南區', Asahi: '旭區', Midori: '綠區', Seya: '瀨谷區', Sakae: '榮區', Izumi: '泉區', Aoba: '青葉區', Tsuzuki: '都筑區' };
+const JP_CITIES = { Tokyo: '東京', Yokohama: '橫濱', Kamakura: '鎌倉', Kyoto: '京都', Osaka: '大阪', Nagoya: '名古屋', Sapporo: '札幌', Fukuoka: '福岡', Kobe: '神戶', Nara: '奈良', Kawasaki: '川崎', Hakone: '箱根' };
+function areaOf(addr) {
+  if (!addr) return '';
+  const tw = addr.match(/([\u4e00-\u9fa5]{2}[市縣])([\u4e00-\u9fa5]{1,3}?[區鄉鎮市])/);
+  if (tw && !/日本/.test(addr)) return `${tw[1]}・${tw[2]}`;
+  const toks = addr.replace(/日本|〒?\d{3}-\d{4}/g, '').split(',').map(t => t.trim().replace(/\s+\d{3}-?\d{4}.*$/, ''));
+  const strip = t => t.replace(/\s+(City|Ward)$/, '').replace(/ō/g, 'o').replace(/ū/g, 'u');
+  let city = '', ward = '';
+  for (const t of toks) { const k = strip(t); if (JP_CITIES[k] && !/Ward$/.test(t)) { city = city || JP_CITIES[k]; } }
+  for (const t of toks) {
+    const k = strip(t);
+    if (city === '東京' && TOKYO_WARDS[k] && (/City$/.test(t) || t === k)) { ward = TOKYO_WARDS[k]; break; }
+    if (city === '橫濱' && /Ward$/.test(t) && YOKOHAMA_WARDS[k]) { ward = YOKOHAMA_WARDS[k]; break; }
+    if (!ward && /Ward$/.test(t)) ward = k + ' 區';
+  }
+  if (!city) { const c = toks.find(t => /City$/.test(t)); if (c) city = strip(c); }
+  return [city, ward].filter(Boolean).join('・');
+}
+
 function filtered() {
   const q = S.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
   let out = S.places.map(eff).filter(p => {
     if (S.list && !p.lists.includes(S.list)) return false;
     if (S.cats.size && !S.cats.has(p.cat)) return false;
-    const hay = `${p.name} ${p.note} ${p.address} ${p.category || ''} ${p.cat ? CATS[p.cat].label : ''} ${p.visits.map(v => v.date + ' ' + v.memo).join(' ')}`.toLowerCase();
+    const hay = `${p.name} ${p.note} ${p.address} ${p.area} ${p.category || ''} ${p.cat ? CATS[p.cat].label : ''} ${p.visits.map(v => v.date + ' ' + v.memo).join(' ')}`.toLowerCase();
     return q.every(w => hay.includes(w));
   });
-  if (S.me) { out.forEach(p => p._d = distKm(S.me, p)); out.sort((a, b) => a._d - b._d); }
+  if (S.sort === 'near' && S.me) { out.forEach(p => p._d = distKm(S.me, p)); out.sort((a, b) => a._d - b._d); }
+  else if (S.sort === 'liked') out.sort((a, b) => (b.liked - a.liked) || ((b.visits[0]?.date || '').localeCompare(a.visits[0]?.date || '')) || a.name.localeCompare(b.name));
   return out;
 }
 
@@ -377,10 +407,10 @@ function cardHTML(p) {
     <div class="body">
       <div class="title"><h3>${esc(p.name)}</h3>${heartBtn(p)}</div>
       ${badge(p)}
-      ${p.note ? `<div class="note">${esc(p.note)}</div>` : `<div class="note empty">（還沒有備註）</div>`}
+      ${p.note ? `<div class="note">${esc(p.note)}</div>` : ''}
       ${last ? `<div class="visited">🍽️ 去過 ${p.visits.length} 次・最近 ${fmtDate(last.date)}${last.memo ? `「${esc(last.memo)}」` : ''}</div>` : ''}
       <div class="quick"><button data-edit="${esc(p.id)}">✏️ 編輯備註</button><button data-visit="${esc(p.id)}">🍽️ 記錄去過</button></div>
-      <div class="meta">${st ? `<span class="open ${st.open ? 'yes' : 'no'}">${st.open ? '營業中' : '休息中'}</span>・今天 ${esc(st.today.text)}<br>` : ''}${[esc(p.address), S.me ? `${p._d.toFixed(1)} 公里` : ''].filter(Boolean).join(' · ')}</div>
+      <div class="meta">${st ? `<span class="open ${st.open ? 'yes' : 'no'}">${st.open ? '營業中' : '休息中'}</span>・今天 ${esc(st.today.text)}<br>` : ''}${[p.area ? `📍 ${esc(p.area)}` : '', S.sort === 'near' && S.me ? `${p._d.toFixed(1)} 公里` : ''].filter(Boolean).join(' · ')}</div>
     </div>
   </div></article>`;
 }
@@ -415,7 +445,7 @@ function renderMap(list) {
       .on('click', () => openDetail(p.id));
     m.addTo(layer); markers.set(p.id, m);
   });
-  if (S.me) L.circleMarker([S.me.lat, S.me.lng], { radius: 7, color: '#fff', weight: 2, fillColor: '#d81b60', fillOpacity: 1 }).bindTooltip('我的位置').addTo(layer);
+  if (S.me && S.sort === 'near') L.circleMarker([S.me.lat, S.me.lng], { radius: 7, color: '#fff', weight: 2, fillColor: '#d81b60', fillOpacity: 1 }).bindTooltip('我的位置').addTo(layer);
   if (!fitted && list.length) { map.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 15 }); fitted = true; }
 }
 function setView(v) {
@@ -486,7 +516,7 @@ function drawDetail() {
       <div class="hint">這裡的修改只存在素食地圖，不會改到 Google 地圖上的備註。</div>
       <div class="row"><button class="btn primary" id="edSave">儲存</button><button class="btn" id="edCancel">取消</button>${p.noteEdited ? `<button class="btn danger" id="edReset">還原成 Google 備註</button>` : ''}</div>
     </div>`
-    : `${p.note ? `<div class="note">${esc(p.note)}</div>` : `<div class="note empty">（沒有備註）</div>`}
+    : `${p.note ? `<div class="note">${esc(p.note)}</div>` : ''}
        ${p.noteEdited ? `<div class="hint" style="margin-top:6px">✏️ 已在素食地圖上修改過</div>` : ''}`;
   $('detail').innerHTML = `<div class="sheet">
     <button class="close" id="dClose" aria-label="關閉">✕</button>
@@ -503,10 +533,11 @@ function drawDetail() {
         <div class="addvisit"><input type="date" id="vDate" value="${todayStr()}" max="${todayStr()}"><input type="text" id="vMemo" placeholder="吃了什麼、跟誰去（可不填）"><button class="btn primary" id="vAdd">＋ 新增</button></div>
       </div>
       <div class="sec"><h4>📍 資訊</h4>
-        <div class="meta" style="font-size:.88rem">${esc(p.address || '（沒有地址）')}${p.phone ? `<br>☎️ <a href="tel:${esc(p.phone.replace(/\s/g, ''))}" style="color:var(--accent)">${esc(p.phone)}</a>` : ''}</div>
+        <div class="meta" style="font-size:.88rem">${p.area ? esc(p.area) : ''}${p.phone ? `<br>☎️ <a href="tel:${esc(p.phone.replace(/\s/g, ''))}" style="color:var(--accent)">${esc(p.phone)}</a>` : ''}</div>
         <div class="links" style="margin-top:10px">
           <a href="${esc(p.gmaps)}" target="_blank" rel="noopener">Google 地圖 ↗</a>
           <button id="dMap">在素食地圖上看</button>
+          ${p.address ? `<button id="dCopy">📋 複製完整地址</button>` : ''}
           ${p.website && /^https?:/.test(p.website) ? `<a href="${esc(p.website)}" target="_blank" rel="noopener">官網 ↗</a>` : ''}
         </div>
       </div>
@@ -520,6 +551,7 @@ $('detail').addEventListener('click', e => {
   const id = detailId, m = my.places[id] || { visits: [] };
   if (t.id === 'dClose') d.close();
   else if (t.id === 'dMap') showOnMap(id);
+  else if (t.id === 'dCopy') { const a = S.places.find(x => x.id === id).address; (navigator.clipboard ? navigator.clipboard.writeText(a) : Promise.reject()).then(() => toast('已複製地址'), () => prompt('複製地址：', a)); }
   else if (t.id === 'edOpen') { editing = true; drawDetail(); $('edNote').focus(); }
   else if (t.id === 'edCancel') { editing = false; drawDetail(); }
   else if (t.id === 'edReset') { if (my.places[id]) delete my.places[id].note; saveMy(id, {}); editing = false; drawDetail(); render(); toast('已還原成 Google 地圖的備註'); }
@@ -611,28 +643,34 @@ $('list').addEventListener('click', e => {
   const c = e.target.closest('[data-open]'); if (c) openDetail(c.dataset.open);
 });
 $('list').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset.open) openDetail(e.target.dataset.open); });
-$('near').onclick = () => {
-  if (S.me) { S.me = null; $('near').classList.remove('on'); render(); return; }
-  if (!navigator.geolocation) return alert('這個瀏覽器不支援定位');
-  $('near').textContent = '📍 定位中…';
+function locate() {
+  if (!navigator.geolocation) { alert('這個瀏覽器不支援定位'); return setSort('name'); }
+  toast('定位中…');
   navigator.geolocation.getCurrentPosition(pos => {
-    S.me = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-    $('near').textContent = '📍 離我最近'; $('near').classList.add('on'); render();
-  }, () => { $('near').textContent = '📍 離我最近'; alert('無法取得位置，請允許定位權限'); }, { enableHighAccuracy: true, timeout: 10000 });
-};
+    S.me = { lat: pos.coords.latitude, lng: pos.coords.longitude }; render();
+  }, () => { alert('無法取得位置，請允許定位權限'); setSort('name'); }, { enableHighAccuracy: true, timeout: 10000 });
+}
+function setSort(v) {
+  S.sort = v; $('sortSel').value = v; ls.set('veggie-sort', v);
+  if (v === 'near' && !S.me) locate();
+  render();
+}
+$('sortSel').addEventListener('change', e => setSort(e.target.value));
 document.addEventListener('visibilitychange', async () => { if (!document.hidden && token()) { await loadMy(); render(); } });
 
 /* ========= 啟動 ========= */
 (async () => {
   setSync(token() ? 'busy' : 'local');
   const [data] = await Promise.all([fetch('places.json?t=' + Date.now()).then(r => r.json()), loadMy()]);
-  S.places = data.places.map(p => ({ ...p, lists: p.lists || [p.list || ''] }));
+  S.places = data.places.map(p => ({ ...p, lists: p.lists || [p.list || ''], area: areaOf(p.address) }));
   const fmt = new Date(data.updated).toLocaleString('zh-TW', { hour12: false });
   $('updated').textContent = `Google 地圖資料最後更新：${fmt}（每 3 小時自動檢查）`;
   if (data.demo) { $('banner').textContent = '目前顯示的是示範資料。'; $('banner').classList.remove('hidden'); }
   else if (data.errors && data.errors.length) { $('banner').textContent = '有部分清單同步失敗：' + data.errors.join('；'); $('banner').classList.remove('hidden'); }
   const lists = [...new Set(S.places.flatMap(p => p.lists))].filter(Boolean);
   if (lists.length > 1) $('listSel').innerHTML += lists.map(c => `<option>${esc(c)}</option>`).join(''); else $('listSel').classList.add('hidden');
+  const savedSort = ls.get('veggie-sort');
+  if (savedSort === 'liked') { S.sort = 'liked'; $('sortSel').value = 'liked'; }
   render();
   setView(ls.get(LS_VIEW) || 'list');
 })().catch(err => { $('updated').textContent = '讀取資料失敗：' + err.message; });
