@@ -1,7 +1,9 @@
 {
  "updated": "2026-11-23T03:10:15+00:00",
  "demo": false,
- "errors": [],
+ "errors": [
+  "https://maps.app.goo.gl/RiJRgoFaCr5G4oAi6: 無法從連結取得清單 ID：https://maps.app.goo.gl/RiJRgoFaCr5G4oAi6（請確認清單已設為「分享」）"
+ ],
  "places": [
   {
    "id": "6924387106382718213",
