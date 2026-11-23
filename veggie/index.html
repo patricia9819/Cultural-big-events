@@ -403,7 +403,10 @@ const TOKYO_WARDS = { Chiyoda: '千代田區', Chuo: '中央區', Minato: '港�
   Arakawa: '荒川區', Itabashi: '板橋區', Nerima: '練馬區', Adachi: '足立區', Katsushika: '葛飾區', Edogawa: '江戶川區' };
 const YOKOHAMA_WARDS = { Naka: '中區', Nishi: '西區', Kanagawa: '神奈川區', Minami: '南區', Kohoku: '港北區', Tsurumi: '鶴見區', Hodogaya: '保土谷區', Isogo: '磯子區',
   Kanazawa: '金澤區', Totsuka: '戶塚區', Konan: '港南區', Asahi: '旭區', Midori: '綠區', Seya: '瀨谷區', Sakae: '榮區', Izumi: '泉區', Aoba: '青葉區', Tsuzuki: '都筑區' };
-const JP_CITIES = { Tokyo: '東京', Yokohama: '橫濱', Kamakura: '鎌倉', Kyoto: '京都', Osaka: '大阪', Nagoya: '名古屋', Sapporo: '札幌', Fukuoka: '福岡', Kobe: '神戶', Nara: '奈良', Kawasaki: '川崎', Hakone: '箱根' };
+const JP_CITIES = { Tokyo: '東京', Yokohama: '橫濱', Kamakura: '鎌倉', Kyoto: '京都', Osaka: '大阪', Nagoya: '名古屋', Sapporo: '札幌', Fukuoka: '福岡', Kobe: '神戶', Nara: '奈良', Kawasaki: '川崎', Hakone: '箱根',
+  Kawagoe: '川越', Saitama: '埼玉', Chiba: '千葉', Narita: '成田', Nikko: '日光', Karuizawa: '輕井澤', Fujisawa: '藤澤', Odawara: '小田原', Atami: '熱海', Hiroshima: '廣島',
+  Sendai: '仙台', Kanazawa: '金澤', Okinawa: '沖繩', Naha: '那霸', Hakodate: '函館', Otaru: '小樽', Takayama: '高山', Matsumoto: '松本', Shizuoka: '靜岡', Himeji: '姬路' };
+const JP_PREFS = /^(Tokyo|Kanagawa|Saitama|Chiba|Osaka|Kyoto|Hyogo|Aichi|Hokkaido|Fukuoka|Okinawa|Nara|Shizuoka|Nagano|Tochigi|Gunma|Ibaraki|Miyagi|Hiroshima|Ishikawa|Gifu)$/;
 function areaOf(addr) {
   if (!addr) return '';
   const tw = addr.match(/([\u4e00-\u9fa5]{2}[市縣])([\u4e00-\u9fa5]{1,3}?[區鄉鎮市])/);
@@ -418,7 +421,8 @@ function areaOf(addr) {
     if (city === '橫濱' && /Ward$/.test(t) && YOKOHAMA_WARDS[k]) { ward = YOKOHAMA_WARDS[k]; break; }
     if (!ward && /Ward$/.test(t)) ward = k + ' 區';
   }
-  if (!city) { const c = toks.find(t => /City$/.test(t)); if (c) city = strip(c); }
+  if (!city) { const c = toks.find(t => /City$/.test(t)); if (c) city = JP_CITIES[strip(c)] || strip(c); }
+  if (!city) { const i = toks.findIndex(t => JP_PREFS.test(strip(t))); if (i > 0 && !/\d/.test(toks[i - 1])) city = JP_CITIES[strip(toks[i - 1])] || strip(toks[i - 1]); }
   return [city, ward].filter(Boolean).join('・');
 }
 
