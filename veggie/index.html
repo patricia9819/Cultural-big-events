@@ -13,6 +13,8 @@
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
 <style>
 :root {
   --bg: #f6f7f2; --card: #ffffff; --text: #1f2a1f; --muted: #66705f; --line: #dde3d6;
@@ -40,7 +42,54 @@ button { font: inherit; color: inherit; }
 header { padding: 10px 16px 10px; background: var(--card); border-bottom: 1px solid var(--line); }
 .top { position: relative; display: flex; justify-content: center; }
 .brand { margin: 0; line-height: 0; padding: 4px 14px; border-radius: 18px; background: var(--brand-bg); }
-.brand img { height: 128px; width: auto; display: block; }
+.brand img { height: 128px; width: auto; display: block; transition: height .3s ease; }
+.sub { transition: opacity .2s; }
+/* 往下捲時頂部收合：logo 縮小、隱藏同步時間 */
+header.mini .brand img { height: 46px; }
+header.mini .sub { display: none; }
+header.mini .controls { margin-top: 6px; }
+header.mini .top .sync-btn { top: 50%; transform: translateY(-50%); font-size: 0; padding: 6px 9px; }
+header.mini .top .sync-btn::first-letter { font-size: .95rem; }
+
+/* 城市按鈕 */
+.cities { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 2px 0; }
+.cities::-webkit-scrollbar { display: none; }
+.city { flex: none; border: 0; background: none; padding: 7px 12px; border-radius: 999px; font-size: .95rem; font-weight: 600; color: var(--muted); cursor: pointer; transition: background-color .2s, color .2s; }
+.city .n { font-size: .78rem; font-weight: 500; margin-left: 4px; opacity: .8; }
+.city[aria-pressed="true"] { background: var(--text); color: var(--card); }
+@media (hover: hover) { .city:not([aria-pressed="true"]):hover { background: var(--chip); color: var(--text); } }
+/* 區域標籤 */
+.areas { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; align-items: center; padding: 2px 0; }
+.areas::-webkit-scrollbar { display: none; }
+.areas .lbl { flex: none; font-size: .78rem; color: var(--muted); margin-right: 2px; }
+.area { flex: none; border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 4px 10px; font-size: .82rem; cursor: pointer; color: var(--text); }
+.area .n { color: var(--muted); margin-left: 3px; font-size: .75rem; }
+.area[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.icon-btn { flex: none; width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); cursor: pointer; display: grid; place-items: center; font-size: 1.05rem; }
+
+/* 分段標題（捲動時固定在上方） */
+.sec-h { grid-column: 1 / -1; position: sticky; top: -14px; z-index: 3; display: flex; align-items: baseline; gap: 8px; padding: 10px 2px 6px; margin-bottom: -4px;
+  background: var(--bg); box-shadow: 0 6px 6px -6px rgba(0,0,0,.12); font-size: .95rem; }
+.sec-h b { font-size: 1rem; }
+.sec-h span { color: var(--muted); font-size: .8rem; }
+.sec-h:not(:first-child) { margin-top: 8px; }
+
+/* 精簡卡片：左邊小照片、右邊資訊 */
+.card.mini .lift { flex-direction: row; }
+.thumb { flex: none; width: 96px; background: var(--chip); position: relative; }
+.thumb img, .thumb .ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+.mbody { flex: 1; min-width: 0; padding: 9px 10px 9px 12px; display: flex; flex-direction: column; gap: 4px; }
+.mbody .title h3 { font-size: .95rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.mbody .heart { margin: -4px -4px 0 0; }
+.mline { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: .76rem; }
+.mnote { font-size: .82rem; line-height: 1.45; color: var(--text); background: var(--accent-soft); border-radius: 6px; padding: 3px 7px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.mbody .meta { font-size: .76rem; }
+
+/* 地圖：合併圓點（外圈顏色＝各分類比例） */
+.cluwrap { background: none; border: 0; }
+.clu { width: 100%; height: 100%; border-radius: 50%; display: grid; place-items: center; box-shadow: 0 2px 8px rgba(0,0,0,.35); transition: transform .2s ease, box-shadow .2s ease; cursor: pointer; }
+.clu span { width: 68%; height: 68%; border-radius: 50%; background: #fff; color: #1f2a1f; display: grid; place-items: center; font-weight: 700; font-size: .85rem; }
+@media (hover: hover) { .cluwrap:hover .clu { transform: translateY(-4px) scale(1.08); box-shadow: 0 8px 18px rgba(0,0,0,.4); } }
 .top .sync-btn { position: absolute; right: 0; top: 0; }
 .sub { color: var(--muted); font-size: .75rem; margin-top: 4px; line-height: 1.5; text-align: center; }
 .sync-btn { border: 1px solid var(--line); background: var(--chip); border-radius: 999px; padding: 5px 10px; font-size: .78rem; cursor: pointer; white-space: nowrap; }
@@ -51,7 +100,8 @@ header { padding: 10px 16px 10px; background: var(--card); border-bottom: 1px so
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 input, select, textarea { font: inherit; font-size: 16px; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--text); min-width: 0; }
 /* 搜尋：平常只有放大鏡，點了向左展開 */
-.searchrow { position: relative; min-height: 44px; }
+.searchrow { position: relative; min-height: 44px; padding-right: 52px; flex-wrap: nowrap; }
+#sortSel { min-width: 0; flex: 0 1 auto; text-overflow: ellipsis; }
 .search { position: absolute; right: 0; top: 50%; transform: translateY(-50%); height: 44px; width: 44px; display: flex; align-items: center;
   border-radius: 999px; background: var(--card); border: 1px solid var(--line); overflow: hidden; z-index: 5;
   transition: width .35s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s; }
@@ -90,6 +140,7 @@ input, select, textarea { font: inherit; font-size: 16px; padding: 9px 12px; bor
 .count { color: var(--muted); font-size: .85rem; margin-left: auto; }
 main { flex: 1; min-height: 0; position: relative; }
 #list { height: 100%; overflow-y: auto; padding: 14px 16px 40px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); align-content: start; }
+#list.dense { gap: 10px; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
 #map { position: absolute; inset: 0; }
 .hidden { display: none !important; }
 
@@ -192,11 +243,19 @@ dialog.closing::backdrop { animation: fadeOut .22s ease-in forwards; }
   .sub { font-size: .72rem; }
   .controls { gap: 6px; margin-top: 8px; }
   .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -12px; padding: 6px 12px; }
+  .cities, .areas { margin: 0 -12px; padding-left: 12px; padding-right: 12px; }
+  .tabs button { padding: 6px 10px; }
+  #sortSel { padding: 8px 6px; flex: 1 1 0; }
+  .tabs button { white-space: nowrap; }
+  .tabs .ti { display: none; }
+  #list.dense { grid-template-columns: 1fr; }
   .brand img { height: 96px; }
+  header.mini .brand img { height: 36px; }
   .chips::-webkit-scrollbar { display: none; }
   .chip { flex: none; padding: 7px 12px; font-size: .84rem; }
   .tabs button { padding: 6px 14px; }
   #list { grid-template-columns: 1fr; padding: 12px; }
+  .sec-h { top: -12px; }
   dialog { width: 100vw; max-width: 100vw; max-height: 92vh; margin: auto 0 0; border-radius: 16px 16px 0 0; }
   .sheet { max-height: 92vh; }
 }
@@ -215,12 +274,19 @@ dialog.closing::backdrop { animation: fadeOut .22s ease-in forwards; }
   <div class="sub" id="updated">載入中…</div>
   <div class="banner hidden" id="banner"></div>
   <div class="controls">
+    <nav class="cities" id="cities" aria-label="城市"></nav>
+    <div class="areas hidden" id="areas" aria-label="區域"></div>
+    <div class="chips" id="chips"></div>
     <div class="row searchrow" id="searchRow">
-      <select id="listSel" aria-label="清單"><option value="">全部清單</option></select>
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tabList" aria-selected="true"><span class="ti">📋 </span>清單</button>
+        <button role="tab" id="tabMap" aria-selected="false"><span class="ti">🗺️ </span>地圖</button>
+      </div>
+      <button class="icon-btn" id="denseBtn" aria-label="切換卡片大小" title="切換精簡／大圖"></button>
       <select id="sortSel" aria-label="排序">
-        <option value="name">排序：店名</option>
-        <option value="liked">❤️ 按讚的優先</option>
-        <option value="near">📍 離我最近</option>
+        <option value="name">依區域</option>
+        <option value="liked">❤️ 按讚</option>
+        <option value="near">📍 最近</option>
       </select>
       <div class="search" id="search">
         <input type="search" id="q" placeholder="搜尋店名、備註、區域、去過的紀錄" aria-label="搜尋" tabindex="-1">
@@ -228,14 +294,6 @@ dialog.closing::backdrop { animation: fadeOut .22s ease-in forwards; }
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
         </button>
       </div>
-    </div>
-    <div class="chips" id="chips"></div>
-    <div class="row">
-      <div class="tabs" role="tablist">
-        <button role="tab" id="tabList" aria-selected="true">📋 清單</button>
-        <button role="tab" id="tabMap" aria-selected="false">🗺️ 地圖</button>
-      </div>
-      <span class="count" id="count"></span>
     </div>
   </div>
 </header>
@@ -363,7 +421,11 @@ function setSync(state, msg) {
 }
 
 /* ========= 店家資料 ========= */
-const S = { places: [], q: '', list: '', cats: new Set(), me: null, view: 'list', sort: 'name' };
+const S = { places: [], q: '', list: '', area: '', cats: new Set(), me: null, view: 'list', sort: 'name', dense: true };
+const cityName = list => list === '其他收藏' ? '其他' : list.replace(/素食$/, '') || list;
+const primaryList = p => p.lists.find(l => l !== '其他收藏') || p.lists[0] || '';
+const areaKey = p => { if (!p.area) return '其他'; const a = p.area.split('・'); return a[1] || a[0]; };
+let LISTS = []; // 依店家數排序的清單（城市）
 function eff(p) {
   const m = my.places[p.id] || {};
   const note = m.note ?? p.note ?? '';
@@ -407,7 +469,9 @@ const CITY_WARDS = {
   '京都': { Nakagyo: '中京區', Shimogyo: '下京區', Higashiyama: '東山區', Kamigyo: '上京區', Sakyo: '左京區', Ukyo: '右京區', Minami: '南區', Kita: '北區',
     Fushimi: '伏見區', Yamashina: '山科區', Nishikyo: '西京區' },
   '神戶': { Chuo: '中央區', Kita: '北區', Nada: '灘區', Higashinada: '東灘區', Hyogo: '兵庫區', Nagata: '長田區', Suma: '須磨區', Tarumi: '垂水區', Nishi: '西區' },
-  '大阪': { Kita: '北區', Chuo: '中央區', Naniwa: '浪速區', Tennoji: '天王寺區', Nishi: '西區', Fukushima: '福島區', Yodogawa: '淀川區', Miyakojima: '都島區' },
+  '大阪': { Kita: '北區', Chuo: '中央區', Naniwa: '浪速區', Tennoji: '天王寺區', Nishi: '西區', Fukushima: '福島區', Yodogawa: '淀川區', Miyakojima: '都島區',
+    Nishinari: '西成區', Abeno: '阿倍野區', Minato: '港區', Taisho: '大正區', Higashinari: '東成區', Ikuno: '生野區', Joto: '城東區', Asahi: '旭區', Sumiyoshi: '住吉區',
+    Konohana: '此花區', Nishiyodogawa: '西淀川區', Higashiyodogawa: '東淀川區', Suminoe: '住之江區', Hirano: '平野區', Tsurumi: '鶴見區', Higashisumiyoshi: '東住吉區' },
 };
 const JP_CITIES = { Tokyo: '東京', Yokohama: '橫濱', Kamakura: '鎌倉', Kyoto: '京都', Osaka: '大阪', Nagoya: '名古屋', Sapporo: '札幌', Fukuoka: '福岡', Kobe: '神戶', Nara: '奈良', Kawasaki: '川崎', Hakone: '箱根',
   Kawagoe: '川越', Saitama: '埼玉', Chiba: '千葉', Narita: '成田', Nikko: '日光', Karuizawa: '輕井澤', Fujisawa: '藤澤', Odawara: '小田原', Atami: '熱海', Hiroshima: '廣島',
@@ -417,7 +481,10 @@ function areaOf(addr) {
   if (!addr) return '';
   const tw = addr.match(/([\u4e00-\u9fa5]{2}[市縣])([\u4e00-\u9fa5]{1,3}?[區鄉鎮市])/);
   if (tw && !/日本/.test(addr)) return `${tw[1]}・${tw[2]}`;
-  const toks = addr.replace(/日本|〒?\d{3}-\d{4}/g, '').split(',').map(t => t.trim().replace(/\s+\d{3}-?\d{4}.*$/, ''));
+  // 日文漢字地址：大阪市中央区、京都市中京区…
+  const jp = addr.match(/(東京都?|大阪|京都|神戸|横浜|名古屋)市?([^\s,、市]{1,4}?)区/);
+  if (jp) return `${{ 東京都: '東京', 神戸: '神戶', 横浜: '橫濱' }[jp[1]] || jp[1]}・${jp[2]}區`;
+  const toks = addr.replace(/日本|〒?\d{3}-\d{4}/g, '').split(',').map(t => t.trim().replace(/\s+\d{3}-?\d{4}.*$/, '').replace(/-ku$/i, ' Ward').replace(/-city$/i, ''));
   const strip = t => t.replace(/\s+(City|Ward)$/, '').replace(/ō/g, 'o').replace(/ū/g, 'u');
   let city = '', ward = '';
   for (const t of toks) { const k = strip(t); if (JP_CITIES[k] && !/Ward$/.test(t)) { city = city || JP_CITIES[k]; } }
@@ -437,6 +504,7 @@ function filtered() {
   const q = S.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
   let out = S.places.map(eff).filter(p => {
     if (S.list && !p.lists.includes(S.list)) return false;
+    if (S.list && S.area && areaKey(p) !== S.area) return false;
     if (S.cats.size && !S.cats.has(p.cat)) return false;
     const hay = `${p.name} ${p.note} ${p.address} ${p.area} ${p.category || ''} ${p.cat ? CATS[p.cat].label : ''} ${p.visits.map(v => v.date + ' ' + v.memo).join(' ')}`.toLowerCase();
     return q.every(w => hay.includes(w));
@@ -456,9 +524,36 @@ const photosHTML = p => `<div class="photos">${[0, 1].map(i => p.photos[i]
 
 function renderChips() {
   // 數量只算目前選的城市清單（選「全部清單」時算全部）
-  const all = S.places.map(eff).filter(p => !S.list || p.lists.includes(S.list));
+  const all = S.places.map(eff).filter(p => (!S.list || p.lists.includes(S.list)) && (!S.area || areaKey(p) === S.area));
   $('chips').innerHTML = Object.entries(CATS).map(([k, c]) =>
     `<button class="chip" data-cat="${k}" style="--c:${c.color}" aria-pressed="${S.cats.has(k)}"><i></i>${esc(c.label)}<span class="n">${all.filter(p => p.cat === k).length}</span></button>`).join('');
+}
+function renderCities() {
+  const n = l => S.places.filter(p => p.lists.includes(l)).length;
+  $('cities').innerHTML = `<button class="city" data-list="" aria-pressed="${!S.list}">全部<span class="n">${S.places.length}</span></button>` +
+    LISTS.map(l => `<button class="city" data-list="${esc(l)}" aria-pressed="${S.list === l}">${esc(cityName(l))}<span class="n">${n(l)}</span></button>`).join('');
+  const box = $('areas');
+  if (!S.list) { box.classList.add('hidden'); return; }
+  const counts = {};
+  S.places.filter(p => p.lists.includes(S.list)).forEach(p => { const k = areaKey(p); counts[k] = (counts[k] || 0) + 1; });
+  const keys = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b, 'zh-TW'));
+  if (keys.length < 2) { box.classList.add('hidden'); return; }
+  box.classList.remove('hidden');
+  box.innerHTML = `<span class="lbl">區域</span><button class="area" data-area="" aria-pressed="${!S.area}">全部</button>` +
+    keys.map(k => `<button class="area" data-area="${esc(k)}" aria-pressed="${S.area === k}">${esc(k)}<span class="n">${counts[k]}</span></button>`).join('');
+}
+function miniCardHTML(p) {
+  const st = openStatus(p);
+  const last = p.visits[0];
+  return `<article class="card mini" tabindex="0" data-open="${esc(p.id)}"><div class="lift">
+    <div class="thumb">${p.photos[0] ? `<img src="${esc(p.photos[0])}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:'🥗'}))">` : '<div class="ph">🥗</div>'}</div>
+    <div class="mbody">
+      <div class="title"><h3>${esc(p.name)}</h3>${heartBtn(p)}</div>
+      <div class="mline">${badge(p)}${st ? `<span class="open ${st.open ? 'yes' : 'no'}">${st.open ? '營業中' : '休息中'}</span>` : ''}</div>
+      ${p.note ? `<div class="mnote">${linkify(p.note)}</div>` : ''}
+      <div class="meta">${[p.area ? `📍 ${esc(p.area)}` : '', S.sort === 'near' && S.me ? `${p._d.toFixed(1)} 公里` : '', last ? `🍽️ 去過 ${p.visits.length} 次` : ''].filter(Boolean).join(' · ')}</div>
+    </div>
+  </div></article>`;
 }
 function cardHTML(p) {
   const st = openStatus(p);
@@ -477,20 +572,51 @@ function cardHTML(p) {
 }
 function render() {
   const list = filtered();
-  $('count').textContent = `共 ${list.length} 間`;
-  $('list').innerHTML = list.length ? list.map(cardHTML).join('') : '<div class="empty-state">找不到符合條件的店家</div>';
+  const card = S.dense ? miniCardHTML : cardHTML;
+  const el = $('list');
+  el.classList.toggle('dense', S.dense);
+  let html;
+  if (!list.length) html = '<div class="empty-state">找不到符合條件的店家</div>';
+  else if (S.sort !== 'name') {
+    html = `<div class="sec-h"><b>${S.sort === 'liked' ? '❤️ 按讚優先' : '📍 離我最近'}</b><span>${list.length} 間</span></div>` + list.map(card).join('');
+  } else {
+    // 「全部」時依城市分段；選了城市時依區域分段
+    const key = S.list ? areaKey : p => primaryList(p);
+    const label = S.list ? k => k : cityName;
+    const groups = new Map();
+    list.forEach(p => { const k = key(p); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(p); });
+    const order = [...groups.keys()].sort((a, b) => S.list ? (groups.get(b).length - groups.get(a).length || a.localeCompare(b, 'zh-TW')) : LISTS.indexOf(a) - LISTS.indexOf(b));
+    html = order.map(k => `<div class="sec-h"><b>${esc(label(k))}</b><span>${groups.get(k).length} 間</span></div>` + groups.get(k).map(card).join('')).join('');
+  }
+  el.innerHTML = html;
+  $('denseBtn').textContent = S.dense ? '▦' : '☰';
+  $('denseBtn').title = S.dense ? '切換成大圖卡片' : '切換成精簡清單';
   if (S.view === 'map') renderMap(list);
+  renderCities();
   renderChips();
 }
 
 /* ========= 地圖 ========= */
-let map, layer, fitted = false;
+let map, layer, meMarker = null, fitted = false;
 const markers = new Map();
 function ensureMap() {
   if (map) return;
   map = L.map('map').setView([35.68, 139.76], 10);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(map);
-  layer = L.featureGroup().addTo(map);
+  layer = (L.markerClusterGroup ? L.markerClusterGroup({
+    showCoverageOnHover: false, maxClusterRadius: 48, spiderfyOnMaxZoom: true,
+    iconCreateFunction: cl => {
+      const kids = cl.getAllChildMarkers(), n = kids.length, cnt = {};
+      kids.forEach(m => cnt[m.options.cat] = (cnt[m.options.cat] || 0) + 1);
+      let acc = 0;
+      const stops = [...Object.keys(CATS), 'none'].filter(k => cnt[k]).map(k => {
+        const from = acc; acc += cnt[k] / n * 100;
+        return `${k === 'none' ? 'var(--c-none)' : CATS[k].color} ${from}% ${acc}%`;
+      }).join(',');
+      const size = n < 10 ? 38 : n < 30 ? 46 : 54;
+      return L.divIcon({ className: 'cluwrap', html: `<div class="clu" style="background:conic-gradient(${stops})"><span>${n}</span></div>`, iconSize: [size, size] });
+    },
+  }) : L.featureGroup()).addTo(map);
   const legend = L.control({ position: 'bottomleft' });
   legend.onAdd = () => { const d = L.DomUtil.create('div', 'legend'); d.innerHTML = Object.values(CATS).map(c => `<div><i style="--c:${c.color}"></i>${c.label}</div>`).join('') + `<div><i style="--c:var(--c-none)"></i>未分類</div>`; return d; };
   legend.addTo(map);
@@ -501,12 +627,13 @@ function renderMap(list) {
   list.forEach(p => {
     const color = p.cat ? CATS[p.cat].color : 'var(--c-none)';
     const icon = L.divIcon({ className: 'dotwrap', html: `<span class="dot${p.liked ? ' liked' : ''}" style="--c:${color}"></span>`, iconSize: [26, 26], iconAnchor: [13, 13] });
-    const m = L.marker([p.lat, p.lng], { icon, riseOnHover: true, keyboard: true, title: p.name })
+    const m = L.marker([p.lat, p.lng], { icon, riseOnHover: true, keyboard: true, title: p.name, cat: p.cat || 'none' })
       .bindTooltip(`${esc(p.name)}${p.note ? `<br><small>${esc(p.note.slice(0, 30))}</small>` : ''}`, { direction: 'top', offset: [0, -14] })
       .on('click', () => openDetail(p.id));
     m.addTo(layer); markers.set(p.id, m);
   });
-  if (S.me && S.sort === 'near') L.circleMarker([S.me.lat, S.me.lng], { radius: 7, color: '#fff', weight: 2, fillColor: '#d81b60', fillOpacity: 1 }).bindTooltip('我的位置').addTo(layer);
+  if (meMarker) { meMarker.remove(); meMarker = null; }
+  if (S.me && S.sort === 'near') meMarker = L.circleMarker([S.me.lat, S.me.lng], { radius: 7, color: '#fff', weight: 2, fillColor: '#d81b60', fillOpacity: 1 }).bindTooltip('我的位置').addTo(map);
   if (!fitted && list.length) { map.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 15 }); fitted = true; }
 }
 function setView(v) {
@@ -515,7 +642,8 @@ function setView(v) {
   $('tabMap').setAttribute('aria-selected', v === 'map');
   $('list').classList.toggle('hidden', v !== 'list');
   $('map').classList.toggle('hidden', v !== 'map');
-  if (v === 'map') { ensureMap(); setTimeout(() => { map.invalidateSize(); renderMap(filtered()); }, 0); }
+  setHeaderMini(v === 'map' || $('list').scrollTop > 60);
+  if (v === 'map') { ensureMap(); setTimeout(() => { map.invalidateSize(); renderMap(filtered()); }, 0); setTimeout(() => map.invalidateSize(), 350); }
   ls.set(LS_VIEW, v);
 }
 function showOnMap(id) {
@@ -523,9 +651,9 @@ function showOnMap(id) {
   setView('map');
   setTimeout(() => {
     const m = markers.get(id); if (!m) return;
-    map.setView(m.getLatLng(), 16);
-    const dot = m.getElement()?.querySelector('.dot');
-    if (dot) { dot.classList.add('flash'); setTimeout(() => dot.classList.remove('flash'), 1800); }
+    const flash = () => { const dot = m.getElement()?.querySelector('.dot'); if (dot) { dot.classList.add('flash'); setTimeout(() => dot.classList.remove('flash'), 1800); } };
+    if (layer.zoomToShowLayer) layer.zoomToShowLayer(m, () => { map.setView(m.getLatLng(), Math.max(map.getZoom(), 16)); setTimeout(flash, 300); });
+    else { map.setView(m.getLatLng(), 16); flash(); }
   }, 80);
 }
 
@@ -718,7 +846,31 @@ $('searchBtn').onclick = () => {
 $('q').addEventListener('input', () => $('searchBtn').setAttribute('aria-label', S.q ? '清除搜尋' : '收起搜尋'));
 $('q').addEventListener('keydown', e => { if (e.key === 'Escape') { setSearch(false); $('searchBtn').focus(); } if (e.key === 'Enter') $('q').blur(); });
 $('q').addEventListener('blur', () => setTimeout(() => { if (document.activeElement !== $('searchBtn') && !S.q) setSearch(false); else $('search').classList.toggle('has-q', !!S.q); }, 150));
-$('listSel').addEventListener('change', e => { S.list = e.target.value; fitted = false; render(); });
+$('cities').addEventListener('click', e => {
+  const b = e.target.closest('.city'); if (!b) return;
+  S.list = b.dataset.list; S.area = ''; fitted = false;
+  ls.set('veggie-city', S.list);
+  render(); $('list').scrollTop = 0;
+  b.scrollIntoView({ inline: 'nearest', block: 'nearest', behavior: 'smooth' });
+});
+$('areas').addEventListener('click', e => {
+  const b = e.target.closest('.area'); if (!b) return;
+  S.area = b.dataset.area; fitted = false; render(); $('list').scrollTop = 0;
+});
+$('denseBtn').onclick = () => { S.dense = !S.dense; ls.set('veggie-dense', S.dense ? '1' : '0'); render(); };
+// 往下捲時把頂部收小，讓畫面留給店家
+function setHeaderMini(on) {
+  const h = document.querySelector('header');
+  if (h.classList.contains('mini') === on) return;
+  h.classList.toggle('mini', on);
+  if (map && S.view === 'map') setTimeout(() => map.invalidateSize(), 350);
+}
+$('list').addEventListener('scroll', () => {
+  const el = $('list');
+  if (S.view !== 'list') return;
+  if (el.scrollTop > 60 && el.scrollHeight - el.clientHeight > 220) setHeaderMini(true);
+  else if (el.scrollTop < 8) setHeaderMini(false);
+}, { passive: true });
 $('tabList').onclick = () => setView('list');
 $('tabMap').onclick = () => setView('map');
 $('chips').addEventListener('click', e => {
@@ -758,8 +910,12 @@ document.addEventListener('visibilitychange', async () => { if (!document.hidden
   $('updated').textContent = `Google 地圖同步：${fmt}・每 3 小時自動檢查`;
   if (data.demo) { $('banner').textContent = '目前顯示的是示範資料。'; $('banner').classList.remove('hidden'); }
   else if (data.errors && data.errors.length) { $('banner').textContent = '有部分清單同步失敗：' + data.errors.join('；'); $('banner').classList.remove('hidden'); }
-  const lists = [...new Set(S.places.flatMap(p => p.lists))].filter(Boolean);
-  if (lists.length > 1) $('listSel').innerHTML += lists.map(c => `<option>${esc(c)}</option>`).join(''); else $('listSel').classList.add('hidden');
+  const cnt = {};
+  S.places.forEach(p => p.lists.forEach(l => { if (l) cnt[l] = (cnt[l] || 0) + 1; }));
+  LISTS = Object.keys(cnt).sort((a, b) => (a === '其他收藏') - (b === '其他收藏') || cnt[b] - cnt[a]);
+  const savedCity = ls.get('veggie-city');
+  if (savedCity && LISTS.includes(savedCity)) S.list = savedCity;
+  S.dense = ls.get('veggie-dense') !== '0';
   const savedSort = ls.get('veggie-sort');
   if (savedSort === 'liked') { S.sort = 'liked'; $('sortSel').value = 'liked'; }
   render();
