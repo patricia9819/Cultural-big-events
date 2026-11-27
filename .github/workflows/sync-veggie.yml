@@ -5,6 +5,7 @@ on:
     - cron: "17 */3 * * *"   # 每 3 小時自動同步一次
   workflow_dispatch:          # 可在 GitHub → Actions 手動按「Run workflow」立即同步
   push:
+    branches: [main]
     paths:
       - veggie/lists.json
       - scripts/sync_google_lists.py
