@@ -403,6 +403,12 @@ const TOKYO_WARDS = { Chiyoda: '千代田區', Chuo: '中央區', Minato: '港�
   Arakawa: '荒川區', Itabashi: '板橋區', Nerima: '練馬區', Adachi: '足立區', Katsushika: '葛飾區', Edogawa: '江戶川區' };
 const YOKOHAMA_WARDS = { Naka: '中區', Nishi: '西區', Kanagawa: '神奈川區', Minami: '南區', Kohoku: '港北區', Tsurumi: '鶴見區', Hodogaya: '保土谷區', Isogo: '磯子區',
   Kanazawa: '金澤區', Totsuka: '戶塚區', Konan: '港南區', Asahi: '旭區', Midori: '綠區', Seya: '瀨谷區', Sakae: '榮區', Izumi: '泉區', Aoba: '青葉區', Tsuzuki: '都筑區' };
+const CITY_WARDS = {
+  '京都': { Nakagyo: '中京區', Shimogyo: '下京區', Higashiyama: '東山區', Kamigyo: '上京區', Sakyo: '左京區', Ukyo: '右京區', Minami: '南區', Kita: '北區',
+    Fushimi: '伏見區', Yamashina: '山科區', Nishikyo: '西京區' },
+  '神戶': { Chuo: '中央區', Kita: '北區', Nada: '灘區', Higashinada: '東灘區', Hyogo: '兵庫區', Nagata: '長田區', Suma: '須磨區', Tarumi: '垂水區', Nishi: '西區' },
+  '大阪': { Kita: '北區', Chuo: '中央區', Naniwa: '浪速區', Tennoji: '天王寺區', Nishi: '西區', Fukushima: '福島區', Yodogawa: '淀川區', Miyakojima: '都島區' },
+};
 const JP_CITIES = { Tokyo: '東京', Yokohama: '橫濱', Kamakura: '鎌倉', Kyoto: '京都', Osaka: '大阪', Nagoya: '名古屋', Sapporo: '札幌', Fukuoka: '福岡', Kobe: '神戶', Nara: '奈良', Kawasaki: '川崎', Hakone: '箱根',
   Kawagoe: '川越', Saitama: '埼玉', Chiba: '千葉', Narita: '成田', Nikko: '日光', Karuizawa: '輕井澤', Fujisawa: '藤澤', Odawara: '小田原', Atami: '熱海', Hiroshima: '廣島',
   Sendai: '仙台', Kanazawa: '金澤', Okinawa: '沖繩', Naha: '那霸', Hakodate: '函館', Otaru: '小樽', Takayama: '高山', Matsumoto: '松本', Shizuoka: '靜岡', Himeji: '姬路' };
@@ -419,6 +425,7 @@ function areaOf(addr) {
     const k = strip(t);
     if (city === '東京' && TOKYO_WARDS[k] && (/City$/.test(t) || t === k)) { ward = TOKYO_WARDS[k]; break; }
     if (city === '橫濱' && /Ward$/.test(t) && YOKOHAMA_WARDS[k]) { ward = YOKOHAMA_WARDS[k]; break; }
+    if (CITY_WARDS[city] && /Ward$/.test(t) && CITY_WARDS[city][k]) { ward = CITY_WARDS[city][k]; break; }
     if (!ward && /Ward$/.test(t)) ward = k + ' 區';
   }
   if (!city) { const c = toks.find(t => /City$/.test(t)); if (c) city = JP_CITIES[strip(c)] || strip(c); }
