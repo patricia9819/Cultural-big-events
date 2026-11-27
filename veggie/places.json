@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T09:09:20+00:00",
+ "updated": "2026-11-27T01:57:02+00:00",
  "demo": false,
  "errors": [],
  "places": [
@@ -234,6 +234,201 @@
     "photos/6924360971717814513-2.jpg"
    ],
    "details_at": 1795424952
+  },
+  {
+   "id": "6917819854179822321",
+   "name": "Gomacro Salon",
+   "note": "無五辛",
+   "address": "日本〒604-8207 Kyoto, Nakagyo Ward, Shinmeicho, ６７−3",
+   "lat": 35.0105845,
+   "lng": 135.75668349999998,
+   "fid": "0x6001088154886af1:0xcba24e139aa5f189",
+   "gmaps": "https://www.google.com/maps/search/Gomacro%20Salon/@35.0105845,135.75668349999998,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "休息"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–18:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–18:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–18:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "08:00–10:00、11:30–18:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "08:00–10:00、11:30–18:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "08:00–10:00、11:30–18:00"
+    }
+   ],
+   "phone": "+81 75-257-5096",
+   "website": "http://gomacro.jp/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917819854179822321-1.jpg",
+    "photos/6917819854179822321-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917686928113093777",
+   "name": "Green Eats Kobe Kitano",
+   "note": "",
+   "address": "3 Chome-6-15 Kitanocho, Chuo Ward, Kobe, Hyogo 650-0002日本",
+   "lat": 34.7007014,
+   "lng": 135.18969149999998,
+   "fid": "0x60008f9c118b4c91:0xb7757c3300a44a2a",
+   "gmaps": "https://www.google.com/maps/search/Green%20Eats%20Kobe%20Kitano/@34.7007014,135.18969149999998,18z",
+   "lists": [
+    "神戶素食"
+   ],
+   "phone": "+81 70-9224-5056",
+   "website": "https://www.instagram.com/greeneats_kobe?igsh=MWloa214b3R5NHFleA==",
+   "category": "咖啡店",
+   "photos": [
+    "photos/6917686928113093777-1.jpg",
+    "photos/6917686928113093777-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917818201184490521",
+   "name": "Hachidori Table Vegetarian Food & Coffee",
+   "note": "無五辛",
+   "address": "日本〒601-8471 Kyoto, Minami Ward, Hachijocho, 438",
+   "lat": 34.984198899999996,
+   "lng": 135.7466686,
+   "fid": "0x6001070076555419:0xa9d3aea9944c0a62",
+   "gmaps": "https://www.google.com/maps/search/Hachidori%20Table%20Vegetarian%20Food%20%26%20Coffee/@34.984198899999996,135.7466686,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–14:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–14:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–14:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–14:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–14:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–14:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "休息"
+    }
+   ],
+   "phone": "+81 75-201-0083",
+   "website": "https://hachidoritable.github.io/hachidori-table/",
+   "category": "素食餐廳",
+   "photos": [
+    "photos/6917818201184490521-1.jpg",
+    "photos/6917818201184490521-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917686276535179189",
+   "name": "Horieza",
+   "note": "",
+   "address": "6 Chome-3-3 Motomachidori, Chuo Ward, Kobe, Hyogo 650-0022日本",
+   "lat": 34.684198699999996,
+   "lng": 135.1810995,
+   "fid": "0x60008f045c7957b5:0x3182c4df31cada01",
+   "gmaps": "https://www.google.com/maps/search/Horieza/@34.684198699999996,135.1810995,18z",
+   "lists": [
+    "神戶素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–18:30"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–18:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–18:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–18:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–18:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–18:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "休息"
+    }
+   ],
+   "phone": "+81 80-7041-5711",
+   "website": "http://horieza.com/",
+   "category": "餐廳",
+   "photos": [
+    "photos/6917686276535179189-1.jpg",
+    "photos/6917686276535179189-2.jpg"
+   ],
+   "details_at": 1795744584
   },
   {
    "id": "6924442720180829137",
@@ -584,6 +779,64 @@
    "details_at": 1795424952
   },
   {
+   "id": "6917996990891702323",
+   "name": "M's Bento",
+   "note": "嵐山",
+   "address": "日本〒616-8373 Kyoto, Ukyo Ward, Sagatenryuji Kurumamichicho, 9-4 永井産業ビル 3階",
+   "lat": 35.017983,
+   "lng": 135.6813462,
+   "fid": "0x6001a99c2f523833:0xb23298542f591a40",
+   "gmaps": "https://www.google.com/maps/search/M%27s%20Bento/@35.017983,135.6813462,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "休息"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "休息"
+    }
+   ],
+   "phone": "+81 80-5326-3363",
+   "website": "https://www.ermineskitchen.com/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917996990891702323-1.jpg",
+    "photos/6917996990891702323-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
    "id": "6924387556782335233",
    "name": "M's Table",
    "note": "預約管道https://www.pompadour.co.jp/contact.php",
@@ -699,6 +952,64 @@
    "details_at": 1795403357
   },
   {
+   "id": "6917686132830286641",
+   "name": "Modernark pharm cafe",
+   "note": "",
+   "address": "3 Chome-11-15 Kitanagasadori, Chuo Ward, Kobe, Hyogo 650-0012日本",
+   "lat": 34.6919669,
+   "lng": 135.18888479999998,
+   "fid": "0x60008ee2e6feb331:0x50f9efe64defc3dc",
+   "gmaps": "https://www.google.com/maps/search/Modernark%20pharm%20cafe/@34.6919669,135.18888479999998,18z",
+   "lists": [
+    "神戶素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "休息"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–19:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–19:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–19:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–19:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–19:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–19:00"
+    }
+   ],
+   "phone": "+81 78-391-3060",
+   "website": "https://modernark-pharm-cafe.com/?utm_medium=referral&utm_source=google&utm_campaign=mm&utm_content=hp",
+   "category": "素食餐廳",
+   "photos": [
+    "photos/6917686132830286641-1.jpg",
+    "photos/6917686132830286641-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
    "id": "6924438558395220165",
    "name": "Nezunoya",
    "note": "",
@@ -755,6 +1066,122 @@
     "photos/6924438558395220165-2.jpg"
    ],
    "details_at": 1795403357
+  },
+  {
+   "id": "6917821188032570159",
+   "name": "Nijiya",
+   "note": "無五辛",
+   "address": "日本〒604-8022 Kyoto, Nakagyo Ward, Minamikurumayacho, 287 木屋町会館 １階",
+   "lat": 35.0065658,
+   "lng": 135.7702029,
+   "fid": "0x600109b7e45a232f:0xcf7d2ce5043ec7ad",
+   "gmaps": "https://www.google.com/maps/search/Nijiya/@35.0065658,135.7702029,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "17:30–20:30"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "12:00–14:30、17:30–20:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "12:00–14:30、17:30–20:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "12:00–14:30、17:30–20:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "12:00–14:30、17:30–20:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "12:00–14:30、17:30–20:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "12:00–18:00"
+    }
+   ],
+   "phone": "+81 75-741-7411",
+   "website": "https://nijiya-produced-by-vegan-farm.jimdosite.com/?utm_source=GBP&utm_medium=GBP&utm_term=GBP&utm_content=GBP&utm_campaign=GBP",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917821188032570159-1.jpg",
+    "photos/6917821188032570159-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917686247078022831",
+   "name": "RAJA",
+   "note": "",
+   "address": "日本〒650-0023 Hyogo, Kobe, Chuo Ward, Sakaemachidori, 2 Chome−7−4 佐野達ビル B1",
+   "lat": 34.6873557,
+   "lng": 135.18698039999998,
+   "fid": "0x60008efd80b0ceaf:0x686faea4238f7a35",
+   "gmaps": "https://www.google.com/maps/search/RAJA/@34.6873557,135.18698039999998,18z",
+   "lists": [
+    "神戶素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "休息"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–14:30、17:00–21:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–14:30、17:00–21:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–14:30、17:00–21:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–14:30、17:00–21:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–14:30、17:00–21:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–14:30、17:00–21:00"
+    }
+   ],
+   "phone": "+81 78-332-5253",
+   "website": "http://www.raja-kobe.com/",
+   "category": "印度餐廳",
+   "photos": [
+    "photos/6917686247078022831-1.jpg",
+    "photos/6917686247078022831-2.jpg"
+   ],
+   "details_at": 1795744584
   },
   {
    "id": "6924387085906352577",
@@ -1528,6 +1955,604 @@
    "details_at": 1795403357
   },
   {
+   "id": "6917820406364527407",
+   "name": "Vegetable Dishes ”OKI” SHIJO",
+   "note": "無五辛",
+   "address": "411 Iwatoyamacho, Shimogyo Ward, Kyoto, 600-8445日本",
+   "lat": 35.0012253,
+   "lng": 135.75678689999998,
+   "fid": "0x60010901e54e5b2f:0xb476703329d8e4c2",
+   "gmaps": "https://www.google.com/maps/search/Vegetable%20Dishes%20%E2%80%9DOKI%E2%80%9D%20SHIJO/@35.0012253,135.75678689999998,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "07:00–10:00、17:00–23:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "07:00–10:00、17:00–23:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "07:00–10:00、17:00–23:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "07:00–10:00、17:00–23:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "07:00–10:00、17:00–23:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "07:00–10:00、17:00–23:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "07:00–10:00、17:00–23:00"
+    }
+   ],
+   "phone": "+81 80-8520-5620",
+   "website": "https://shijo.yasai-oki.com/",
+   "category": "有機餐廳",
+   "photos": [
+    "photos/6917820406364527407-1.jpg",
+    "photos/6917820406364527407-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917821237968881491",
+   "name": "Vegetarian Cafe Ren Horikawa",
+   "note": "",
+   "address": "日本〒602-8111 Kyoto, Kamigyo Ward, 堀川下長者郵便局 となり",
+   "lat": 35.0223039,
+   "lng": 135.7515862,
+   "fid": "0x600109c384c9c753:0x5b5ebc65a139d4c2",
+   "gmaps": "https://www.google.com/maps/search/Vegetarian%20Cafe%20Ren%20Horikawa/@35.0223039,135.7515862,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "12:00–15:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "12:00–15:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "12:00–15:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "12:00–15:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "12:00–15:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "12:00–15:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "休息"
+    }
+   ],
+   "phone": "+81 75-384-8112",
+   "website": "https://cafe-ren-horikawa.therestaurant.jp/",
+   "category": "素食餐廳",
+   "photos": [
+    "photos/6917821237968881491-1.jpg",
+    "photos/6917821237968881491-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917818384727879285",
+   "name": "Vegetarian Cafe Ren Shijō Ōmiya",
+   "note": "",
+   "address": "12-7 Mibubojocho, Nakagyo Ward, Kyoto, 604-8804日本",
+   "lat": 35.0044448,
+   "lng": 135.7466727,
+   "fid": "0x6001072b325f2e75:0x811234a4355fee10",
+   "gmaps": "https://www.google.com/maps/search/Vegetarian%20Cafe%20Ren%20Shij%C5%8D%20%C5%8Cmiya/@35.0044448,135.7466727,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–15:30、17:30–20:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–15:30、17:30–20:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–15:30、17:30–20:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–15:30、17:30–20:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–15:30、17:30–20:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–15:30、17:30–20:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "休息"
+    }
+   ],
+   "phone": "+81 75-496-8182",
+   "website": "https://cafe-ren-shijyoomiya.therestaurant.jp/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917818384727879285-1.jpg",
+    "photos/6917818384727879285-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917819191236900049",
+   "name": "Vegetarian 素食 南宮 （京都四条大宫店）",
+   "note": "",
+   "address": "ユーリプラザ, 2階 京都市中京区錦大宮町, 130-4 Shijoomiyacho, Kyoto 604-8365日本",
+   "lat": 35.0042732,
+   "lng": 135.7487947,
+   "fid": "0x600107e6fa0e34d1:0xdbc00cc13e4711ec",
+   "gmaps": "https://www.google.com/maps/search/Vegetarian%20%E7%B4%A0%E9%A3%9F%20%E5%8D%97%E5%AE%AE%20%EF%BC%88%E4%BA%AC%E9%83%BD%E5%9B%9B%E6%9D%A1%E5%A4%A7%E5%AE%AB%E5%BA%97%EF%BC%89/@35.0042732,135.7487947,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "10:30–15:00、17:00–22:30"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "10:30–15:00、17:00–22:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "10:30–15:00、17:00–22:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "10:30–15:00、17:00–22:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "10:30–15:00、17:00–22:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "10:30–15:00、17:00–22:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "10:30–15:00、17:00–22:30"
+    }
+   ],
+   "phone": "+81 75-813-0880",
+   "category": "素食餐廳",
+   "photos": [
+    "photos/6917819191236900049-1.jpg",
+    "photos/6917819191236900049-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917687150628768741",
+   "name": "Veggie Junkies Burger / ベジバーガー元町バロム",
+   "note": "",
+   "address": "日本〒650-0021 Hyogo, Kobe, Chuo Ward, Sannomiyacho, 3 Chome−5−5 2F",
+   "lat": 34.689671,
+   "lng": 135.18978719999998,
+   "fid": "0x60008fcfe0830be5:0xb8d5f7bf6e7aabf2",
+   "gmaps": "https://www.google.com/maps/search/Veggie%20Junkies%20Burger%20%2F%20%E3%83%99%E3%82%B8%E3%83%90%E3%83%BC%E3%82%AC%E3%83%BC%E5%85%83%E7%94%BA%E3%83%90%E3%83%AD%E3%83%A0/@34.689671,135.18978719999998,18z",
+   "lists": [
+    "神戶素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "休息"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–17:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–17:00"
+    }
+   ],
+   "website": "https://www.instagram.com/veggie_junkies_burger",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917687150628768741-1.jpg",
+    "photos/6917687150628768741-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917686126457446445",
+   "name": "XINLIN CHINESE RESTAURANT",
+   "note": "",
+   "address": "日本〒650-0004 Hyogo, Kobe, Chuo Ward, Nakayamatedori, 2 Chome−13−12",
+   "lat": 34.6968349,
+   "lng": 135.1902226,
+   "fid": "0x60008ee16b24e02d:0x2a18a51e19d99f0f",
+   "gmaps": "https://www.google.com/maps/search/XINLIN%20CHINESE%20RESTAURANT/@34.6968349,135.1902226,18z",
+   "lists": [
+    "神戶素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "休息"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–15:00、17:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–15:00、17:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–15:00、17:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–15:00、17:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–15:00、17:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–15:00、17:00–22:00"
+    }
+   ],
+   "phone": "+81 78-242-9911",
+   "website": "https://xinlin.jp/",
+   "category": "中菜館",
+   "photos": [
+    "photos/6917686126457446445-1.jpg",
+    "photos/6917686126457446445-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917686244532252149",
+   "name": "YIDAKI CAFE",
+   "note": "",
+   "address": "日本〒650-0021 Hyogo, Kobe, Chuo Ward, Sannomiyacho, 3 Chome−6−6 大栄ビル 2階",
+   "lat": 34.689941499999996,
+   "lng": 135.1899434,
+   "fid": "0x60008efce8f36df5:0xd220e772b84f58b8",
+   "gmaps": "https://www.google.com/maps/search/YIDAKI%20CAFE/@34.689941499999996,135.1899434,18z",
+   "lists": [
+    "神戶素食"
+   ],
+   "phone": "+81 78-335-0520",
+   "website": "https://www.instagram.com/yidakicafe/",
+   "category": "咖啡店",
+   "photos": [
+    "photos/6917686244532252149-1.jpg",
+    "photos/6917686244532252149-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917821171618477381",
+   "name": "ZIRAEL Vegan Restaurant",
+   "note": "",
+   "address": "313-7 Gionmachi Kitagawa, Higashiyama Ward, Kyoto, 605-0073日本",
+   "lat": 35.005062599999995,
+   "lng": 135.77795419999998,
+   "fid": "0x600109b411fef545:0x266c41d8c2a30082",
+   "gmaps": "https://www.google.com/maps/search/ZIRAEL%20Vegan%20Restaurant/@35.005062599999995,135.77795419999998,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "12:00–19:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "12:00–19:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "12:00–19:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "12:00–19:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "12:00–15:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "12:00–19:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "12:00–19:00"
+    }
+   ],
+   "website": "https://ziraelinc.wixsite.com/zirael-restaurant",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917821171618477381-1.jpg",
+    "photos/6917821171618477381-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917820788733656493",
+   "name": "cafe vegan terrace",
+   "note": "無五辛",
+   "address": "44-21 Bishamoncho, Higashiyama Ward, Kyoto, 605-0812日本",
+   "lat": 35.000447199999996,
+   "lng": 135.776748,
+   "fid": "0x6001095aec483dad:0xdcea2bbd990130b4",
+   "gmaps": "https://www.google.com/maps/search/cafe%20vegan%20terrace/@35.000447199999996,135.776748,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–16:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–20:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–20:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–20:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–20:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–20:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–16:00"
+    }
+   ],
+   "phone": "+81 70-6546-5301",
+   "website": "https://www.instagram.com/cafe_vegan_terrace/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917820788733656493-1.jpg",
+    "photos/6917820788733656493-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917686191307822509",
+   "name": "isogami gyoza bar tomako",
+   "note": "",
+   "address": "日本〒651-0086 Hyogo, Kobe, Chuo Ward, Isogamidori, 8 Chome−1−29 カサベラビルＣ＆Ｍ",
+   "lat": 34.6916523,
+   "lng": 135.1965694,
+   "fid": "0x60008ef0848715ad:0x3e1e814b8992c0b6",
+   "gmaps": "https://www.google.com/maps/search/isogami%20gyoza%20bar%20tomako/@34.6916523,135.1965694,18z",
+   "lists": [
+    "神戶素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–15:00、17:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–15:00、17:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–15:00、17:00–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–15:00、17:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–15:00、17:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–15:00、17:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–15:00、17:00–22:00"
+    }
+   ],
+   "phone": "+81 78-230-1330",
+   "website": "https://shop.isogami.jp/#itemlist",
+   "category": "餐廳",
+   "photos": [
+    "photos/6917686191307822509-1.jpg",
+    "photos/6917686191307822509-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917819862835506729",
+   "name": "mumokuteki cafe&foods Kyoto",
+   "note": "",
+   "address": "日本〒604-8061 Kyoto, Nakagyo Ward, Shikibucho, 261 ヒューマンフォーラム本社ビル 2F",
+   "lat": 35.0065374,
+   "lng": 135.76660909999998,
+   "fid": "0x600108835873ae29:0x4545194c795cc8a8",
+   "gmaps": "https://www.google.com/maps/search/mumokuteki%20cafe%26foods%20Kyoto/@35.0065374,135.76660909999998,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–19:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–19:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–19:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–19:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–19:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–19:00"
+    }
+   ],
+   "phone": "+81 50-3164-9733",
+   "website": "https://mumokuteki.com/cafe?utm_source=GBP&utm_medium=GBP&utm_term=GBP&utm_content=GBP&utm_campaign=GBP",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917819862835506729-1.jpg",
+    "photos/6917819862835506729-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
    "id": "6924441268062220729",
    "name": "〒111-0053 Tokyo, Taito City, Asakusabashi, 5-chōme−20−8 ＣＳタワー",
    "note": "",
@@ -1663,6 +2688,63 @@
    "details_at": 1795403357
   },
   {
+   "id": "6917820142058886485",
+   "name": "元祖特級拉麵 寬",
+   "note": "",
+   "address": "30-4 Bishamoncho, Higashiyama Ward, Kyoto, 605-0812日本",
+   "lat": 35.000779,
+   "lng": 135.777683,
+   "fid": "0x600108c45b765555:0x744be01a0c4a7f22",
+   "gmaps": "https://www.google.com/maps/search/%E5%85%83%E7%A5%96%E7%89%B9%E7%B4%9A%E6%8B%89%E9%BA%B5%20%E5%AF%AC/@35.000779,135.777683,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–20:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–20:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–20:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–20:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–20:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–20:00"
+    }
+   ],
+   "phone": "+81 90-1903-3498",
+   "category": "拉麵店",
+   "photos": [
+    "photos/6917820142058886485-1.jpg",
+    "photos/6917820142058886485-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
    "id": "6924387413261824153",
    "name": "台灣菜館",
    "note": "素食友善",
@@ -1718,6 +2800,64 @@
     "photos/6924387413261824153-2.jpg"
    ],
    "details_at": 1795403357
+  },
+  {
+   "id": "6917997416427552767",
+   "name": "嵯峨豆腐 稻 北店",
+   "note": "嵐山",
+   "address": "46-2 Sagatenryuji Kitatsukurimichicho, Ukyo Ward, Kyoto, 616-8374日本",
+   "lat": 35.017267499999996,
+   "lng": 135.6768897,
+   "fid": "0x6001a9ff433bffff:0x4b4859deeac61ac9",
+   "gmaps": "https://www.google.com/maps/search/%E5%B5%AF%E5%B3%A8%E8%B1%86%E8%85%90%20%E7%A8%BB%20%E5%8C%97%E5%BA%97/@35.017267499999996,135.6768897,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–18:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–18:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–18:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–18:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–18:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–18:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–18:00"
+    }
+   ],
+   "phone": "+81 75-864-5313",
+   "website": "http://www.kyo-ine.com/",
+   "category": "豆腐餐廳",
+   "photos": [
+    "photos/6917997416427552767-1.jpg",
+    "photos/6917997416427552767-2.jpg"
+   ],
+   "details_at": 1795744584
   },
   {
    "id": "6924524538904279191",
@@ -1952,6 +3092,22 @@
    "details_at": 1795403357
   },
   {
+   "id": "6917686258376266593",
+   "name": "灯りの塔 KOBEキャンドル",
+   "note": "",
+   "address": "8 Chome-1-8 Onoedori, Chuo Ward, Kobe, Hyogo 651-0087日本",
+   "lat": 34.692516,
+   "lng": 135.1955752,
+   "fid": "0x60008f00221e5361:0x23a812ab66518b4e",
+   "gmaps": "https://www.google.com/maps/search/%E7%81%AF%E3%82%8A%E3%81%AE%E5%A1%94%20KOBE%E3%82%AD%E3%83%A3%E3%83%B3%E3%83%89%E3%83%AB/@34.692516,135.1955752,18z",
+   "lists": [
+    "神戶素食"
+   ],
+   "website": "https://kobe-shashinkan.jp/cenotaph/chuou/chuou19.html",
+   "category": "文化地標",
+   "details_at": 1795744584
+  },
+  {
    "id": "6924440485097646101",
    "name": "真さか MASAKA 居酒屋",
    "note": "",
@@ -2066,6 +3222,179 @@
     "photos/6924438887505279025-2.jpg"
    ],
    "details_at": 1795403357
+  },
+  {
+   "id": "6917686259963727079",
+   "name": "義式料理 OSTERIA gaudente",
+   "note": "",
+   "address": "日本〒650-0044 Hyogo, Kobe, Chuo Ward, Higashikawasakicho, 1 Chome−6−1 神戸ハーバーランドumie モザイク 3F",
+   "lat": 34.679219499999995,
+   "lng": 135.1848199,
+   "fid": "0x60008f0080bd0ce7:0x3bb757c92da9a885",
+   "gmaps": "https://www.google.com/maps/search/%E7%BE%A9%E5%BC%8F%E6%96%99%E7%90%86%20OSTERIA%20gaudente/@34.679219499999995,135.1848199,18z",
+   "lists": [
+    "神戶素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–14:30、17:30–21:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–14:30、17:30–21:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–14:30、17:30–21:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–14:30、17:30–21:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–14:30、17:30–21:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–15:00、17:00–21:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–15:00、17:00–21:00"
+    }
+   ],
+   "phone": "+81 78-360-2800",
+   "website": "http://gaudente.jp/",
+   "category": "意大利餐廳",
+   "photos": [
+    "photos/6917686259963727079-1.jpg",
+    "photos/6917686259963727079-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917997417571680995",
+   "name": "西山草堂",
+   "note": "嵐山",
+   "address": "63 Sagatenryuji Susukinobabacho, Ukyo Ward, Kyoto, 616-8385日本",
+   "lat": 35.0152777,
+   "lng": 135.6769425,
+   "fid": "0x6001a9ff876e02e3:0x2a4d760f333eab35",
+   "gmaps": "https://www.google.com/maps/search/%E8%A5%BF%E5%B1%B1%E8%8D%89%E5%A0%82/@35.0152777,135.6769425,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–14:30"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–14:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–14:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–14:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–14:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–14:30"
+    }
+   ],
+   "phone": "+81 75-861-1609",
+   "category": "豆腐餐廳",
+   "photos": [
+    "photos/6917997417571680995-1.jpg",
+    "photos/6917997417571680995-2.jpg"
+   ],
+   "details_at": 1795744584
+  },
+  {
+   "id": "6917819542817457671",
+   "name": "豆乳拉麵專門店「豆禪」",
+   "note": "",
+   "address": "13-4 Shimogamo Higashitakagicho, Sakyo Ward, Kyoto, 606-0865日本",
+   "lat": 35.0437606,
+   "lng": 135.77601239999998,
+   "fid": "0x60010838d5e3c607:0x6a0ec0c0e45b3161",
+   "gmaps": "https://www.google.com/maps/search/%E8%B1%86%E4%B9%B3%E6%8B%89%E9%BA%B5%E5%B0%88%E9%96%80%E5%BA%97%E3%80%8C%E8%B1%86%E7%A6%AA%E3%80%8D/@35.0437606,135.77601239999998,18z",
+   "lists": [
+    "京都素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–15:30"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–15:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "休息"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–15:30、17:30–21:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–15:30、17:30–21:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–15:30、17:30–21:30"
+    }
+   ],
+   "phone": "+81 75-703-5731",
+   "website": "https://www.mamezen.com/",
+   "category": "拉麵店",
+   "photos": [
+    "photos/6917819542817457671-1.jpg",
+    "photos/6917819542817457671-2.jpg"
+   ],
+   "details_at": 1795744584
   },
   {
    "id": "6924361266439277965",
