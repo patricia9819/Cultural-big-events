@@ -1,8 +1,23 @@
 {
- "updated": "2026-11-27T01:57:02+00:00",
+ "updated": "2026-11-27T01:58:14+00:00",
  "demo": false,
  "errors": [],
  "places": [
+  {
+   "id": "6917782732369442703",
+   "name": "1-chōme-10-14 Nakazaki",
+   "note": "",
+   "address": "1-chōme-10-14 Nakazaki, Kita Ward, Osaka, 530-0016日本",
+   "lat": 34.7078829,
+   "lng": 135.5071417,
+   "fid": "0x6000e6be3c36378f:0xd2d93c9635db9b7e",
+   "gmaps": "https://www.google.com/maps/search/1-ch%C5%8Dme-10-14%20Nakazaki/@34.7078829,135.5071417,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "category": "複合大樓",
+   "details_at": 1795744671
+  },
   {
    "id": "6924387106382718213",
    "name": "AFURI 橫濱地標廣場",
@@ -118,6 +133,63 @@
     "photos/6924439306314927305-2.jpg"
    ],
    "details_at": 1795403357
+  },
+  {
+   "id": "6917783472822588253",
+   "name": "Chinese Cuisine Kinfukurai",
+   "note": "",
+   "address": "日本〒542-0073 Osaka, Chuo Ward, Nipponbashi, 1 Chome−3−7 日本橋ビル38番街 2F ビル",
+   "lat": 34.6674012,
+   "lng": 135.5059752,
+   "fid": "0x6000e76aa2a8935d:0xe6405cd6be73d825",
+   "gmaps": "https://www.google.com/maps/search/Chinese%20Cuisine%20Kinfukurai/@34.6674012,135.5059752,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–15:00、17:00–23:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–15:00、17:00–23:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:00–15:00、17:00–23:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–15:00、17:00–23:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–15:00、17:00–23:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–15:00、17:00–23:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–15:00、17:00–23:00"
+    }
+   ],
+   "phone": "+81 6-6213-5580",
+   "category": "中菜館",
+   "photos": [
+    "photos/6917783472822588253-1.jpg",
+    "photos/6917783472822588253-2.jpg"
+   ],
+   "details_at": 1795744671
   },
   {
    "id": "6924361126391986771",
@@ -294,6 +366,64 @@
    "details_at": 1795744584
   },
   {
+   "id": "6917783136727670661",
+   "name": "Green Earth",
+   "note": "",
+   "address": "日本〒541-0057 Osaka, Chuo Ward, Kitakyuhojimachi, 4 Chome−2−2 １F",
+   "lat": 34.6797685,
+   "lng": 135.4992871,
+   "fid": "0x6000e71c61d71f85:0xe337f9b0e3e1efb0",
+   "gmaps": "https://www.google.com/maps/search/Green%20Earth/@34.6797685,135.4992871,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–16:30"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–16:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–16:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–16:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–16:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–16:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "休息"
+    }
+   ],
+   "phone": "+81 6-6251-1245",
+   "website": "https://www.osaka-vegetarian-ge.com/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917783136727670661-1.jpg",
+    "photos/6917783136727670661-2.jpg"
+   ],
+   "details_at": 1795744671
+  },
+  {
    "id": "6917686928113093777",
    "name": "Green Eats Kobe Kitano",
    "note": "",
@@ -371,6 +501,64 @@
     "photos/6917818201184490521-2.jpg"
    ],
    "details_at": 1795744584
+  },
+  {
+   "id": "6917783111052169517",
+   "name": "Halal Ramen Naniwaya",
+   "note": "",
+   "address": "2 Chome-7-22 Nishishinsaibashi, Chuo Ward, Osaka, 542-0086日本",
+   "lat": 34.669663899999996,
+   "lng": 135.4981661,
+   "fid": "0x6000e7166776112d:0x906327e00611397a",
+   "gmaps": "https://www.google.com/maps/search/Halal%20Ramen%20Naniwaya/@34.669663899999996,135.4981661,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "12:00–22:30"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "12:00–22:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "12:00–22:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "12:00–22:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "12:00–22:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "12:00–22:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "12:00–22:30"
+    }
+   ],
+   "phone": "+81 6-6926-8888",
+   "website": "https://hitokiwa-gno.com/naniwaya_jpn",
+   "category": "清真餐廳",
+   "photos": [
+    "photos/6917783111052169517-1.jpg",
+    "photos/6917783111052169517-2.jpg"
+   ],
+   "details_at": 1795744671
   },
   {
    "id": "6917686276535179189",
@@ -952,6 +1140,64 @@
    "details_at": 1795403357
   },
   {
+   "id": "6917783972661631183",
+   "name": "Mercy Vegan Factory",
+   "note": "",
+   "address": "日本〒542-0066 Osaka, Chuo Ward, Kawarayamachi, 2 Chome−4−15 1階 西側（瓦屋町グランド正面",
+   "lat": 34.670007999999996,
+   "lng": 135.5133099,
+   "fid": "0x6000e7df036318cf:0xbdcd4f5a8f988e7",
+   "gmaps": "https://www.google.com/maps/search/Mercy%20Vegan%20Factory/@34.670007999999996,135.5133099,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "08:00–17:00、18:00–21:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "08:00–17:00、18:00–21:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "08:00–17:00、18:00–21:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "08:00–17:00、18:00–21:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "08:00–17:00、18:00–21:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "休息"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "08:00–17:00、18:00–21:00"
+    }
+   ],
+   "phone": "+81 6-6718-5846",
+   "website": "https://www.hotpepper.jp/strJ003298114/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917783972661631183-1.jpg",
+    "photos/6917783972661631183-2.jpg"
+   ],
+   "details_at": 1795744671
+  },
+  {
    "id": "6917686132830286641",
    "name": "Modernark pharm cafe",
    "note": "",
@@ -1124,6 +1370,178 @@
     "photos/6917821188032570159-2.jpg"
    ],
    "details_at": 1795744584
+  },
+  {
+   "id": "6917784035664162341",
+   "name": "OKO - Fun Okonomiyaki Bar",
+   "note": "",
+   "address": "2 Chome-4-13 Dotonbori, Chuo Ward, Osaka, 542-0071日本",
+   "lat": 34.668703199999996,
+   "lng": 135.4981529,
+   "fid": "0x6000e7edaea16e25:0xf84a6a950a120ac1",
+   "gmaps": "https://www.google.com/maps/search/OKO%20-%20Fun%20Okonomiyaki%20Bar/@34.668703199999996,135.4981529,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–13:30、18:00–23:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–13:30、18:00–23:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–13:30、18:00–23:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–13:30、18:00–23:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–13:30、18:00–23:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–13:30、18:00–23:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–13:30、18:00–23:00"
+    }
+   ],
+   "phone": "+81 90-5897-3366",
+   "category": "御好燒餐廳",
+   "photos": [
+    "photos/6917784035664162341-1.jpg",
+    "photos/6917784035664162341-2.jpg"
+   ],
+   "details_at": 1795744671
+  },
+  {
+   "id": "6917783034839919087",
+   "name": "Paprika shokudo Vegan",
+   "note": "",
+   "address": "日本〒550-0013 Osaka, Nishi Ward, Shinmachi, 1 Chome−9−9 Alivio 新町 １F",
+   "lat": 34.677259899999996,
+   "lng": 135.4964512,
+   "fid": "0x6000e704a8db69ef:0xdca8f41c673163f0",
+   "gmaps": "https://www.google.com/maps/search/Paprika%20shokudo%20Vegan/@34.677259899999996,135.4964512,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–14:00、17:30–21:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–14:00、17:30–21:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–14:00、17:30–21:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–14:00、17:30–21:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–14:00、17:30–21:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–14:00、17:30–21:00"
+    }
+   ],
+   "phone": "+81 6-6599-9788",
+   "website": "https://www.hotpepper.jp/strJ001128228/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917783034839919087-1.jpg",
+    "photos/6917783034839919087-2.jpg"
+   ],
+   "details_at": 1795744671
+  },
+  {
+   "id": "6917783656638531145",
+   "name": "Pivot BASE Travel Cafe @ Tonbori",
+   "note": "",
+   "address": "日本〒542-0071 Osaka, Chuo Ward, Dotonbori, 1 Chome−7−21 中座くいだおれビル 1F",
+   "lat": 34.668576099999996,
+   "lng": 135.50240449999998,
+   "fid": "0x6000e7956ef14649:0x79cc874630d758fe",
+   "gmaps": "https://www.google.com/maps/search/Pivot%20BASE%20Travel%20Cafe%20%40%20Tonbori/@34.668576099999996,135.50240449999998,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–22:00"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–22:00"
+    }
+   ],
+   "website": "https://dotonbori-night.com/pivot/en/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917783656638531145-1.jpg",
+    "photos/6917783656638531145-2.jpg"
+   ],
+   "details_at": 1795744671
   },
   {
    "id": "6917686247078022831",
@@ -1356,6 +1774,121 @@
     "photos/6924438498428090873-2.jpg"
    ],
    "details_at": 1795403357
+  },
+  {
+   "id": "6917772779008926563",
+   "name": "Shinsekai Paprika Shokudo Vegan&Gluten-free",
+   "note": "",
+   "address": "3 Chome-4-5 Ebisuhigashi, Naniwa Ward, Osaka, 556-0002日本",
+   "lat": 34.650522599999995,
+   "lng": 135.5060219,
+   "fid": "0x6000ddb0c9b1a363:0xac3ae4dd427f5908",
+   "gmaps": "https://www.google.com/maps/search/Shinsekai%20Paprika%20Shokudo%20Vegan%26Gluten-free/@34.650522599999995,135.5060219,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "12:00–14:30、17:30–21:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "12:00–14:30、17:30–21:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "12:00–14:30、17:30–21:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "12:00–14:30、17:30–21:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "12:00–14:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "休息"
+    }
+   ],
+   "phone": "+81 6-6567-9376",
+   "category": "素食餐廳",
+   "photos": [
+    "photos/6917772779008926563-1.jpg",
+    "photos/6917772779008926563-2.jpg"
+   ],
+   "details_at": 1795744671
+  },
+  {
+   "id": "6917783395699603023",
+   "name": "Sukhasana Pozzuoli",
+   "note": "",
+   "address": "日本〒540-0017 Osaka, Chuo Ward, Matsuyamachi Sumiyoshi, 5−24 ハイツ澤 １F",
+   "lat": 34.6790223,
+   "lng": 135.5118125,
+   "fid": "0x6000e758adc5364f:0xd40eef8c70f9c6b2",
+   "gmaps": "https://www.google.com/maps/search/Sukhasana%20Pozzuoli/@34.6790223,135.5118125,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "15:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "15:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "15:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "15:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "15:00–21:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "17:00–21:00"
+    }
+   ],
+   "phone": "+81 6-6765-0999",
+   "website": "https://www.instagram.com/sukhasana_v_pizzeria?igsh=d2Z2cnowMG1vN2Zr&utm_source=qr",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917783395699603023-1.jpg",
+    "photos/6917783395699603023-2.jpg"
+   ],
+   "details_at": 1795744671
   },
   {
    "id": "6924441228035922085",
@@ -1897,6 +2430,64 @@
    "details_at": 1795403357
   },
   {
+   "id": "6917783242224588373",
+   "name": "Vegan and Gluten Free Osaka",
+   "note": "",
+   "address": "日本〒530-0001 Osaka, B1F Osaka Ekimae 4th Building, 1-11-4,Umeda, Kita-ku, Osaka-city",
+   "lat": 34.6996907,
+   "lng": 135.49847549999998,
+   "fid": "0x6000e734f1f25655:0x4c37aa89840dac4e",
+   "gmaps": "https://www.google.com/maps/search/Vegan%20and%20Gluten%20Free%20Osaka/@34.6996907,135.49847549999998,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–22:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–22:00"
+    }
+   ],
+   "phone": "+81 6-4256-7299",
+   "website": "https://www.veganandglutenfree-osaka.com/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917783242224588373-1.jpg",
+    "photos/6917783242224588373-2.jpg"
+   ],
+   "details_at": 1795744671
+  },
+  {
    "id": "6924441246354854183",
    "name": "Vege herb saga",
    "note": "",
@@ -2184,6 +2775,63 @@
     "photos/6917819191236900049-2.jpg"
    ],
    "details_at": 1795744584
+  },
+  {
+   "id": "6917783675152022993",
+   "name": "Vegetarian 素食 江南（大阪日本橋店）",
+   "note": "",
+   "address": "日本〒542-0073 Osaka, Chuo Ward, Nipponbashi, 1 Chome−3−7 日本橋ビル38番街 2階",
+   "lat": 34.6674054,
+   "lng": 135.5059091,
+   "fid": "0x6000e799be6ebdd1:0x1a8ef5dc74562aec",
+   "gmaps": "https://www.google.com/maps/search/Vegetarian%20%E7%B4%A0%E9%A3%9F%20%E6%B1%9F%E5%8D%97%EF%BC%88%E5%A4%A7%E9%98%AA%E6%97%A5%E6%9C%AC%E6%A9%8B%E5%BA%97%EF%BC%89/@34.6674054,135.5059091,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:30–15:00、17:30–22:30"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:30–15:00、17:30–22:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–15:00、17:30–22:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–15:00、17:30–22:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–15:00、17:30–22:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–15:00、17:30–22:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–15:00、17:30–22:30"
+    }
+   ],
+   "phone": "+81 6-6213-5580",
+   "category": "中菜館",
+   "photos": [
+    "photos/6917783675152022993-1.jpg",
+    "photos/6917783675152022993-2.jpg"
+   ],
+   "details_at": 1795744671
   },
   {
    "id": "6917687150628768741",
@@ -2553,6 +3201,64 @@
    "details_at": 1795744584
   },
   {
+   "id": "6917783722435405643",
+   "name": "new order",
+   "note": "",
+   "address": "6 Chome-13-21 Tanimachi, 大阪市中央区 Osaka 542-0012日本",
+   "lat": 34.674614999999996,
+   "lng": 135.5142114,
+   "fid": "0x6000e7a4c0bde74b:0x6d3dda1d8121700c",
+   "gmaps": "https://www.google.com/maps/search/new%20order/@34.674614999999996,135.5142114,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "11:00–15:00、17:00–20:00"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "11:00–15:00"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "休息"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "休息"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "12:00–15:00"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:00–15:00、17:00–20:00"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:00–15:00"
+    }
+   ],
+   "phone": "+81 6-7410-3135",
+   "website": "https://www.instagram.com/_hi_ri_n",
+   "category": "日式咖哩餐廳",
+   "photos": [
+    "photos/6917783722435405643-1.jpg",
+    "photos/6917783722435405643-2.jpg"
+   ],
+   "details_at": 1795744671
+  },
+  {
    "id": "6924441268062220729",
    "name": "〒111-0053 Tokyo, Taito City, Asakusabashi, 5-chōme−20−8 ＣＳタワー",
    "note": "",
@@ -2800,6 +3506,63 @@
     "photos/6924387413261824153-2.jpg"
    ],
    "details_at": 1795403357
+  },
+  {
+   "id": "6917772868577775087",
+   "name": "咲璽季(SAIJIKI)～素食VEGAN ～台灣料理",
+   "note": "",
+   "address": "Tennoji Park Villa, 105号, 1 Chome-1-10 Sanno, Nishinari Ward, Osaka, 557-0001日本",
+   "lat": 34.6481598,
+   "lng": 135.50773949999999,
+   "fid": "0x6000ddc5a469cdef:0x89a36ae320ebe2a5",
+   "gmaps": "https://www.google.com/maps/search/%E5%92%B2%E7%92%BD%E5%AD%A3%28SAIJIKI%29%EF%BD%9E%E7%B4%A0%E9%A3%9FVEGAN%20%EF%BD%9E%E5%8F%B0%E7%81%A3%E6%96%99%E7%90%86/@34.6481598,135.50773949999999,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "休息"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "休息"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:30–14:00、17:30–20:45"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:30–14:00、17:30–20:45"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:30–14:00、17:30–20:45"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:30–14:00、17:30–20:45"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:30–14:00、17:30–20:45"
+    }
+   ],
+   "phone": "+81 6-6585-7481",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917772868577775087-1.jpg",
+    "photos/6917772868577775087-2.jpg"
+   ],
+   "details_at": 1795744671
   },
   {
    "id": "6917997416427552767",
@@ -3105,7 +3868,7 @@
    ],
    "website": "https://kobe-shashinkan.jp/cenotaph/chuou/chuou19.html",
    "category": "文化地標",
-   "details_at": 1795744584
+   "details_at": 1795744671
   },
   {
    "id": "6924440485097646101",
@@ -3222,6 +3985,63 @@
     "photos/6924438887505279025-2.jpg"
    ],
    "details_at": 1795403357
+  },
+  {
+   "id": "6917782732395957759",
+   "name": "素食串燒 あじゅ",
+   "note": "",
+   "address": "1 Chome-10-14 Nakazaki, Kita Ward, Osaka, 530-0016日本",
+   "lat": 34.7078778,
+   "lng": 135.507137,
+   "fid": "0x6000e6be3dcacdff:0xe0452f40752415e6",
+   "gmaps": "https://www.google.com/maps/search/%E7%B4%A0%E9%A3%9F%E4%B8%B2%E7%87%92%20%E3%81%82%E3%81%98%E3%82%85/@34.7078778,135.507137,18z",
+   "lists": [
+    "大阪素食"
+   ],
+   "hours": [
+    {
+     "day": 1,
+     "name": "星期一",
+     "text": "休息"
+    },
+    {
+     "day": 2,
+     "name": "星期二",
+     "text": "17:30–21:30"
+    },
+    {
+     "day": 3,
+     "name": "星期三",
+     "text": "11:40–13:30、17:30–21:30"
+    },
+    {
+     "day": 4,
+     "name": "星期四",
+     "text": "11:40–13:30、17:30–21:30"
+    },
+    {
+     "day": 5,
+     "name": "星期五",
+     "text": "11:40–13:30、17:30–21:30"
+    },
+    {
+     "day": 6,
+     "name": "星期六",
+     "text": "11:40–13:30、17:30–21:30"
+    },
+    {
+     "day": 7,
+     "name": "星期日",
+     "text": "11:40–13:30、17:30–21:30"
+    }
+   ],
+   "website": "https://aju-osaka.netlify.app/",
+   "category": "純素餐廳",
+   "photos": [
+    "photos/6917782732395957759-1.jpg",
+    "photos/6917782732395957759-2.jpg"
+   ],
+   "details_at": 1795744671
   },
   {
    "id": "6917686259963727079",
